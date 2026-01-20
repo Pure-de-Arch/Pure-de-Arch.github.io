@@ -12,19 +12,17 @@ layout: none
   <!-- Styles -->
   <link rel="stylesheet" href="/assets/css/style.css">
 
-  <!-- Chart.js (CDN) -->
+  <!-- Chart.js -->
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 
 <body>
 
-  <!-- HERO / FEJLÉC -->
+  <!-- HERO -->
   <header class="hero">
     <div class="hero-inner">
-
       <div class="hero-top">
         <h1 class="hero-brand">Pure DE Arch</h1>
-
         <div class="hero-buttons">
           <a href="#" class="hero-btn">Kereső</a>
           <a href="https://github.com/Pure-de-Arch" target="_blank" rel="noopener" class="hero-btn">GitHub</a>
@@ -40,13 +38,12 @@ layout: none
         <br>
         <span class="hero-note">Minden adat alaprendszeren mérve</span>
       </p>
-
     </div>
   </header>
 
   <div class="layout">
 
-    <!-- SIDEBAR SZŰRŐK -->
+    <!-- SIDEBAR -->
     <aside class="sidebar">
       <h2>Szűrők</h2>
 
@@ -79,10 +76,10 @@ layout: none
       <div id="tag-filters" class="tag-checkboxes"></div>
     </aside>
 
-    <!-- FŐ TARTALOM -->
+    <!-- MAIN CONTENT -->
     <main class="content">
 
-      <!-- ÖSSZEHASONLÍTÁS / COMPARE -->
+      <!-- COMPARE SECTION -->
       <section class="compare">
         <div class="compare-header">
           <h2>Összehasonlítás</h2>
@@ -118,7 +115,7 @@ layout: none
         </div>
       </section>
 
-      <!-- KÁRTYAGRID -->
+      <!-- CARD GRID -->
       <div id="cards" class="grid">
         {% for item in site.data.desktops %}
           {% include card.html item=item %}
@@ -128,8 +125,7 @@ layout: none
     </main>
   </div>
 
-  <!-- FILTER + COMPARE SCRIPT -->
+  <!-- SCRIPT -->
   <script src="/assets/js/filter.js"></script>
-
 </body>
 </html>
