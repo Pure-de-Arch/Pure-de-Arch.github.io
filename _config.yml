@@ -1,5 +1,5 @@
 title: Pure DE Arch
-description: Desktop Environment Filter
+description: Desktop Environment & Window Manager filter and comparison
 baseurl: ""
 url: "https://pure-de-arch.github.io"
 markdown: kramdown
