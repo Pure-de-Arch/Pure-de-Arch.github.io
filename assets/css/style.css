@@ -407,3 +407,95 @@ body {
     font-size: 0.85rem;
   }
 }
+
+/* --- COMPARE SECTION --- */
+.compare {
+  margin-bottom: 32px;
+  padding: 24px 0;
+  border-bottom: 1px solid var(--border);
+}
+
+.compare-header h2 {
+  margin: 0 0 6px;
+  font-size: 1.6rem;
+}
+
+.compare-header p {
+  margin: 0;
+  color: var(--muted);
+  font-size: 0.95rem;
+}
+
+.compare-selects {
+  display: flex;
+  gap: 16px;
+  margin-top: 16px;
+  margin-bottom: 20px;
+}
+
+.compare-select {
+  flex: 1;
+}
+
+.compare-select label {
+  display: block;
+  font-size: 0.9rem;
+  color: var(--muted);
+  margin-bottom: 4px;
+}
+
+.compare-select select {
+  width: 100%;
+  padding: 8px;
+  border-radius: var(--radius);
+  border: 1px solid var(--border);
+  background: var(--card-bg);
+  color: var(--text);
+}
+
+/* Panels */
+.compare-panels {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+}
+
+.compare-panel {
+  background: var(--card-bg);
+  border-radius: var(--radius);
+  border: 1px solid var(--border);
+  padding: 16px;
+  min-height: 160px;
+  box-shadow: var(--shadow);
+}
+
+.compare-panel.empty {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--muted);
+  font-size: 0.9rem;
+  font-style: italic;
+}
+
+.compare-panel h3 {
+  margin: 0 0 6px;
+}
+
+.compare-panel .meta {
+  margin-bottom: 8px;
+}
+
+.compare-panel .features {
+  margin-bottom: 8px;
+}
+
+/* Mobile */
+@media (max-width: 720px) {
+  .compare-selects {
+    flex-direction: column;
+  }
+  .compare-panels {
+    grid-template-columns: 1fr;
+  }
+}
