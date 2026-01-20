@@ -1,5 +1,9 @@
 document.addEventListener("DOMContentLoaded", () => {
 
+  /* -----------------------------
+     ALAP SZŰRŐK
+  ----------------------------- */
+
   const display = document.getElementById("filter-display");
   const type = document.getElementById("filter-type");
   const layout = document.getElementById("filter-layout");
@@ -7,9 +11,8 @@ document.addEventListener("DOMContentLoaded", () => {
   const tagContainer = document.getElementById("tag-filters");
   const cards = [...document.querySelectorAll(".card")];
 
-  /* --- TAG LISTA GENERÁLÁSA --- */
+  /* TAG LISTA */
   const allTags = new Set();
-
   cards.forEach(card => {
     const tags = (card.dataset.tags || "").split(",").filter(Boolean);
     tags.forEach(t => allTags.add(t.trim()));
@@ -29,7 +32,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   const tagCheckboxes = [...document.querySelectorAll(".tag-checkbox")];
 
-  /* --- SZŰRÉS --- */
+  /* SZŰRÉS */
   function applyFilters() {
     const d = display.value;
     const t = type.value;
@@ -64,11 +67,12 @@ document.addEventListener("DOMContentLoaded", () => {
   search.oninput = applyFilters;
   tagCheckboxes.forEach(cb => cb.onchange = applyFilters);
 
-  /* --- ÖSSZEHASONLÍTÁS --- */
+  /* -----------------------------
+     ÖSSZEHASONLÍTÁS + DIAGRAMOK
+  ----------------------------- */
+
   const selectA = document.getElementById("compare-a");
   const selectB = document.getElementById("compare-b");
-  const panelA = document.getElementById("compare-panel-a");
-  const panelB = document.getElementById("compare-panel-b");
 
   const cardData = {};
 
@@ -78,28 +82,110 @@ document.addEventListener("DOMContentLoaded", () => {
       name: card.querySelector("h3").innerText,
       meta: card.querySelector(".meta").innerText,
       features: card.querySelector(".features").innerText,
-      link: card.querySelector(".link").href
+      tags: (card.dataset.tags || "").split(","),
+      layout: card.dataset.layout,
+      display: card.dataset.display,
+      type: card.dataset.type,
+      resources: card.dataset.resources || "Medium"
     };
   });
 
-  function renderCompare(panel, id) {
-    if (!id || !cardData[id]) {
-      panel.classList.add("empty");
-      panel.innerHTML = `<span class="placeholder">Válassz egy elemet</span>`;
-      return;
-    }
+  /* --- DIAGRAMOK --- */
 
-    const item = cardData[id];
-    panel.classList.remove("empty");
-    panel.innerHTML = `
-      <h3>${item.name}</h3>
-      <p class="meta">${item.meta}</p>
-      <p class="features">${item.features}</p>
-      <a href="${item.link}" target="_blank" class="link">Részletek</a>
-    `;
+  const ctxResources = document.getElementById("chart-resources");
+  const ctxLayout = document.getElementById("chart-layout");
+  const ctxTags = document.getElementById("chart-tags");
+
+  let chartResources, chartLayout, chartTags;
+
+  function updateCharts() {
+    const idA = selectA.value;
+    const idB = selectB.value;
+
+    if (!idA || !idB) return;
+
+    const A = cardData[idA];
+    const B = cardData[idB];
+
+    /* RESOURCE DIAGRAM */
+    const resourceMap = { Low: 1, Medium: 2, High: 3 };
+
+    if (chartResources) chartResources.destroy();
+    chartResources = new Chart(ctxResources, {
+      type: "bar",
+      data: {
+        labels: [A.name, B.name],
+        datasets: [{
+          label: "Erőforrás igény",
+          data: [resourceMap[A.resources], resourceMap[B.resources]],
+          backgroundColor: ["#4da3ff88", "#7bc0ff88"],
+          borderColor: ["#4da3ff", "#7bc0ff"],
+          borderWidth: 2
+        }]
+      },
+      options: { responsive: true }
+    });
+
+    /* LAYOUT DIAGRAM */
+    const layoutMap = { Tiling: 1, Stacking: 2, Dynamic: 3 };
+
+    if (chartLayout) chartLayout.destroy();
+    chartLayout = new Chart(ctxLayout, {
+      type: "radar",
+      data: {
+        labels: ["Tiling", "Stacking", "Dynamic"],
+        datasets: [
+          {
+            label: A.name,
+            data: [
+              A.layout === "Tiling" ? 1 : 0,
+              A.layout === "Stacking" ? 1 : 0,
+              A.layout === "Dynamic" ? 1 : 0
+            ],
+            backgroundColor: "#4da3ff33",
+            borderColor: "#4da3ff"
+          },
+          {
+            label: B.name,
+            data: [
+              B.layout === "Tiling" ? 1 : 0,
+              B.layout === "Stacking" ? 1 : 0,
+              B.layout === "Dynamic" ? 1 : 0
+            ],
+            backgroundColor: "#7bc0ff33",
+            borderColor: "#7bc0ff"
+          }
+        ]
+      },
+      options: { responsive: true }
+    });
+
+    /* TAG DIAGRAM */
+    const all = [...new Set([...A.tags, ...B.tags])];
+
+    if (chartTags) chartTags.destroy();
+    chartTags = new Chart(ctxTags, {
+      type: "bar",
+      data: {
+        labels: all,
+        datasets: [
+          {
+            label: A.name,
+            data: all.map(t => A.tags.includes(t) ? 1 : 0),
+            backgroundColor: "#4da3ff88"
+          },
+          {
+            label: B.name,
+            data: all.map(t => B.tags.includes(t) ? 1 : 0),
+            backgroundColor: "#7bc0ff88"
+          }
+        ]
+      },
+      options: { responsive: true }
+    });
   }
 
-  selectA.onchange = () => renderCompare(panelA, selectA.value);
-  selectB.onchange = () => renderCompare(panelB, selectB.value);
+  selectA.onchange = updateCharts;
+  selectB.onchange = updateCharts;
 
 });
