@@ -5,20 +5,20 @@ layout: none
 <!DOCTYPE html>
 <html lang="hu">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>{{ site.title }}</title>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>{{ site.title | default: "Pure DE Arch" }}</title>
 
-  <!-- STYLE -->
+  <!-- Styles -->
   <link rel="stylesheet" href="/assets/css/style.css">
 
-  <!-- CHART.JS -->
+  <!-- Chart.js (CDN) -->
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 
 <body>
 
-  <!-- HERO -->
+  <!-- HERO / FEJLÉC -->
   <header class="hero">
     <div class="hero-inner">
 
@@ -27,7 +27,7 @@ layout: none
 
         <div class="hero-buttons">
           <a href="#" class="hero-btn">Kereső</a>
-          <a href="https://github.com/Pure-de-Arch" target="_blank" class="hero-btn">GitHub</a>
+          <a href="https://github.com/Pure-de-Arch" target="_blank" rel="noopener" class="hero-btn">GitHub</a>
         </div>
       </div>
 
@@ -46,43 +46,43 @@ layout: none
 
   <div class="layout">
 
-    <!-- SIDEBAR -->
+    <!-- SIDEBAR SZŰRŐK -->
     <aside class="sidebar">
       <h2>Szűrők</h2>
 
-      <label>Display Server</label>
-      <select id="filter-display">
+      <label for="filter-display">Display Server</label>
+      <select id="filter-display" name="filter-display">
         <option value="all">Mind</option>
         <option value="Wayland">Wayland</option>
         <option value="X11">X11</option>
       </select>
 
-      <label>Típus</label>
-      <select id="filter-type">
+      <label for="filter-type">Típus</label>
+      <select id="filter-type" name="filter-type">
         <option value="all">Mind</option>
         <option value="DE">DE</option>
         <option value="WM">WM</option>
       </select>
 
-      <label>Layout</label>
-      <select id="filter-layout">
+      <label for="filter-layout">Layout</label>
+      <select id="filter-layout" name="filter-layout">
         <option value="all">Mind</option>
         <option value="Tiling">Tiling</option>
         <option value="Stacking">Stacking</option>
         <option value="Dynamic">Dynamic</option>
       </select>
 
-      <label>Keresés</label>
-      <input id="search" placeholder="Keresés név, jellemzők, tag-ek szerint">
+      <label for="search">Keresés</label>
+      <input id="search" name="search" placeholder="Keresés név, jellemzők, tag-ek szerint" />
 
       <label>Tag-ek</label>
       <div id="tag-filters" class="tag-checkboxes"></div>
     </aside>
 
-    <!-- MAIN CONTENT -->
+    <!-- FŐ TARTALOM -->
     <main class="content">
 
-      <!-- COMPARE SECTION -->
+      <!-- ÖSSZEHASONLÍTÁS / COMPARE -->
       <section class="compare">
         <div class="compare-header">
           <h2>Összehasonlítás</h2>
@@ -92,7 +92,7 @@ layout: none
         <div class="compare-selects">
           <div class="compare-select">
             <label for="compare-a">Első választás</label>
-            <select id="compare-a">
+            <select id="compare-a" name="compare-a">
               <option value="">Válassz...</option>
               {% for item in site.data.desktops %}
                 <option value="{{ item.id }}">{{ item.name }}</option>
@@ -102,7 +102,7 @@ layout: none
 
           <div class="compare-select">
             <label for="compare-b">Második választás</label>
-            <select id="compare-b">
+            <select id="compare-b" name="compare-b">
               <option value="">Válassz...</option>
               {% for item in site.data.desktops %}
                 <option value="{{ item.id }}">{{ item.name }}</option>
@@ -111,15 +111,14 @@ layout: none
           </div>
         </div>
 
-        <!-- DIAGRAMOK -->
         <div class="compare-charts">
-          <canvas id="chart-resources"></canvas>
-          <canvas id="chart-layout"></canvas>
-          <canvas id="chart-tags"></canvas>
+          <canvas id="chart-resources" aria-label="Erőforrás igény összehasonlítás" role="img"></canvas>
+          <canvas id="chart-layout" aria-label="Layout típus összehasonlítás" role="img"></canvas>
+          <canvas id="chart-tags" aria-label="Tag összehasonlítás" role="img"></canvas>
         </div>
       </section>
 
-      <!-- CARD GRID -->
+      <!-- KÁRTYAGRID -->
       <div id="cards" class="grid">
         {% for item in site.data.desktops %}
           {% include card.html item=item %}
@@ -129,7 +128,7 @@ layout: none
     </main>
   </div>
 
-  <!-- SCRIPT -->
+  <!-- FILTER + COMPARE SCRIPT -->
   <script src="/assets/js/filter.js"></script>
 
 </body>
