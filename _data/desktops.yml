@@ -1,0 +1,29 @@
+- id: gnome
+  name: GNOME
+  type: DE
+  display_server: Wayland
+  layout: Dynamic
+  resources: High
+  image: /assets/images/gnome.jpg
+  features: "Extensions;Dynamic Workspaces;Modern UI"
+  url: "https://www.gnome.org/"
+
+- id: kde
+  name: KDE Plasma
+  type: DE
+  display_server: Wayland
+  layout: Stacking
+  resources: Medium
+  image: /assets/images/kde.jpg
+  features: "Highly customizable;Widgets;KWin"
+  url: "https://kde.org/plasma-desktop/"
+
+- id: i3
+  name: i3 WM
+  type: WM
+  display_server: X11
+  layout: Tiling
+  resources: Low
+  image: /assets/images/i3.jpg
+  features: "Keyboard-driven;Lightweight;Configurable"
+  url: "https://i3wm.org/"
