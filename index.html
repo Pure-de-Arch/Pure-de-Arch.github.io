@@ -8,7 +8,12 @@ layout: none
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>{{ site.title }}</title>
+
+  <!-- STYLE -->
   <link rel="stylesheet" href="/assets/css/style.css">
+
+  <!-- CHART.JS -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 
 <body>
@@ -81,7 +86,7 @@ layout: none
       <section class="compare">
         <div class="compare-header">
           <h2>Összehasonlítás</h2>
-          <p>Válassz ki két asztali környezetet vagy ablakkezelőt, és hasonlítsd össze őket egymás mellett.</p>
+          <p>Válassz ki két asztali környezetet vagy ablakkezelőt, és nézd meg a különbségeket diagramokon.</p>
         </div>
 
         <div class="compare-selects">
@@ -106,13 +111,11 @@ layout: none
           </div>
         </div>
 
-        <div class="compare-panels">
-          <div id="compare-panel-a" class="compare-panel empty">
-            <span class="placeholder">Válassz egy elemet bal oldalt</span>
-          </div>
-          <div id="compare-panel-b" class="compare-panel empty">
-            <span class="placeholder">Válassz egy elemet jobb oldalt</span>
-          </div>
+        <!-- DIAGRAMOK -->
+        <div class="compare-charts">
+          <canvas id="chart-resources"></canvas>
+          <canvas id="chart-layout"></canvas>
+          <canvas id="chart-tags"></canvas>
         </div>
       </section>
 
@@ -126,6 +129,8 @@ layout: none
     </main>
   </div>
 
+  <!-- SCRIPT -->
   <script src="/assets/js/filter.js"></script>
+
 </body>
 </html>
