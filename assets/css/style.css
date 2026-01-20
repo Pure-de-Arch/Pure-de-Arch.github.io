@@ -1,59 +1,85 @@
+/* --- GLOBAL --- */
+:root {
+  --bg: #f8fafc;
+  --sidebar-bg: #ffffff;
+  --card-bg: #ffffff;
+  --border: #e2e8f0;
+  --text: #1e293b;
+  --muted: #64748b;
+  --primary: #2563eb;
+  --radius: 10px;
+  --shadow: 0 2px 8px rgba(0,0,0,0.08);
+}
+
 body {
   margin: 0;
   font-family: system-ui, sans-serif;
-  background: #f5f6fa;
-  color: #222;
+  background: var(--bg);
+  color: var(--text);
 }
 
+/* --- LAYOUT --- */
 .layout {
   display: flex;
   min-height: 100vh;
 }
 
-/* Sidebar */
+/* --- SIDEBAR --- */
 .sidebar {
   width: 260px;
-  padding: 20px;
-  background: #fff;
-  border-right: 1px solid #ddd;
+  padding: 24px;
+  background: var(--sidebar-bg);
+  border-right: 1px solid var(--border);
   position: sticky;
   top: 0;
   height: 100vh;
 }
 
+.sidebar h2 {
+  margin-top: 0;
+  font-size: 1.3rem;
+}
+
 .sidebar label {
-  margin-top: 12px;
+  margin-top: 16px;
   display: block;
   font-weight: 600;
+  color: var(--muted);
 }
 
 .sidebar select,
 .sidebar input {
   width: 100%;
-  padding: 8px;
-  margin-top: 4px;
-  border-radius: 6px;
-  border: 1px solid #ccc;
+  padding: 10px;
+  margin-top: 6px;
+  border-radius: var(--radius);
+  border: 1px solid var(--border);
+  background: #fff;
 }
 
-/* Content */
+/* --- CONTENT --- */
 .content {
   flex: 1;
-  padding: 20px;
+  padding: 32px;
 }
 
 .grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-  gap: 20px;
+  gap: 24px;
 }
 
-/* Cards */
+/* --- CARD --- */
 .card {
-  background: #fff;
-  border-radius: 10px;
+  background: var(--card-bg);
+  border-radius: var(--radius);
   overflow: hidden;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+  box-shadow: var(--shadow);
+  transition: transform 0.15s ease;
+}
+
+.card:hover {
+  transform: translateY(-3px);
 }
 
 .card-image {
@@ -63,17 +89,27 @@ body {
 }
 
 .card-body {
-  padding: 12px;
+  padding: 16px;
+}
+
+.card-body h3 {
+  margin: 0 0 6px;
+  font-size: 1.2rem;
 }
 
 .meta {
-  color: #666;
+  color: var(--muted);
   font-size: 0.9rem;
+  margin-bottom: 10px;
+}
+
+.features {
+  font-size: 0.9rem;
+  margin-bottom: 12px;
 }
 
 .link {
-  display: inline-block;
-  margin-top: 8px;
-  color: #0070f3;
+  color: var(--primary);
   text-decoration: none;
+  font-weight: 600;
 }
