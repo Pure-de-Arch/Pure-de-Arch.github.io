@@ -13,7 +13,7 @@ layout: none
 
 <body>
 
-  <!-- HERO / FEJLÉC -->
+  <!-- HERO -->
   <header class="hero">
     <div class="hero-inner">
 
@@ -41,7 +41,7 @@ layout: none
 
   <div class="layout">
 
-    <!-- SIDEBAR SZŰRŐK -->
+    <!-- SIDEBAR -->
     <aside class="sidebar">
       <h2>Szűrők</h2>
 
@@ -71,15 +71,13 @@ layout: none
       <input id="search" placeholder="Keresés név, jellemzők, tag-ek szerint">
 
       <label>Tag-ek</label>
-      <div id="tag-filters" class="tag-checkboxes">
-        <!-- JS tölti fel a YAML alapján -->
-      </div>
+      <div id="tag-filters" class="tag-checkboxes"></div>
     </aside>
 
-    <!-- FŐ TARTALOM -->
+    <!-- MAIN CONTENT -->
     <main class="content">
 
-      <!-- ÖSSZEHASONLÍTÁS SZEKCIÓ -->
+      <!-- COMPARE SECTION -->
       <section class="compare">
         <div class="compare-header">
           <h2>Összehasonlítás</h2>
@@ -118,7 +116,7 @@ layout: none
         </div>
       </section>
 
-      <!-- KÁRTYAGRID -->
+      <!-- CARD GRID -->
       <div id="cards" class="grid">
         {% for item in site.data.desktops %}
           {% include card.html item=item %}
