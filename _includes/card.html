@@ -2,6 +2,7 @@
   data-display="{{ item.display_server }}"
   data-type="{{ item.type }}"
   data-layout="{{ item.layout }}"
+  data-tags="{{ item.tags | join: ',' }}"
 >
   <img class="card-image" src="{{ item.image }}" alt="{{ item.name }}">
 
@@ -10,6 +11,13 @@
     <p class="meta">
       {{ item.type }} • {{ item.display_server }} • {{ item.layout }}
     </p>
+
+    <div class="tag-badges">
+      {% for tag in item.tags %}
+        <span class="tag">{{ tag }}</span>
+      {% endfor %}
+    </div>
+
     <p class="features">{{ item.features }}</p>
     <a href="{{ item.url }}" target="_blank" class="link">Visit</a>
   </div>
