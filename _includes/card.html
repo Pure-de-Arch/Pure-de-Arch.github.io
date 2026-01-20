@@ -1,0 +1,16 @@
+<article class="card"
+  data-display="{{ item.display_server }}"
+  data-type="{{ item.type }}"
+  data-layout="{{ item.layout }}"
+>
+  <img class="card-image" src="{{ item.image }}" alt="{{ item.name }}">
+
+  <div class="card-body">
+    <h3>{{ item.name }}</h3>
+    <p class="meta">
+      {{ item.type }} • {{ item.display_server }} • {{ item.layout }}
+    </p>
+    <p class="features">{{ item.features }}</p>
+    <a href="{{ item.url }}" target="_blank" class="link">Visit</a>
+  </div>
+</article>
