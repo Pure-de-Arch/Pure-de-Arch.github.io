@@ -1,0 +1,7 @@
+title: Pure DE Arch
+description: Desktop Environment Filter – Jekyll Edition
+baseurl: ""
+url: "https://pure-de-arch.github.io"
+markdown: kramdown
+theme: minima
+plugins: []
