@@ -1,0 +1,61 @@
+---
+layout: none
+---
+
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{{ site.title }}</title>
+  <link rel="stylesheet" href="/assets/css/style.css">
+</head>
+
+<body>
+
+<div class="layout">
+
+  <!-- Sidebar Filters -->
+  <aside class="sidebar">
+    <h2>Filters</h2>
+
+    <label>Display Server</label>
+    <select id="filter-display">
+      <option value="all">All</option>
+      <option value="Wayland">Wayland</option>
+      <option value="X11">X11</option>
+    </select>
+
+    <label>Type</label>
+    <select id="filter-type">
+      <option value="all">All</option>
+      <option value="DE">DE</option>
+      <option value="WM">WM</option>
+    </select>
+
+    <label>Layout</label>
+    <select id="filter-layout">
+      <option value="all">All</option>
+      <option value="Tiling">Tiling</option>
+      <option value="Stacking">Stacking</option>
+      <option value="Dynamic">Dynamic</option>
+    </select>
+
+    <label>Search</label>
+    <input id="search" placeholder="Search...">
+  </aside>
+
+  <!-- Main Content -->
+  <main class="content">
+    <div id="cards" class="grid">
+      {% for item in site.data.desktops %}
+        {% include card.html item=item %}
+      {% endfor %}
+    </div>
+  </main>
+
+</div>
+
+<script src="/assets/js/filter.js"></script>
+</body>
+</html>
