@@ -176,3 +176,41 @@ body {
 .link:hover::after {
   width: 100%;
 }
+
+/* --- TAG BADGES --- */
+.tag-badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-bottom: 10px;
+}
+
+.tag {
+  background: rgba(77,163,255,0.15);
+  color: var(--primary);
+  padding: 3px 8px;
+  border-radius: 6px;
+  font-size: 0.75rem;
+  border: 1px solid rgba(77,163,255,0.3);
+}
+
+/* --- TAG CHECKBOXOK --- */
+.tag-checkboxes {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-top: 8px;
+}
+
+.tag-option {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.9rem;
+  color: var(--text);
+}
+
+.tag-option input {
+  accent-color: var(--primary);
+}
+
