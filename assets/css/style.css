@@ -1,14 +1,15 @@
-/* --- GLOBAL DARK THEME --- */
+/* --- PURE-DE-ARCH DARK THEME --- */
 :root {
-  --bg: #0f1117;
-  --sidebar-bg: #161920;
-  --card-bg: #1b1f27;
-  --border: #2a2f3a;
-  --text: #e5e7eb;
-  --muted: #9ca3af;
-  --primary: #3b82f6;
-  --radius: 10px;
-  --shadow: 0 2px 8px rgba(0,0,0,0.4);
+  --bg: #0b0e14;
+  --sidebar-bg: #11141c;
+  --card-bg: #161a22;
+  --border: #222733;
+  --text: #e6e9ef;
+  --muted: #8b93a6;
+  --primary: #4da3ff;
+  --primary-hover: #7bc0ff;
+  --radius: 12px;
+  --shadow: 0 4px 18px rgba(0,0,0,0.55);
 }
 
 body {
@@ -77,21 +78,53 @@ body {
   background: var(--card-bg);
   border-radius: var(--radius);
   overflow: hidden;
-  box-shadow: var(--shadow);
-  transition: transform 0.15s ease, box-shadow 0.2s ease;
   border: 1px solid var(--border);
+  box-shadow: var(--shadow);
+  position: relative;
+  transform: translateY(0) scale(1);
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
 }
 
+/* Hover: 3D emelkedés */
 .card:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 4px 14px rgba(0,0,0,0.6);
+  transform: translateY(-6px) scale(1.02);
+  box-shadow: 0 8px 28px rgba(0,0,0,0.7);
 }
 
+/* Fénycsík animáció */
+.card::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -120%;
+  width: 80%;
+  height: 100%;
+  background: linear-gradient(
+    120deg,
+    transparent,
+    rgba(255,255,255,0.08),
+    transparent
+  );
+  transform: skewX(-20deg);
+  transition: 0.6s;
+}
+
+.card:hover::before {
+  left: 120%;
+}
+
+/* Kép animáció */
 .card-image {
   width: 100%;
   height: 150px;
   object-fit: cover;
+  transition: transform 0.4s ease, filter 0.4s ease;
   filter: brightness(0.85);
+}
+
+.card:hover .card-image {
+  transform: scale(1.06);
+  filter: brightness(1);
 }
 
 .card-body {
@@ -116,8 +149,30 @@ body {
   color: var(--text);
 }
 
+/* Link animáció */
 .link {
   color: var(--primary);
-  text-decoration: none;
   font-weight: 600;
+  position: relative;
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.link::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -2px;
+  width: 0%;
+  height: 2px;
+  background: var(--primary);
+  transition: width 0.25s ease;
+}
+
+.link:hover {
+  color: var(--primary-hover);
+}
+
+.link:hover::after {
+  width: 100%;
 }
