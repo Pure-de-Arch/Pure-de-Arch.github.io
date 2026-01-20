@@ -1,8 +1,10 @@
 <article class="card"
+  id="card-{{ item.id }}"
   data-id="{{ item.id }}"
   data-display="{{ item.display_server }}"
   data-type="{{ item.type }}"
   data-layout="{{ item.layout }}"
+  data-resources="{{ item.resources }}"
   data-tags="{{ item.tags | join: ',' }}"
 >
   <img class="card-image" src="{{ item.image }}" alt="{{ item.name }}">
