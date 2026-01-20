@@ -199,3 +199,17 @@ a {
 .tag-checkboxes {
   display: flex;
   flex-direction
+
+.compare-charts {
+  margin-top: 24px;
+  display: grid;
+  gap: 24px;
+}
+
+.compare-charts canvas {
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 16px;
+  box-shadow: var(--shadow);
+}
