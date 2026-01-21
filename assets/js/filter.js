@@ -1,100 +1,86 @@
-/**
- * assets/js/filter.js
- * Pure‑DE‑Arch — filters, tag toggles, compare + Chart.js charts & stats
- */
-
 document.addEventListener("DOMContentLoaded", () => {
-  /* -------------------------
-     DOM elemek
-  ------------------------- */
   const displayEl = document.getElementById("filter-display");
   const typeEl = document.getElementById("filter-type");
   const layoutEl = document.getElementById("filter-layout");
   const searchEl = document.getElementById("search");
   const tagContainer = document.getElementById("tag-filters");
-  const cardsContainer = document.getElementById("cards");
   const cards = Array.from(document.querySelectorAll(".card"));
 
-  /* Compare elements */
+  const comparePanel = document.getElementById("compare-panel");
+  const etcherPanel = document.getElementById("etcher-panel");
+  const compareToggle = document.getElementById("compare-toggle");
+  const etcherToggle = document.getElementById("etcher-toggle");
+  const closeButtons = Array.from(document.querySelectorAll(".panel-close"));
+
   const selectA = document.getElementById("compare-a");
   const selectB = document.getElementById("compare-b");
+  const statsList = document.getElementById("compare-stats");
   const ctxResources = document.getElementById("chart-resources");
   const ctxLayout = document.getElementById("chart-layout");
-  const ctxTags = document.getElementById("chart-tags");
-  const statsList = document.getElementById("compare-stats");
 
-  /* Safety: if no cards, nothing to do */
   if (!cards.length) return;
 
-  /* -------------------------
-     TAGS: gyűjtés és render
-  ------------------------- */
+  /* TAGS */
+
   const allTags = new Set();
   cards.forEach(card => {
-    const raw = card.dataset.tags || "";
-    raw.split(",").map(t => t.trim()).filter(Boolean).forEach(t => allTags.add(t));
+    (card.dataset.tags || "")
+      .split(",")
+      .map(t => t.trim())
+      .filter(Boolean)
+      .forEach(t => allTags.add(t));
   });
 
-  // Render tag toggles (label > [name][input.checkbox][span.switch])
   if (tagContainer) {
-    const fragment = document.createDocumentFragment();
+    const frag = document.createDocumentFragment();
     Array.from(allTags).sort().forEach(tag => {
       const label = document.createElement("label");
       label.className = "tag-option";
 
       const nameSpan = document.createElement("span");
-      nameSpan.textContent = tag;
       nameSpan.className = "tag-name";
+      nameSpan.textContent = tag;
 
       const input = document.createElement("input");
       input.type = "checkbox";
       input.value = tag;
       input.className = "tag-checkbox";
-      input.id = `tag-${cssSafeId(tag)}`;
-      input.setAttribute("aria-label", `Tag: ${tag}`);
+      input.id = `tag-${tag.toLowerCase().replace(/[^a-z0-9\-]/g,"-")}`;
 
       const switchSpan = document.createElement("span");
       switchSpan.className = "tag-switch";
 
-      // Structure: [nameSpan][input(hidden)][switchSpan]
       label.appendChild(nameSpan);
       label.appendChild(input);
       label.appendChild(switchSpan);
 
-      fragment.appendChild(label);
+      frag.appendChild(label);
     });
-    tagContainer.appendChild(fragment);
+    tagContainer.appendChild(frag);
   }
 
-  // Helper to create safe id from tag
-  function cssSafeId(s) {
-    return s.toLowerCase().replace(/[^a-z0-9\-_]/g, "-");
-  }
-
-  // Query checkboxes after render
   let tagCheckboxes = Array.from(document.querySelectorAll(".tag-checkbox"));
 
-  /* -------------------------
-     FILTER LOGIC
-  ------------------------- */
+  /* FILTERS */
+
   function applyFilters() {
     const displayVal = displayEl ? displayEl.value : "all";
     const typeVal = typeEl ? typeEl.value : "all";
     const layoutVal = layoutEl ? layoutEl.value : "all";
-    const q = searchEl ? searchEl.value.trim().toLowerCase() : "";
+    const q = (searchEl ? searchEl.value : "").toLowerCase().trim();
 
     const activeTags = tagCheckboxes.filter(cb => cb.checked).map(cb => cb.value);
 
     cards.forEach(card => {
-      const cardDisplay = card.dataset.display || "";
-      const cardType = card.dataset.type || "";
-      const cardLayout = card.dataset.layout || "";
-      const cardText = card.innerText.toLowerCase();
+      const cd = card.dataset.display || "";
+      const ct = card.dataset.type || "";
+      const cl = card.dataset.layout || "";
+      const text = card.innerText.toLowerCase();
 
-      const matchDisplay = displayVal === "all" || cardDisplay === displayVal;
-      const matchType = typeVal === "all" || cardType === typeVal;
-      const matchLayout = layoutVal === "all" || cardLayout === layoutVal;
-      const matchSearch = q === "" || cardText.includes(q);
+      const matchDisplay = displayVal === "all" || cd === displayVal;
+      const matchType = typeVal === "all" || ct === typeVal;
+      const matchLayout = layoutVal === "all" || cl === layoutVal;
+      const matchSearch = !q || text.includes(q);
 
       const cardTags = (card.dataset.tags || "").split(",").map(s => s.trim()).filter(Boolean);
       const matchTags = activeTags.length === 0 || activeTags.every(t => cardTags.includes(t));
@@ -103,62 +89,75 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  // Attach filter events
   if (displayEl) displayEl.addEventListener("change", applyFilters);
   if (typeEl) typeEl.addEventListener("change", applyFilters);
   if (layoutEl) layoutEl.addEventListener("change", applyFilters);
   if (searchEl) searchEl.addEventListener("input", applyFilters);
   tagCheckboxes.forEach(cb => cb.addEventListener("change", applyFilters));
 
-  // Initial filter pass
   applyFilters();
 
-  /* -------------------------
-     COMPARE DATA PREP
-  ------------------------- */
+  /* PANELS TOGGLE */
+
+  function openPanel(panel) {
+    if (!panel) return;
+    panel.hidden = false;
+    panel.scrollIntoView({ behavior: "smooth", block: "start" });
+  }
+
+  function closePanel(panel) {
+    if (!panel) return;
+    panel.hidden = true;
+  }
+
+  if (compareToggle && comparePanel) {
+    compareToggle.addEventListener("click", () => openPanel(comparePanel));
+  }
+  if (etcherToggle && etcherPanel) {
+    etcherToggle.addEventListener("click", () => openPanel(etcherPanel));
+  }
+
+  closeButtons.forEach(btn => {
+    btn.addEventListener("click", () => {
+      const targetId = btn.getAttribute("data-target");
+      const panel = document.getElementById(targetId);
+      closePanel(panel);
+    });
+  });
+
+  /* COMPARE DATA */
+
   const cardData = {};
   cards.forEach(card => {
-    const id = card.dataset.id || card.id || null;
+    const id = card.dataset.id;
     if (!id) return;
     cardData[id] = {
       id,
       name: card.querySelector("h3")?.innerText || id,
-      meta: card.querySelector(".meta")?.innerText || "",
-      features: card.querySelector(".features")?.innerText || "",
-      tags: (card.dataset.tags || "").split(",").map(s => s.trim()).filter(Boolean),
-      layout: card.dataset.layout || "",
-      display: card.dataset.display || "",
       type: card.dataset.type || "",
-      resources: card.dataset.resources || "Medium",
-      link: card.querySelector(".link")?.href || "#"
+      display: card.dataset.display || "",
+      layout: card.dataset.layout || "",
+      ram: parseFloat(card.dataset.ram || "0"),
+      cpu: parseFloat(card.dataset.cpu || "0"),
+      disk: parseFloat(card.dataset.disk || "0"),
+      tags: (card.dataset.tags || "").split(",").map(s => s.trim()).filter(Boolean)
     };
   });
 
-  /* -------------------------
-     CHARTS: helpers + instances
-  ------------------------- */
   let chartResources = null;
   let chartLayout = null;
-  let chartTags = null;
 
-  function destroyChart(c) { if (c && typeof c.destroy === "function") c.destroy(); }
+  function destroyChart(c) {
+    if (c && typeof c.destroy === "function") c.destroy();
+  }
 
-  // Map resource labels to numeric scale
-  const resourceMap = {
-    "very low": 0.5, "very-low": 0.5, "very_low": 0.5,
-    "low": 1, "medium": 2, "high": 3, "very high": 4, "very-high": 4
-  };
-
-  /* -------------------------
-     UPDATE STATS (textual)
-  ------------------------- */
   function updateStats(A, B) {
     if (!statsList) return;
     statsList.innerHTML = "";
 
     if (!A || !B) {
       const li = document.createElement("li");
-      li.textContent = "Válassz két elemet a részletes statisztikákhoz";
+      li.textContent = "Válassz ki két elemet az összehasonlításhoz.";
       statsList.appendChild(li);
       return;
     }
@@ -175,97 +174,108 @@ document.addEventListener("DOMContentLoaded", () => {
       statsList.appendChild(li);
     };
 
-    add(`<strong>${escapeHtml(A.name)}</strong> vs <strong>${escapeHtml(B.name)}</strong>`);
-    add(`Layout egyezés: <strong>${sameLayout ? "igen" : "nem"}</strong> (${escapeHtml(A.layout)} / ${escapeHtml(B.layout)})`);
-    add(`Display server egyezés: <strong>${sameDisplay ? "igen" : "nem"}</strong> (${escapeHtml(A.display)} / ${escapeHtml(B.display)})`);
-    add(`Közös tagek: <strong>${sharedTags.length ? escapeHtml(sharedTags.join(", ")) : "nincs"}</strong>`);
-    add(`${escapeHtml(A.name)} egyedi tagek: <strong>${uniqueA.length ? escapeHtml(uniqueA.join(", ")) : "nincs"}</strong>`);
-    add(`${escapeHtml(B.name)} egyedi tagek: <strong>${uniqueB.length ? escapeHtml(uniqueB.join(", ")) : "nincs"}</strong>`);
-    add(`Erőforrás igény: <strong>${escapeHtml(A.resources)}</strong> vs <strong>${escapeHtml(B.resources)}</strong>`);
+    add(`<strong>${A.name}</strong> vs <strong>${B.name}</strong>`);
+    add(`Layout: ${A.layout} / ${B.layout} (${sameLayout ? "azonos" : "eltérő"})`);
+    add(`Display: ${A.display} / ${B.display} (${sameDisplay ? "azonos" : "eltérő"})`);
+    add(`Közös tagek: ${sharedTags.length ? sharedTags.join(", ") : "nincs"}`);
+    add(`Egyedi tagek (A): ${uniqueA.length ? uniqueA.join(", ") : "nincs"}`);
+    add(`Egyedi tagek (B): ${uniqueB.length ? uniqueB.join(", ") : "nincs"}`);
+    add(`RAM: ${A.ram} MB vs ${B.ram} MB`);
+    add(`CPU: ${A.cpu}% vs ${B.cpu}%`);
+    add(`Disk: ${A.disk} MB vs ${B.disk} MB`);
   }
 
-  function escapeHtml(s) {
-    return String(s).replace(/[&<>"']/g, (m) => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
-  }
-
-  /* -------------------------
-     UPDATE CHARTS
-  ------------------------- */
   function updateCharts() {
     if (!selectA || !selectB) return;
 
     const idA = selectA.value;
     const idB = selectB.value;
 
-    if (!idA || !idB) {
-      destroyChart(chartResources); destroyChart(chartLayout); destroyChart(chartTags);
+    const A = cardData[idA];
+    const B = cardData[idB];
+
+    destroyChart(chartResources);
+    destroyChart(chartLayout);
+
+    if (!A || !B) {
       updateStats(null, null);
       return;
     }
 
-    const A = cardData[idA];
-    const B = cardData[idB];
-    if (!A || !B) return;
-
-    // Resources chart (bar)
-    const valA = resourceMap[(A.resources || "").toLowerCase()] || 2;
-    const valB = resourceMap[(B.resources || "").toLowerCase()] || 2;
-
-    destroyChart(chartResources);
     if (ctxResources && window.Chart) {
       chartResources = new Chart(ctxResources, {
         type: "bar",
         data: {
-          labels: [A.name, B.name],
-          datasets: [{
-            label: "Erőforrás igény (relatív)",
-            data: [valA, valB],
-            backgroundColor: ["#4da3ff88", "#7bc0ff88"],
-            borderColor: ["#4da3ff", "#7bc0ff"],
-            borderWidth: 2
-          }]
+          labels: ["RAM (MB)", "CPU (%)", "Disk (MB)"],
+          datasets: [
+            {
+              label: A.name,
+              data: [A.ram, A.cpu, A.disk],
+              backgroundColor: "rgba(99,102,241,0.6)",
+              borderColor: "rgba(129,140,248,1)",
+              borderWidth: 1
+            },
+            {
+              label: B.name,
+              data: [B.ram, B.cpu, B.disk],
+              backgroundColor: "rgba(56,189,248,0.6)",
+              borderColor: "rgba(56,189,248,1)",
+              borderWidth: 1
+            }
+          ]
         },
         options: {
           responsive: true,
-          plugins: { legend: { display: false } },
-          scales: { y: { beginAtZero: true, ticks: { stepSize: 1 } } }
+          plugins: { legend: { position: "top" } },
+          scales: { y: { beginAtZero: true } }
         }
       });
     }
 
-    // Layout chart (radar)
-    destroyChart(chartLayout);
     if (ctxLayout && window.Chart) {
       chartLayout = new Chart(ctxLayout, {
         type: "radar",
         data: {
-          labels: ["Tiling", "Stacking", "Dynamic"],
+          labels: ["Tiling", "Stacking", "Dynamic", "Wayland", "X11"],
           datasets: [
             {
               label: A.name,
-              data: [A.layout === "Tiling" ? 1 : 0, A.layout === "Stacking" ? 1 : 0, A.layout === "Dynamic" ? 1 : 0],
-              backgroundColor: "#4da3ff33",
-              borderColor: "#4da3ff",
-              pointBackgroundColor: "#4da3ff"
+              data: [
+                A.layout === "Tiling" ? 1 : 0,
+                A.layout === "Stacking" ? 1 : 0,
+                A.layout === "Dynamic" ? 1 : 0,
+                A.display === "Wayland" ? 1 : 0,
+                A.display === "X11" ? 1 : 0
+              ],
+              backgroundColor: "rgba(99,102,241,0.25)",
+              borderColor: "rgba(129,140,248,1)",
+              pointBackgroundColor: "rgba(129,140,248,1)"
             },
             {
               label: B.name,
-              data: [B.layout === "Tiling" ? 1 : 0, B.layout === "Stacking" ? 1 : 0, B.layout === "Dynamic" ? 1 : 0],
-              backgroundColor: "#7bc0ff33",
-              borderColor: "#7bc0ff",
-              pointBackgroundColor: "#7bc0ff"
+              data: [
+                B.layout === "Tiling" ? 1 : 0,
+                B.layout === "Stacking" ? 1 : 0,
+                B.layout === "Dynamic" ? 1 : 0,
+                B.display === "Wayland" ? 1 : 0,
+                B.display === "X11" ? 1 : 0
+              ],
+              backgroundColor: "rgba(56,189,248,0.25)",
+              borderColor: "rgba(56,189,248,1)",
+              pointBackgroundColor: "rgba(56,189,248,1)"
             }
           ]
         },
+        options: {
+          responsive: true,
+          scales: { r: { beginAtZero: true, ticks: { stepSize: 1 } } }
+        }
+      });
+    }
 
-        const compareToggle = document.getElementById("compare-toggle");
-const compareSection = document.getElementById("compare");
+    updateStats(A, B);
+  }
 
-if (compareToggle && compareSection) {
-  compareToggle.addEventListener("click", (e) => {
-    e.preventDefault();
-    compareSection.hidden = false;
-    compareSection.scrollIntoView({ behavior: "smooth" });
-  });
-}
-
+  if (selectA) selectA.addEventListener("change", updateCharts);
+  if (selectB) selectB.addEventListener("change", updateCharts);
+});
