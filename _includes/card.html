@@ -1,27 +1,43 @@
 <article class="card"
-  id="card-{{ item.id }}"
   data-id="{{ item.id }}"
-  data-display="{{ item.display_server }}"
+  data-name="{{ item.name }}"
   data-type="{{ item.type }}"
+  data-display="{{ item.display_server }}"
   data-layout="{{ item.layout }}"
   data-resources="{{ item.resources }}"
+  data-testable="{{ item.testable }}"
+  data-ram="{{ item.ram }}"
+  data-cpu="{{ item.cpu }}"
+  data-disk="{{ item.disk }}"
   data-tags="{{ item.tags | join: ',' }}"
 >
-  <img class="card-image" src="{{ item.image }}" alt="{{ item.name }}">
-
+  <div class="card-image-wrap">
+    <img class="card-image" src="{{ item.image }}" alt="{{ item.name }}">
+  </div>
   <div class="card-body">
-    <h3>{{ item.name }}</h3>
-    <p class="meta">
-      {{ item.type }} • {{ item.display_server }} • {{ item.layout }}
-    </p>
+    <div class="card-header-row">
+      <h3 class="card-title">{{ item.name }}</h3>
+      <span class="card-type-pill">{{ item.type }}</span>
+    </div>
+    <p class="card-desc">{{ item.description }}</p>
 
-    <div class="tag-badges">
-      {% for tag in item.tags %}
-        <span class="tag">{{ tag }}</span>
-      {% endfor %}
+    <div class="card-tags-row">
+      <span class="card-tag">{{ item.display_server }}</span>
+      <span class="card-tag">{{ item.layout }}</span>
+      <span class="card-tag">{{ item.resources_hu }}</span>
+      <span class="card-tag">{{ item.customizable_hu }}</span>
     </div>
 
-    <p class="features">{{ item.features }}</p>
-    <a href="{{ item.url }}" target="_blank" class="link">Részletek</a>
+    <p class="card-features">{{ item.features }}</p>
+
+    <div class="card-footer">
+      <div class="card-resources">
+        RAM: {{ item.ram }} MB • CPU: {{ item.cpu }}% • Disk: {{ item.disk }} MB
+      </div>
+      <div class="card-actions">
+        <a href="{{ item.url }}" target="_blank" class="btn-ghost">Hivatalos oldal</a>
+        <button class="btn-ghost" type="button">Letöltés</button>
+      </div>
+    </div>
   </div>
 </article>
