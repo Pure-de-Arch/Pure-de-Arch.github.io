@@ -7,25 +7,29 @@ layout: none
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Pure DE Arch</title>
+  <title>Pure de Arch – DE & WM Kereső</title>
 
   <link rel="stylesheet" href="/assets/css/style.css">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
 
-  <!-- FEJLÉC -->
+  <!-- HEADER / HERO -->
   <header class="hero">
     <div class="hero-inner">
       <div class="hero-top">
         <div class="hero-brand">
           <span class="logo-dot"></span>
-          <h1>Pure de Arch</h1>
+          <div class="hero-brand-text">
+            <h1>Pure de Arch</h1>
+            <span class="hero-subtitle">DE &amp; WM Kereső</span>
+          </div>
         </div>
         <nav class="hero-nav">
-          <a href="#guide" class="nav-btn">Útmutató</a>
-          <a href="#compare" class="nav-btn">Összehasonlítás</a>
-          <a href="https://github.com/Pure-de-Arch" target="_blank" class="nav-btn">GitHub</a>
+          <button class="nav-btn" id="btn-guide">Útmutató</button>
+          <button class="nav-btn" id="btn-compare">Összehasonlítás</button>
+          <a href="https://github.com" target="_blank" class="nav-btn">GitHub</a>
         </nav>
       </div>
 
@@ -35,16 +39,182 @@ layout: none
       </p>
       <p class="hero-note">Minden adat Arch Linux alaprendszeren mérve</p>
 
-      <div class="hero-search">
-        <input id="search" placeholder="Keresés név vagy leírás alapján...">
+      <div class="hero-search-row">
+        <input id="search" placeholder="Keresés név vagy leírás alapján..." />
+        <button class="filter-btn" id="btn-toggle-filters">Szűrők</button>
       </div>
     </div>
   </header>
 
-  <!-- TARTALOM -->
-  <main class="content">
-    <!-- Itt jön majd a szűrőpanel, kártyák, összehasonlítás stb. -->
-  </main>
+  <!-- MAIN LAYOUT -->
+  <div class="layout">
+    <!-- FILTER SIDEBAR -->
+    <aside class="sidebar" id="sidebar-filters">
+      <h3>Szűrők</h3>
 
+      <div class="filter-group">
+        <span class="filter-label">Típus</span>
+        <div class="chip-row" data-filter-group="type">
+          <button class="chip chip-active" data-value="all">Összes</button>
+          <button class="chip" data-value="DE">Desktop Environment</button>
+          <button class="chip" data-value="WM">Window Manager</button>
+        </div>
+      </div>
+
+      <div class="filter-group">
+        <span class="filter-label">Display server</span>
+        <div class="chip-row" data-filter-group="display">
+          <button class="chip chip-active" data-value="all">Összes</button>
+          <button class="chip" data-value="X11">X11</button>
+          <button class="chip" data-value="Wayland">Wayland</button>
+          <button class="chip" data-value="X11 & Wayland">X11 &amp; Wayland</button>
+        </div>
+      </div>
+
+      <div class="filter-group">
+        <span class="filter-label">Ablakkezelés</span>
+        <div class="chip-row" data-filter-group="layout">
+          <button class="chip chip-active" data-value="all">Összes</button>
+          <button class="chip" data-value="Stacking">Stacking</button>
+          <button class="chip" data-value="Tiling">Tiling</button>
+          <button class="chip" data-value="Dynamic">Dynamic</button>
+          <button class="chip" data-value="Manual">Manual</button>
+        </div>
+      </div>
+
+      <div class="filter-group">
+        <span class="filter-label">Erőforrás igény</span>
+        <div class="chip-row" data-filter-group="resources">
+          <button class="chip chip-active" data-value="all">Összes</button>
+          <button class="chip" data-value="Low">Alacsony</button>
+          <button class="chip" data-value="Medium">Közepes</button>
+          <button class="chip" data-value="High">Magas</button>
+        </div>
+      </div>
+
+      <div class="filter-group">
+        <span class="filter-label">Tesztelhetőség</span>
+        <div class="chip-row" data-filter-group="testable">
+          <button class="chip chip-active" data-value="all">Összes</button>
+          <button class="chip" data-value="Yes">Igen</button>
+          <button class="chip" data-value="No">Nem</button>
+        </div>
+      </div>
+
+      <div class="filter-group">
+        <span class="filter-label">Tag-ek</span>
+        <div id="tag-filters" class="tag-bubbles"></div>
+      </div>
+    </aside>
+
+    <!-- CONTENT -->
+    <main class="content">
+      <section class="cards-section">
+        <div id="cards" class="cards-grid">
+          {% for item in site.data.desktops %}
+            {% include card.html item=item %}
+          {% endfor %}
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <!-- OVERLAY PANELS (SLIDEDOWN) -->
+
+  <!-- COMPARE PANEL -->
+  <section class="overlay-panel" id="panel-compare" aria-hidden="true">
+    <div class="overlay-inner">
+      <div class="overlay-header">
+        <div>
+          <h3>Összehasonlítás</h3>
+          <p>Válassz ki két asztali környezetet vagy ablakkezelőt az összehasonlításhoz.</p>
+        </div>
+        <button class="overlay-close" data-target="panel-compare">×</button>
+      </div>
+
+      <div class="overlay-body compare-body">
+        <div class="compare-selects">
+          <div>
+            <label>Első</label>
+            <select id="compare-a">
+              <option value="">Válassz...</option>
+              {% for item in site.data.desktops %}
+                <option value="{{ item.id }}">{{ item.name }}</option>
+              {% endfor %}
+            </select>
+          </div>
+          <div>
+            <label>Második</label>
+            <select id="compare-b">
+              <option value="">Válassz...</option>
+              {% for item in site.data.desktops %}
+                <option value="{{ item.id }}">{{ item.name }}</option>
+              {% endfor %}
+            </select>
+          </div>
+        </div>
+
+        <div class="compare-layout">
+          <div class="compare-charts">
+            <div class="chart-card">
+              <h4>Erőforrások</h4>
+              <canvas id="chart-resources"></canvas>
+            </div>
+            <div class="chart-card">
+              <h4>Layout &amp; Display</h4>
+              <canvas id="chart-layout"></canvas>
+            </div>
+          </div>
+          <div class="compare-stats">
+            <h4>Gyors statisztikák</h4>
+            <ul id="compare-stats">
+              <li>Válassz ki két elemet az összehasonlításhoz.</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- GUIDE PANEL -->
+  <section class="overlay-panel" id="panel-guide" aria-hidden="true">
+    <div class="overlay-inner">
+      <div class="overlay-header">
+        <div>
+          <h3>Útmutató</h3>
+          <p>ISO írás BalenaEtcher-rel és alap WM alkalmazások telepítése.</p>
+        </div>
+        <button class="overlay-close" data-target="panel-guide">×</button>
+      </div>
+
+      <div class="overlay-body guide-body">
+        <div class="guide-section">
+          <h4>ISO írás BalenaEtcher-rel</h4>
+          <ol class="guide-steps">
+            <li>Töltsd le a BalenaEtcher alkalmazást: <a href="https://etcher.balena.io/" target="_blank">etcher.balena.io</a></li>
+            <li>Indítsd el, válaszd a <strong>Flash from file</strong> opciót, és tallózd be az ISO-t.</li>
+            <li>Válaszd ki a cél USB meghajtót.</li>
+            <li>Kattints a <strong>Flash!</strong> gombra, várd meg az írást és ellenőrzést.</li>
+            <li>Bootolj az elkészült USB meghajtóról.</li>
+          </ol>
+        </div>
+
+        <div class="guide-section">
+          <h4>Alap WM alkalmazások telepítése</h4>
+          <p>Ajánlott alap alkalmazások egy minimalista WM környezethez:</p>
+          <ul class="guide-list">
+            <li><strong>Alacritty</strong> – gyors terminál emulátor</li>
+            <li><strong>Thunar</strong> – könnyű fájlkezelő</li>
+            <li><strong>MPV</strong> – médialejátszó</li>
+            <li><strong>Firefox</strong> – webböngésző</li>
+          </ul>
+          <p>Telepítés Arch Linuxon:</p>
+          <pre class="code-block">sudo pacman -S alacritty thunar mpv firefox</pre>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <script src="/assets/js/filter.js"></script>
 </body>
 </html>
