@@ -83,7 +83,7 @@ layout: none
       <section class="compare">
         <div class="compare-header">
           <h2>Összehasonlítás</h2>
-          <p>Válassz ki két asztali környezetet vagy ablakkezelőt, és nézd meg a különbségeket diagramokon.</p>
+          <p>Válassz ki két asztali környezetet vagy ablakkezelőt, és nézd meg a különbségeket diagramokon és statisztikákon.</p>
         </div>
 
         <div class="compare-selects">
@@ -109,9 +109,31 @@ layout: none
         </div>
 
         <div class="compare-charts">
-          <canvas id="chart-resources" aria-label="Erőforrás igény összehasonlítás" role="img"></canvas>
-          <canvas id="chart-layout" aria-label="Layout típus összehasonlítás" role="img"></canvas>
-          <canvas id="chart-tags" aria-label="Tag összehasonlítás" role="img"></canvas>
+          <div class="chart-row">
+            <div class="chart-card">
+              <h3>Erőforrás igény</h3>
+              <canvas id="chart-resources" aria-label="Erőforrás igény összehasonlítás" role="img"></canvas>
+            </div>
+
+            <div class="chart-card">
+              <h3>Layout típus</h3>
+              <canvas id="chart-layout" aria-label="Layout típus összehasonlítás" role="img"></canvas>
+            </div>
+          </div>
+
+          <div class="chart-row">
+            <div class="chart-card wide">
+              <h3>Tag összehasonlítás</h3>
+              <canvas id="chart-tags" aria-label="Tag összehasonlítás" role="img"></canvas>
+            </div>
+
+            <div class="chart-card stats">
+              <h3>Gyors statisztikák</h3>
+              <ul id="compare-stats">
+                <li>Nincs kiválasztva két elem</li>
+              </ul>
+            </div>
+          </div>
         </div>
       </section>
 
