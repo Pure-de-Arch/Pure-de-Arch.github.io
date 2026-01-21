@@ -257,3 +257,15 @@ document.addEventListener("DOMContentLoaded", () => {
             }
           ]
         },
+
+        const compareToggle = document.getElementById("compare-toggle");
+const compareSection = document.getElementById("compare");
+
+if (compareToggle && compareSection) {
+  compareToggle.addEventListener("click", (e) => {
+    e.preventDefault();
+    compareSection.hidden = false;
+    compareSection.scrollIntoView({ behavior: "smooth" });
+  });
+}
+
