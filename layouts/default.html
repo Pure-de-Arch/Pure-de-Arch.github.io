@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ page.title }}</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* Egyedi görgetősáv a retro/modern hatásért */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #f1f1f1; }
+        ::-webkit-scrollbar-thumb { background: #888; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #555; }
+        
+        .desktop-bg {
+            background-image: url('https://images.unsplash.com/photo-1477346611705-65d1883cee1e?q=80&w=2070&auto=format&fit=crop');
+            background-size: cover;
+            background-position: center;
+        }
+    </style>
+</head>
+<body class="desktop-bg h-screen w-screen overflow-hidden text-slate-800 font-sans antialiased selection:bg-blue-200">
+    
+    <main class="relative z-10 h-full w-full flex items-center justify-center p-4">
+        {{ content }}
+    </main>
+
+    <div class="fixed bottom-0 left-0 right-0 h-12 bg-white/80 backdrop-blur-md border-t border-white/50 flex items-center justify-center space-x-4 z-50 shadow-lg">
+        <button class="p-2 hover:bg-white/50 rounded-lg transition-all transform hover:scale-110 duration-200">
+            <span class="text-xl">🪟</span>
+        </button>
+        <button class="p-2 bg-white/50 rounded-lg shadow-inner border border-white/40">
+            <span class="text-xl">📁</span>
+        </button>
+        <button class="p-2 hover:bg-white/50 rounded-lg transition-all transform hover:scale-110 duration-200">
+            <span class="text-xl">🌐</span>
+        </button>
+    </div>
+
+    <script src="{{ '/assets/js/filter.js' | relative_url }}"></script>
+</body>
+</html>
