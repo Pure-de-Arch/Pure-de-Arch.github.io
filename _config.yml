@@ -1,7 +1,3 @@
-title: Pure DE Arch
-description: Desktop Environment & Window Manager filter and comparison
-baseurl: ""
-url: "https://pure-de-arch.github.io"
-markdown: kramdown
+title: Saját Jekyll Másolat
 theme: minima
 plugins: []
