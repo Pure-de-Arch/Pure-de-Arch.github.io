@@ -4,39 +4,24 @@
   data-display="{{ item.display_server }}"
   data-type="{{ item.type }}"
   data-layout="{{ item.layout }}"
+  data-resources="{{ item.resources }}"
   data-tags="{{ item.tags | join: ',' }}"
-  data-ram="{{ item.ram }}"
-  data-cpu="{{ item.cpu }}"
-  data-disk="{{ item.disk }}"
 >
-  <div class="card-image-wrap">
-    <img class="card-image" src="{{ item.image }}" alt="{{ item.name }}">
-  </div>
+  <img class="card-image" src="{{ item.image }}" alt="{{ item.name }}">
 
   <div class="card-body">
-    <div class="card-title-row">
-      <h3>{{ item.name }}</h3>
-      <span class="card-type-pill">{{ item.type }}</span>
-    </div>
-
-    <p class="card-meta">
-      {{ item.display_server }} • {{ item.layout }}
+    <h3>{{ item.name }}</h3>
+    <p class="meta">
+      {{ item.type }} • {{ item.display_server }} • {{ item.layout }}
     </p>
 
-    <div class="card-resources">
-      <span class="res-pill">RAM: {{ item.ram }} MB</span>
-      <span class="res-pill">CPU: {{ item.cpu }} %</span>
-      <span class="res-pill">Disk: {{ item.disk }} MB</span>
-    </div>
-
-    <p class="card-features">{{ item.features }}</p>
-
-    <div class="card-tags">
+    <div class="tag-badges">
       {% for tag in item.tags %}
         <span class="tag">{{ tag }}</span>
       {% endfor %}
     </div>
 
-    <a href="{{ item.url }}" target="_blank" rel="noopener" class="card-link">Hivatalos oldal</a>
+    <p class="features">{{ item.features }}</p>
+    <a href="{{ item.url }}" target="_blank" class="link">Részletek</a>
   </div>
 </article>
