@@ -9,27 +9,23 @@ layout: none
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>{{ site.title | default: "Pure DE Arch" }}</title>
 
+  <!-- Styles -->
   <link rel="stylesheet" href="/assets/css/style.css">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 
+  <!-- Chart.js -->
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
+
 <body>
 
   <!-- HERO -->
   <header class="hero">
     <div class="hero-inner">
       <div class="hero-top">
-        <div class="hero-brand-wrap">
-          <span class="hero-logo-dot"></span>
-          <h1 class="hero-brand">Pure DE Arch</h1>
-        </div>
+        <h1 class="hero-brand">Pure DE Arch</h1>
         <div class="hero-buttons">
-          <a href="#" class="hero-btn ghost">Kereső</a>
-          <a href="/compare.html" class="hero-btn ghost">Részletes összehasonlítás</a>
-          <a href="https://github.com/Pure-de-Arch" target="_blank" rel="noopener" class="hero-btn primary">GitHub</a>
+          <a href="#" class="hero-btn">Kereső</a>
+          <a href="https://github.com/Pure-de-Arch" target="_blank" rel="noopener" class="hero-btn">GitHub</a>
         </div>
       </div>
 
@@ -38,23 +34,10 @@ layout: none
       </h2>
 
       <p class="hero-subtitle">
-        Szűrj a Desktop Environment‑ek és Window Manager‑ek tulajdonságai alapján,
-        hogy megtaláld a számodra ideális Linux asztali élményt.
+        Szűrj a DE‑k és WM‑ek tulajdonságai alapján, hogy megtaláld a számodra ideális Linux asztali élményt.
+        <br>
+        <span class="hero-note">Minden adat alaprendszeren mérve</span>
       </p>
-
-      <p class="hero-note">
-        Minden adat Arch Linux alaprendszeren mérve, friss telepítés után, idle állapotban.
-      </p>
-
-      <div class="hero-pill-row">
-        <span class="hero-pill">Desktop Environments</span>
-        <span class="hero-pill">Window Managers</span>
-      </div>
-
-      <div class="hero-compare-cta">
-        <button id="compare-toggle" class="hero-btn primary">Összehasonlítás</button>
-        <button id="etcher-toggle" class="hero-btn ghost">Balea Etcher telepítés</button>
-      </div>
     </div>
   </header>
 
@@ -64,65 +47,59 @@ layout: none
     <aside class="sidebar">
       <h2>Szűrők</h2>
 
-      <label for="filter-display">Display server</label>
+      <label for="filter-display">Display Server</label>
       <select id="filter-display" name="filter-display">
-        <option value="all">Összes</option>
+        <option value="all">Mind</option>
         <option value="Wayland">Wayland</option>
         <option value="X11">X11</option>
       </select>
 
       <label for="filter-type">Típus</label>
       <select id="filter-type" name="filter-type">
-        <option value="all">Összes</option>
-        <option value="DE">Desktop Environment</option>
-        <option value="WM">Window Manager</option>
+        <option value="all">Mind</option>
+        <option value="DE">DE</option>
+        <option value="WM">WM</option>
       </select>
 
       <label for="filter-layout">Layout</label>
       <select id="filter-layout" name="filter-layout">
-        <option value="all">Összes</option>
+        <option value="all">Mind</option>
         <option value="Tiling">Tiling</option>
         <option value="Stacking">Stacking</option>
         <option value="Dynamic">Dynamic</option>
       </select>
 
       <label for="search">Keresés</label>
-      <input id="search" name="search" placeholder="Keresés név vagy leírás alapján..." />
+      <input id="search" name="search" placeholder="Keresés név, jellemzők, tag-ek szerint" />
 
-      <label>Tag‑ek</label>
+      <label>Tag-ek</label>
       <div id="tag-filters" class="tag-checkboxes"></div>
     </aside>
 
-    <!-- MAIN -->
+    <!-- MAIN CONTENT -->
     <main class="content">
 
-      <!-- ÖSSZEHASONLÍTÁS PANEL (hero alatt, alapból rejtve) -->
-      <section class="panel compare-panel" id="compare-panel" hidden>
-        <div class="panel-header">
-          <div>
-            <h2>Erőforrás‑használat összehasonlítása</h2>
-            <p>RAM, CPU és tárhely igény vizuális összehasonlítása azonos Arch Linux alaprendszeren.</p>
-          </div>
-          <button class="panel-close" data-target="compare-panel">×</button>
-        </div>
-
-        <div class="panel-meta">
-          <p><strong>Arch Linux alaprendszer:</strong> friss telepítés, minimális háttérfolyamatok, idle állapot.</p>
+      <!-- COMPARE SECTION -->
+      <section class="compare">
+        <div class="compare-header">
+          <h2>Összehasonlítás</h2>
+          <p>Válassz ki két asztali környezetet vagy ablakkezelőt, és nézd meg a különbségeket diagramokon és statisztikákon.</p>
         </div>
 
         <div class="compare-selects">
           <div class="compare-select">
             <label for="compare-a">Első választás</label>
-            <select id="compare-a">
+            <select id="compare-a" name="compare-a">
               <option value="">Válassz...</option>
               {% for item in site.data.desktops %}
                 <option value="{{ item.id }}">{{ item.name }}</option>
               {% endfor %}
             </select>
           </div>
+
           <div class="compare-select">
             <label for="compare-b">Második választás</label>
-            <select id="compare-b">
+            <select id="compare-b" name="compare-b">
               <option value="">Válassz...</option>
               {% for item in site.data.desktops %}
                 <option value="{{ item.id }}">{{ item.name }}</option>
@@ -132,75 +109,45 @@ layout: none
         </div>
 
         <div class="compare-charts">
-          <div class="chart-card">
-            <h3>Erőforrás igény (RAM / CPU / tárhely)</h3>
-            <canvas id="chart-resources"></canvas>
+          <div class="chart-row">
+            <div class="chart-card">
+              <h3>Erőforrás igény</h3>
+              <canvas id="chart-resources" aria-label="Erőforrás igény összehasonlítás" role="img"></canvas>
+            </div>
+
+            <div class="chart-card">
+              <h3>Layout típus</h3>
+              <canvas id="chart-layout" aria-label="Layout típus összehasonlítás" role="img"></canvas>
+            </div>
           </div>
-          <div class="chart-card">
-            <h3>Layout & display profil</h3>
-            <canvas id="chart-layout"></canvas>
+
+          <div class="chart-row">
+            <div class="chart-card wide">
+              <h3>Tag összehasonlítás</h3>
+              <canvas id="chart-tags" aria-label="Tag összehasonlítás" role="img"></canvas>
+            </div>
+
+            <div class="chart-card stats">
+              <h3>Gyors statisztikák</h3>
+              <ul id="compare-stats">
+                <li>Nincs kiválasztva két elem</li>
+              </ul>
+            </div>
           </div>
         </div>
-
-        <div class="compare-stats">
-          <h3>Gyors statisztikák</h3>
-          <ul id="compare-stats">
-            <li>Válassz ki két elemet az összehasonlításhoz.</li>
-          </ul>
-        </div>
-
-        <p class="panel-footnote">
-          * Az adatok hozzávetőlegesek, és függnek a konfigurációtól, a futó alkalmazásoktól és a rendszer állapotától.
-        </p>
       </section>
 
-      <!-- BALEA ETCHER TELEPÍTÉS PANEL (ugyanolyan elrendezés) -->
-      <section class="panel etcher-panel" id="etcher-panel" hidden>
-        <div class="panel-header">
-          <div>
-            <h2>Balea Etcher telepítése és használata</h2>
-            <p>Így készíthetsz bootolható Pure DE Arch pendrive‑ot Balea Etcher segítségével.</p>
-          </div>
-          <button class="panel-close" data-target="etcher-panel">×</button>
-        </div>
-
-        <div class="panel-meta">
-          <p><strong>Előkészületek:</strong> töltsd le a Pure DE Arch ISO‑t, és készíts elő egy megfelelő méretű USB meghajtót (minden adat törlődik róla).</p>
-        </div>
-
-        <div class="etcher-steps">
-          <ol>
-            <li><strong>Balea Etcher letöltése:</strong> látogasd meg a <a href="https://etcher.balena.io/" target="_blank" rel="noopener">balenaEtcher hivatalos oldalát</a>, és töltsd le a rendszerednek megfelelő verziót (Windows, macOS, Linux).</li>
-            <li><strong>Etcher indítása:</strong> indítsd el az alkalmazást, majd válaszd a <em>Flash from file</em> opciót.</li>
-            <li><strong>ISO kiválasztása:</strong> tallózd be a letöltött Pure DE Arch ISO fájlt.</li>
-            <li><strong>USB meghajtó kiválasztása:</strong> kattints a <em>Select target</em> gombra, és válaszd ki a megfelelő pendrive‑ot.</li>
-            <li><strong>Írás indítása:</strong> kattints a <em>Flash!</em> gombra, és várd meg, amíg az írás és ellenőrzés befejeződik.</li>
-            <li><strong>Bootolás:</strong> indítsd újra a gépet, válaszd ki az USB meghajtót a boot menüben, és kövesd a Pure DE Arch telepítő lépéseit.</li>
-          </ol>
-        </div>
-
-        <p class="panel-footnote">
-          * Ügyelj arra, hogy a kiválasztott USB meghajtón minden adat törlődni fog. Ellenőrizd kétszer a célmeghajtót.
-        </p>
-      </section>
-
-      <!-- KÁRTYAGRID -->
-      <section class="cards-section">
-        <div class="cards-header">
-          <h2>DE & WM Kereső</h2>
-          <p>Szűrd és böngészd a Desktop Environment‑eket és Window Manager‑eket tulajdonságaik alapján.</p>
-        </div>
-
-        <div id="cards" class="grid">
-          {% for item in site.data.desktops %}
-            {% include card.html item=item %}
-          {% endfor %}
-        </div>
-      </section>
+      <!-- CARD GRID -->
+      <div id="cards" class="grid">
+        {% for item in site.data.desktops %}
+          {% include card.html item=item %}
+        {% endfor %}
+      </div>
 
     </main>
   </div>
 
+  <!-- SCRIPT -->
   <script src="/assets/js/filter.js"></script>
 </body>
 </html>
