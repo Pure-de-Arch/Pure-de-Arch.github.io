@@ -1,125 +1,219 @@
-/* ---------------------------------------------------
-   PURE-DE-ARCH DARK THEME VARIABLES
---------------------------------------------------- */
-:root {
-  --bg: #0b0e14;
-  --sidebar-bg: #11141c;
-  --card-bg: #161a22;
-  --border: #222733;
-  --text: #e6e9ef;
-  --muted: #8b93a6;
-  --primary: #4da3ff;
-  --primary-hover: #7bc0ff;
-  --radius: 12px;
-  --shadow: 0 4px 18px rgba(0,0,0,0.55);
-}
+document.addEventListener("DOMContentLoaded", () => {
 
-/* GLOBAL */
-body {
-  margin: 0;
-  font-family: system-ui, sans-serif;
-  background: var(--bg);
-  color: var(--text);
-}
+  // Elems
+  const display = document.getElementById("filter-display");
+  const type = document.getElementById("filter-type");
+  const layout = document.getElementById("filter-layout");
+  const search = document.getElementById("search");
+  const tagContainer = document.getElementById("tag-filters");
+  const cards = [...document.querySelectorAll(".card")];
 
-a { color: var(--primary); }
+  // Build tag set
+  const allTags = new Set();
+  cards.forEach(card => {
+    const tags = (card.dataset.tags || "").split(",").map(t => t.trim()).filter(Boolean);
+    tags.forEach(t => allTags.add(t));
+  });
 
-/* HERO */
-.hero {
-  width: 100%;
-  padding: 48px 0 32px;
-  border-bottom: 1px solid var(--border);
-  background: var(--bg);
-  display: flex;
-  justify-content: center;
-}
-.hero-inner { width:100%; max-width:900px; padding:0 32px; display:flex; flex-direction:column; gap:20px; }
-.hero-top { display:flex; justify-content:space-between; align-items:center; }
-.hero-brand { font-size:1.9rem; font-weight:700; color:var(--primary); margin:0; }
-.hero-buttons { display:flex; gap:12px; }
-.hero-btn { padding:8px 16px; background:var(--card-bg); border:1px solid var(--border); border-radius:var(--radius); color:var(--text); font-size:0.9rem; transition:0.2s; }
-.hero-btn:hover { background:var(--primary); color:#fff; border-color:var(--primary-hover); }
-.hero-title { font-size:2.6rem; font-weight:700; line-height:1.2; margin:0; }
-.hero-subtitle { font-size:1.15rem; color:var(--muted); line-height:1.6; margin:0; }
-.hero-note { font-size:0.9rem; opacity:0.7; }
+  // Render tag checkboxes
+  if (tagContainer) {
+    const frag = document.createDocumentFragment();
+    Array.from(allTags).sort().forEach(tag => {
+      const label = document.createElement("label");
+      label.className = "tag-option";
+      label.innerHTML = `<input type="checkbox" value="${tag}" class="tag-checkbox"> <span>${tag}</span>`;
+      frag.appendChild(label);
+    });
+    tagContainer.appendChild(frag);
+  }
 
-/* MOBILE HERO */
-@media (max-width:720px) {
-  .hero { padding:32px 0 24px; }
-  .hero-inner { padding:0 20px; gap:16px; }
-  .hero-top { flex-direction:column; align-items:flex-start; gap:12px; }
-  .hero-brand { font-size:1.7rem; }
-  .hero-buttons { width:100%; gap:10px; }
-  .hero-btn { flex:1; text-align:center; padding:10px 0; font-size:0.95rem; }
-  .hero-title { font-size:2rem; line-height:1.25; }
-  .hero-subtitle { font-size:1rem; line-height:1.55; }
-}
+  // Query checkboxes
+  let tagCheckboxes = [...document.querySelectorAll(".tag-checkbox")];
 
-/* LAYOUT */
-.layout { display:flex; min-height:100vh; }
+  // Apply filters
+  function applyFilters() {
+    const d = display ? display.value : "all";
+    const t = type ? type.value : "all";
+    const l = layout ? layout.value : "all";
+    const q = search ? search.value.toLowerCase() : "";
 
-/* SIDEBAR */
-.sidebar {
-  width:260px; padding:24px; background:var(--sidebar-bg); border-right:1px solid var(--border);
-  position:sticky; top:0; height:100vh; overflow-y:auto;
-}
-.sidebar h2 { margin-top:0; font-size:1.3rem; }
-.sidebar label { margin-top:16px; display:block; font-weight:600; color:var(--muted); }
-.sidebar select, .sidebar input { width:100%; padding:10px; margin-top:6px; border-radius:var(--radius); border:1px solid var(--border); background:#11141a; color:var(--text); }
+    const activeTags = tagCheckboxes.filter(cb => cb.checked).map(cb => cb.value);
 
-/* TAG CHECKBOXES */
-.tag-checkboxes { display:flex; flex-direction:column; gap:6px; margin-top:8px; }
-.tag-option { display:flex; align-items:center; gap:6px; font-size:0.9rem; color:var(--text); }
-.tag-option input { accent-color:var(--primary); }
+    cards.forEach(card => {
+      const matchDisplay = d === "all" || card.dataset.display === d;
+      const matchType = t === "all" || card.dataset.type === t;
+      const matchLayout = l === "all" || card.dataset.layout === l;
+      const matchSearch = q === "" || card.innerText.toLowerCase().includes(q);
 
-/* MAIN CONTENT */
-.content { flex:1; padding:32px; }
+      const cardTags = (card.dataset.tags || "").split(",").map(s => s.trim()).filter(Boolean);
+      const matchTags = activeTags.length === 0 || activeTags.every(tag => cardTags.includes(tag));
 
-/* COMPARE */
-.compare { margin-bottom:32px; padding:24px 0; border-bottom:1px solid var(--border); }
-.compare-header h2 { margin:0 0 6px; font-size:1.6rem; }
-.compare-header p { margin:0; color:var(--muted); font-size:0.95rem; }
-.compare-selects { display:flex; gap:16px; margin-top:16px; margin-bottom:20px; }
-.compare-select { flex:1; }
-.compare-select label { display:block; font-size:0.9rem; color:var(--muted); margin-bottom:4px; }
-.compare-select select { width:100%; padding:8px; border-radius:var(--radius); border:1px solid var(--border); background:var(--card-bg); color:var(--text); }
-.compare-charts { margin-top:24px; display:grid; gap:24px; }
-.compare-charts canvas { background:var(--card-bg); border:1px solid var(--border); border-radius:var(--radius); padding:16px; box-shadow:var(--shadow); }
+      card.style.display = (matchDisplay && matchType && matchLayout && matchSearch && matchTags) ? "" : "none";
+    });
+  }
 
-/* MOBILE COMPARE */
-@media (max-width:720px) {
-  .compare-selects { flex-direction:column; }
-  .compare-charts { grid-template-columns:1fr; }
-}
+  // Events
+  if (display) display.addEventListener("change", applyFilters);
+  if (type) type.addEventListener("change", applyFilters);
+  if (layout) layout.addEventListener("change", applyFilters);
+  if (search) search.addEventListener("input", applyFilters);
+  tagCheckboxes.forEach(cb => cb.addEventListener("change", applyFilters));
 
-/* GRID */
-.grid { display:grid; grid-template-columns:repeat(auto-fill, minmax(260px,1fr)); gap:24px; }
+  // Initial
+  applyFilters();
 
-/* CARD */
-.card {
-  background:var(--card-bg); border-radius:var(--radius); overflow:hidden; border:1px solid var(--border);
-  box-shadow:var(--shadow); position:relative; transform:translateY(0) scale(1); transition:transform 0.25s, box-shadow 0.25s;
-}
-.card:hover { transform:translateY(-6px) scale(1.02); box-shadow:0 8px 28px rgba(0,0,0,0.7); }
-.card::before {
-  content:""; position:absolute; top:0; left:-120%; width:80%; height:100%;
-  background:linear-gradient(120deg, transparent, rgba(255,255,255,0.08), transparent);
-  transform:skewX(-20deg); transition:0.6s;
-}
-.card:hover::before { left:120%; }
-.card-image { width:100%; height:150px; object-fit:cover; transition:transform 0.4s, filter 0.4s; filter:brightness(0.85); }
-.card:hover .card-image { transform:scale(1.06); filter:brightness(1); }
-.card-body { padding:16px; }
-.card-body h3 { margin:0 0 6px; font-size:1.2rem; }
-.meta { color:var(--muted); font-size:0.9rem; margin-bottom:10px; }
-.features { font-size:0.9rem; margin-bottom:12px; }
+  // Prepare compare data
+  const selectA = document.getElementById("compare-a");
+  const selectB = document.getElementById("compare-b");
+  const ctxResources = document.getElementById("chart-resources");
+  const ctxLayout = document.getElementById("chart-layout");
+  const ctxTags = document.getElementById("chart-tags");
+  const statsList = document.getElementById("compare-stats");
 
-/* TAG BADGES */
-.tag-badges { display:flex; flex-wrap:wrap; gap:6px; margin-bottom:10px; }
-.tag { background:rgba(77,163,255,0.15); color:var(--primary); padding:3px 8px; border-radius:6px; font-size:0.75rem; border:1px solid rgba(77,163,255,0.3); }
+  const cardData = {};
+  cards.forEach(card => {
+    const id = card.dataset.id;
+    cardData[id] = {
+      id,
+      name: card.querySelector("h3")?.innerText || id,
+      meta: card.querySelector(".meta")?.innerText || "",
+      features: card.querySelector(".features")?.innerText || "",
+      tags: (card.dataset.tags || "").split(",").map(s => s.trim()).filter(Boolean),
+      layout: card.dataset.layout || "",
+      display: card.dataset.display || "",
+      type: card.dataset.type || "",
+      resources: card.dataset.resources || "Medium",
+      link: card.querySelector(".link")?.href || "#"
+    };
+  });
 
-/* LINK */
-.link { color:var(--primary); font-weight:600; position:relative; transition:color 0.2s; }
-.link::after { content:""; position:absolute; left:0; bottom:-2px; width:0%; height:2px; background:var(--primary); transition:width 0.25s; }
-.link:hover { color:var(--primary-hover); }
-.link:hover::after { width:100%; }
+  // Chart instances
+  let chartResources = null;
+  let chartLayout = null;
+  let chartTags = null;
+
+  function destroyIfExists(c) { if (c && typeof c.destroy === "function") c.destroy(); }
+
+  function updateStats(A, B) {
+    if (!statsList) return;
+    statsList.innerHTML = "";
+    if (!A || !B) {
+      statsList.innerHTML = "<li>Válassz két elemet a részletes statisztikákhoz</li>";
+      return;
+    }
+
+    // Quick comparisons
+    const sameLayout = A.layout === B.layout;
+    const sameDisplay = A.display === B.display;
+    const sharedTags = A.tags.filter(t => B.tags.includes(t));
+    const uniqueA = A.tags.filter(t => !B.tags.includes(t));
+    const uniqueB = B.tags.filter(t => !A.tags.includes(t));
+
+    const li = (html) => {
+      const el = document.createElement("li");
+      el.innerHTML = html;
+      statsList.appendChild(el);
+    };
+
+    li(`<strong>${A.name}</strong> vs <strong>${B.name}</strong>`);
+    li(`Közös layout: ${sameLayout ? "igen" : "nem"} (${A.layout} / ${B.layout})`);
+    li(`Közös display server: ${sameDisplay ? "igen" : "nem"} (${A.display} / ${B.display})`);
+    li(`Közös tagek: ${sharedTags.length > 0 ? sharedTags.join(", ") : "nincs közös tag"}`);
+    li(`Egyedi tagek ${A.name}: ${uniqueA.length > 0 ? uniqueA.join(", ") : "nincs"}`);
+    li(`Egyedi tagek ${B.name}: ${uniqueB.length > 0 ? uniqueB.join(", ") : "nincs"}`);
+    li(`Erőforrások: ${A.resources} vs ${B.resources}`);
+  }
+
+  function updateCharts() {
+    const idA = selectA.value;
+    const idB = selectB.value;
+
+    if (!idA || !idB) {
+      destroyIfExists(chartResources); destroyIfExists(chartLayout); destroyIfExists(chartTags);
+      updateStats(null, null);
+      return;
+    }
+
+    const A = cardData[idA];
+    const B = cardData[idB];
+    if (!A || !B) return;
+
+    // Resources mapping
+    const resourceMap = { "Very Low": 0.5, "Very Low": 0.5, "Very Low": 0.5, "Low": 1, "Medium": 2, "High": 3, "Very High": 4 };
+    const valA = resourceMap[A.resources] || 2;
+    const valB = resourceMap[B.resources] || 2;
+
+    // Resources bar
+    destroyIfExists(chartResources);
+    chartResources = new Chart(ctxResources, {
+      type: "bar",
+      data: {
+        labels: [A.name, B.name],
+        datasets: [{
+          label: "Erőforrás igény (relatív)",
+          data: [valA, valB],
+          backgroundColor: ["#4da3ff88", "#7bc0ff88"],
+          borderColor: ["#4da3ff", "#7bc0ff"],
+          borderWidth: 2
+        }]
+      },
+      options: {
+        responsive: true,
+        plugins: { legend: { display: false } },
+        scales: { y: { beginAtZero: true, ticks: { stepSize: 1 } } }
+      }
+    });
+
+    // Layout radar
+    destroyIfExists(chartLayout);
+    chartLayout = new Chart(ctxLayout, {
+      type: "radar",
+      data: {
+        labels: ["Tiling", "Stacking", "Dynamic"],
+        datasets: [
+          {
+            label: A.name,
+            data: [A.layout === "Tiling" ? 1 : 0, A.layout === "Stacking" ? 1 : 0, A.layout === "Dynamic" ? 1 : 0],
+            backgroundColor: "#4da3ff33",
+            borderColor: "#4da3ff",
+            pointBackgroundColor: "#4da3ff"
+          },
+          {
+            label: B.name,
+            data: [B.layout === "Tiling" ? 1 : 0, B.layout === "Stacking" ? 1 : 0, B.layout === "Dynamic" ? 1 : 0],
+            backgroundColor: "#7bc0ff33",
+            borderColor: "#7bc0ff",
+            pointBackgroundColor: "#7bc0ff"
+          }
+        ]
+      },
+      options: { responsive: true, scales: { r: { beginAtZero: true, ticks: { stepSize: 1 } } } }
+    });
+
+    // Tags bar
+    const all = Array.from(new Set([...A.tags, ...B.tags]));
+    destroyIfExists(chartTags);
+    chartTags = new Chart(ctxTags, {
+      type: "bar",
+      data: {
+        labels: all,
+        datasets: [
+          { label: A.name, data: all.map(t => A.tags.includes(t) ? 1 : 0), backgroundColor: "#4da3ff88" },
+          { label: B.name, data: all.map(t => B.tags.includes(t) ? 1 : 0), backgroundColor: "#7bc0ff88" }
+        ]
+      },
+      options: {
+        responsive: true,
+        plugins: { legend: { position: "top" } },
+        scales: { y: { beginAtZero: true, ticks: { stepSize: 1 } } }
+      }
+    });
+
+    // Update textual stats
+    updateStats(A, B);
+  }
+
+  if (selectA) selectA.addEventListener("change", updateCharts);
+  if (selectB) selectB.addEventListener("change", updateCharts);
+
+});
