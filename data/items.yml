@@ -1,0 +1,24 @@
+- title: "Projekt Alpha"
+  category: "design"
+  icon: "🎨"
+  description: "Modern UI design rendszer."
+
+- title: "Backend API"
+  category: "code"
+  icon: "💻"
+  description: "Node.js alapú szerver logika."
+
+- title: "Marketing Kampány"
+  category: "marketing"
+  icon: "📈"
+  description: "Q4 növekedési stratégia."
+
+- title: "Logó Vázlatok"
+  category: "design"
+  icon: "✏️"
+  description: "Vektoros illusztrációk."
+
+- title: "React Komponensek"
+  category: "code"
+  icon: "⚛️"
+  description: "Frontend könyvtár elemek."
