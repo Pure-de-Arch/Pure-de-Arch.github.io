@@ -1,123 +1,219 @@
-// assets/js/filter.js
 document.addEventListener("DOMContentLoaded", () => {
-  const displayEl = document.getElementById("filter-display");
-  const typeEl = document.getElementById("filter-type");
-  const layoutEl = document.getElementById("filter-layout");
-  const searchEl = document.getElementById("search");
+
+  // Elems
+  const display = document.getElementById("filter-display");
+  const type = document.getElementById("filter-type");
+  const layout = document.getElementById("filter-layout");
+  const search = document.getElementById("search");
   const tagContainer = document.getElementById("tag-filters");
-  const cardsContainer = document.getElementById("cards");
-  let cards = Array.from(document.querySelectorAll(".card"));
+  const cards = [...document.querySelectorAll(".card")];
 
-  // If no cards, nothing to do
-  if (!cards.length) return;
-
-  // Build tag set from cards (normalize to lower-case for matching)
+  // Build tag set
   const allTags = new Set();
   cards.forEach(card => {
-    const raw = card.dataset.tags || "";
-    raw.split(",").map(t => t.trim()).filter(Boolean).forEach(t => allTags.add(t));
+    const tags = (card.dataset.tags || "").split(",").map(t => t.trim()).filter(Boolean);
+    tags.forEach(t => allTags.add(t));
   });
 
-  // Render tag toggles (checkbox + visual switch)
+  // Render tag checkboxes
   if (tagContainer) {
-    tagContainer.innerHTML = ""; // clear
     const frag = document.createDocumentFragment();
-    Array.from(allTags).sort((a,b) => a.localeCompare(b)).forEach(tag => {
-      const safeId = `tag-${tag.toLowerCase().replace(/[^a-z0-9\-]/g,'-')}`;
+    Array.from(allTags).sort().forEach(tag => {
       const label = document.createElement("label");
       label.className = "tag-option";
-      label.innerHTML = `
-        <span class="tag-name">${tag}</span>
-        <input type="checkbox" id="${safeId}" class="tag-checkbox" value="${tag}">
-        <span class="tag-switch" aria-hidden="true"></span>
-      `;
+      label.innerHTML = `<input type="checkbox" value="${tag}" class="tag-checkbox"> <span>${tag}</span>`;
       frag.appendChild(label);
     });
     tagContainer.appendChild(frag);
   }
 
-  // Query checkboxes after render
-  let tagCheckboxes = Array.from(document.querySelectorAll(".tag-checkbox"));
+  // Query checkboxes
+  let tagCheckboxes = [...document.querySelectorAll(".tag-checkbox")];
 
-  // Normalize helper
-  const norm = s => (String(s || "")).toLowerCase().trim();
-
-  // Core filter function
+  // Apply filters
   function applyFilters() {
-    // re-query cards in case DOM changed
-    cards = Array.from(document.querySelectorAll(".card"));
+    const d = display ? display.value : "all";
+    const t = type ? type.value : "all";
+    const l = layout ? layout.value : "all";
+    const q = search ? search.value.toLowerCase() : "";
 
-    const displayVal = displayEl ? norm(displayEl.value) : "all";
-    const typeVal = typeEl ? norm(typeEl.value) : "all";
-    const layoutVal = layoutEl ? norm(layoutEl.value) : "all";
-    const q = searchEl ? norm(searchEl.value) : "";
-
-    const activeTags = tagCheckboxes.filter(cb => cb.checked).map(cb => norm(cb.value));
+    const activeTags = tagCheckboxes.filter(cb => cb.checked).map(cb => cb.value);
 
     cards.forEach(card => {
-      const cd = norm(card.dataset.display);
-      const ct = norm(card.dataset.type);
-      const cl = norm(card.dataset.layout);
-      const cardText = norm(card.innerText);
+      const matchDisplay = d === "all" || card.dataset.display === d;
+      const matchType = t === "all" || card.dataset.type === t;
+      const matchLayout = l === "all" || card.dataset.layout === l;
+      const matchSearch = q === "" || card.innerText.toLowerCase().includes(q);
 
-      const matchDisplay = displayVal === "all" || cd === displayVal;
-      const matchType = typeVal === "all" || ct === typeVal;
-      const matchLayout = layoutVal === "all" || cl === layoutVal;
-      const matchSearch = !q || cardText.includes(q);
+      const cardTags = (card.dataset.tags || "").split(",").map(s => s.trim()).filter(Boolean);
+      const matchTags = activeTags.length === 0 || activeTags.every(tag => cardTags.includes(tag));
 
-      const cardTags = (card.dataset.tags || "").split(",").map(t => norm(t)).filter(Boolean);
-      const matchTags = activeTags.length === 0 || activeTags.every(t => cardTags.includes(t));
-
-      const show = matchDisplay && matchType && matchLayout && matchSearch && matchTags;
-      card.style.display = show ? "" : "none";
+      card.style.display = (matchDisplay && matchType && matchLayout && matchSearch && matchTags) ? "" : "none";
     });
   }
 
-  // Attach events
-  if (displayEl) displayEl.addEventListener("change", applyFilters);
-  if (typeEl) typeEl.addEventListener("change", applyFilters);
-  if (layoutEl) layoutEl.addEventListener("change", applyFilters);
-  if (searchEl) searchEl.addEventListener("input", applyFilters);
+  // Events
+  if (display) display.addEventListener("change", applyFilters);
+  if (type) type.addEventListener("change", applyFilters);
+  if (layout) layout.addEventListener("change", applyFilters);
+  if (search) search.addEventListener("input", applyFilters);
+  tagCheckboxes.forEach(cb => cb.addEventListener("change", applyFilters));
 
-  // Attach change listeners to tag checkboxes (re-query in case of dynamic changes)
-  function bindTagEvents() {
-    tagCheckboxes = Array.from(document.querySelectorAll(".tag-checkbox"));
-    tagCheckboxes.forEach(cb => {
-      cb.removeEventListener("change", applyFilters);
-      cb.addEventListener("change", applyFilters);
-    });
+  // Initial
+  applyFilters();
+
+  // Prepare compare data
+  const selectA = document.getElementById("compare-a");
+  const selectB = document.getElementById("compare-b");
+  const ctxResources = document.getElementById("chart-resources");
+  const ctxLayout = document.getElementById("chart-layout");
+  const ctxTags = document.getElementById("chart-tags");
+  const statsList = document.getElementById("compare-stats");
+
+  const cardData = {};
+  cards.forEach(card => {
+    const id = card.dataset.id;
+    cardData[id] = {
+      id,
+      name: card.querySelector("h3")?.innerText || id,
+      meta: card.querySelector(".meta")?.innerText || "",
+      features: card.querySelector(".features")?.innerText || "",
+      tags: (card.dataset.tags || "").split(",").map(s => s.trim()).filter(Boolean),
+      layout: card.dataset.layout || "",
+      display: card.dataset.display || "",
+      type: card.dataset.type || "",
+      resources: card.dataset.resources || "Medium",
+      link: card.querySelector(".link")?.href || "#"
+    };
+  });
+
+  // Chart instances
+  let chartResources = null;
+  let chartLayout = null;
+  let chartTags = null;
+
+  function destroyIfExists(c) { if (c && typeof c.destroy === "function") c.destroy(); }
+
+  function updateStats(A, B) {
+    if (!statsList) return;
+    statsList.innerHTML = "";
+    if (!A || !B) {
+      statsList.innerHTML = "<li>Válassz két elemet a részletes statisztikákhoz</li>";
+      return;
+    }
+
+    // Quick comparisons
+    const sameLayout = A.layout === B.layout;
+    const sameDisplay = A.display === B.display;
+    const sharedTags = A.tags.filter(t => B.tags.includes(t));
+    const uniqueA = A.tags.filter(t => !B.tags.includes(t));
+    const uniqueB = B.tags.filter(t => !A.tags.includes(t));
+
+    const li = (html) => {
+      const el = document.createElement("li");
+      el.innerHTML = html;
+      statsList.appendChild(el);
+    };
+
+    li(`<strong>${A.name}</strong> vs <strong>${B.name}</strong>`);
+    li(`Közös layout: ${sameLayout ? "igen" : "nem"} (${A.layout} / ${B.layout})`);
+    li(`Közös display server: ${sameDisplay ? "igen" : "nem"} (${A.display} / ${B.display})`);
+    li(`Közös tagek: ${sharedTags.length > 0 ? sharedTags.join(", ") : "nincs közös tag"}`);
+    li(`Egyedi tagek ${A.name}: ${uniqueA.length > 0 ? uniqueA.join(", ") : "nincs"}`);
+    li(`Egyedi tagek ${B.name}: ${uniqueB.length > 0 ? uniqueB.join(", ") : "nincs"}`);
+    li(`Erőforrások: ${A.resources} vs ${B.resources}`);
   }
-  bindTagEvents();
 
-  // Observe cards container for dynamic changes (rebuild tags if cards change)
-  if (cardsContainer) {
-    const mo = new MutationObserver(muts => {
-      const changed = muts.some(m => m.addedNodes.length || m.removedNodes.length);
-      if (changed) {
-        // rebuild tag list and rebind events
-        const newCards = Array.from(document.querySelectorAll(".card"));
-        // rebuild tag set
-        const newTags = new Set();
-        newCards.forEach(card => {
-          (card.dataset.tags || "").split(",").map(t => t.trim()).filter(Boolean).forEach(t => newTags.add(t));
-        });
-        // if tags changed, re-render
-        const oldTags = Array.from(allTags).sort().join(",");
-        const curTags = Array.from(newTags).sort().join(",");
-        if (oldTags !== curTags) {
-          // update DOM: simple approach — reload page to keep state consistent
-          // (or you can implement incremental rebuild here)
-          window.location.reload();
-        } else {
-          // otherwise just rebind events and re-run filters
-          bindTagEvents();
-          applyFilters();
-        }
+  function updateCharts() {
+    const idA = selectA.value;
+    const idB = selectB.value;
+
+    if (!idA || !idB) {
+      destroyIfExists(chartResources); destroyIfExists(chartLayout); destroyIfExists(chartTags);
+      updateStats(null, null);
+      return;
+    }
+
+    const A = cardData[idA];
+    const B = cardData[idB];
+    if (!A || !B) return;
+
+    // Resources mapping
+    const resourceMap = { "Very Low": 0.5, "Very Low": 0.5, "Very Low": 0.5, "Low": 1, "Medium": 2, "High": 3, "Very High": 4 };
+    const valA = resourceMap[A.resources] || 2;
+    const valB = resourceMap[B.resources] || 2;
+
+    // Resources bar
+    destroyIfExists(chartResources);
+    chartResources = new Chart(ctxResources, {
+      type: "bar",
+      data: {
+        labels: [A.name, B.name],
+        datasets: [{
+          label: "Erőforrás igény (relatív)",
+          data: [valA, valB],
+          backgroundColor: ["#4da3ff88", "#7bc0ff88"],
+          borderColor: ["#4da3ff", "#7bc0ff"],
+          borderWidth: 2
+        }]
+      },
+      options: {
+        responsive: true,
+        plugins: { legend: { display: false } },
+        scales: { y: { beginAtZero: true, ticks: { stepSize: 1 } } }
       }
     });
-    mo.observe(cardsContainer, { childList: true, subtree: false });
+
+    // Layout radar
+    destroyIfExists(chartLayout);
+    chartLayout = new Chart(ctxLayout, {
+      type: "radar",
+      data: {
+        labels: ["Tiling", "Stacking", "Dynamic"],
+        datasets: [
+          {
+            label: A.name,
+            data: [A.layout === "Tiling" ? 1 : 0, A.layout === "Stacking" ? 1 : 0, A.layout === "Dynamic" ? 1 : 0],
+            backgroundColor: "#4da3ff33",
+            borderColor: "#4da3ff",
+            pointBackgroundColor: "#4da3ff"
+          },
+          {
+            label: B.name,
+            data: [B.layout === "Tiling" ? 1 : 0, B.layout === "Stacking" ? 1 : 0, B.layout === "Dynamic" ? 1 : 0],
+            backgroundColor: "#7bc0ff33",
+            borderColor: "#7bc0ff",
+            pointBackgroundColor: "#7bc0ff"
+          }
+        ]
+      },
+      options: { responsive: true, scales: { r: { beginAtZero: true, ticks: { stepSize: 1 } } } }
+    });
+
+    // Tags bar
+    const all = Array.from(new Set([...A.tags, ...B.tags]));
+    destroyIfExists(chartTags);
+    chartTags = new Chart(ctxTags, {
+      type: "bar",
+      data: {
+        labels: all,
+        datasets: [
+          { label: A.name, data: all.map(t => A.tags.includes(t) ? 1 : 0), backgroundColor: "#4da3ff88" },
+          { label: B.name, data: all.map(t => B.tags.includes(t) ? 1 : 0), backgroundColor: "#7bc0ff88" }
+        ]
+      },
+      options: {
+        responsive: true,
+        plugins: { legend: { position: "top" } },
+        scales: { y: { beginAtZero: true, ticks: { stepSize: 1 } } }
+      }
+    });
+
+    // Update textual stats
+    updateStats(A, B);
   }
 
-  // Initial pass
-  applyFilters();
+  if (selectA) selectA.addEventListener("change", updateCharts);
+  if (selectB) selectB.addEventListener("change", updateCharts);
+
 });
