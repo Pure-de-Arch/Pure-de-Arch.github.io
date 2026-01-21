@@ -1,68 +1,21 @@
+/**
+ * assets/js/filter.js
+ * Pure‑DE‑Arch — filters, tag toggles, compare + Chart.js charts & stats
+ */
+
 document.addEventListener("DOMContentLoaded", () => {
-
-  // Elems
-  const display = document.getElementById("filter-display");
-  const type = document.getElementById("filter-type");
-  const layout = document.getElementById("filter-layout");
-  const search = document.getElementById("search");
+  /* -------------------------
+     DOM elemek
+  ------------------------- */
+  const displayEl = document.getElementById("filter-display");
+  const typeEl = document.getElementById("filter-type");
+  const layoutEl = document.getElementById("filter-layout");
+  const searchEl = document.getElementById("search");
   const tagContainer = document.getElementById("tag-filters");
-  const cards = [...document.querySelectorAll(".card")];
+  const cardsContainer = document.getElementById("cards");
+  const cards = Array.from(document.querySelectorAll(".card"));
 
-  // Build tag set
-  const allTags = new Set();
-  cards.forEach(card => {
-    const tags = (card.dataset.tags || "").split(",").map(t => t.trim()).filter(Boolean);
-    tags.forEach(t => allTags.add(t));
-  });
-
-  // Render tag checkboxes
-  if (tagContainer) {
-    const frag = document.createDocumentFragment();
-    Array.from(allTags).sort().forEach(tag => {
-      const label = document.createElement("label");
-      label.className = "tag-option";
-      label.innerHTML = `<input type="checkbox" value="${tag}" class="tag-checkbox"> <span>${tag}</span>`;
-      frag.appendChild(label);
-    });
-    tagContainer.appendChild(frag);
-  }
-
-  // Query checkboxes
-  let tagCheckboxes = [...document.querySelectorAll(".tag-checkbox")];
-
-  // Apply filters
-  function applyFilters() {
-    const d = display ? display.value : "all";
-    const t = type ? type.value : "all";
-    const l = layout ? layout.value : "all";
-    const q = search ? search.value.toLowerCase() : "";
-
-    const activeTags = tagCheckboxes.filter(cb => cb.checked).map(cb => cb.value);
-
-    cards.forEach(card => {
-      const matchDisplay = d === "all" || card.dataset.display === d;
-      const matchType = t === "all" || card.dataset.type === t;
-      const matchLayout = l === "all" || card.dataset.layout === l;
-      const matchSearch = q === "" || card.innerText.toLowerCase().includes(q);
-
-      const cardTags = (card.dataset.tags || "").split(",").map(s => s.trim()).filter(Boolean);
-      const matchTags = activeTags.length === 0 || activeTags.every(tag => cardTags.includes(tag));
-
-      card.style.display = (matchDisplay && matchType && matchLayout && matchSearch && matchTags) ? "" : "none";
-    });
-  }
-
-  // Events
-  if (display) display.addEventListener("change", applyFilters);
-  if (type) type.addEventListener("change", applyFilters);
-  if (layout) layout.addEventListener("change", applyFilters);
-  if (search) search.addEventListener("input", applyFilters);
-  tagCheckboxes.forEach(cb => cb.addEventListener("change", applyFilters));
-
-  // Initial
-  applyFilters();
-
-  // Prepare compare data
+  /* Compare elements */
   const selectA = document.getElementById("compare-a");
   const selectB = document.getElementById("compare-b");
   const ctxResources = document.getElementById("chart-resources");
@@ -70,9 +23,103 @@ document.addEventListener("DOMContentLoaded", () => {
   const ctxTags = document.getElementById("chart-tags");
   const statsList = document.getElementById("compare-stats");
 
+  /* Safety: if no cards, nothing to do */
+  if (!cards.length) return;
+
+  /* -------------------------
+     TAGS: gyűjtés és render
+  ------------------------- */
+  const allTags = new Set();
+  cards.forEach(card => {
+    const raw = card.dataset.tags || "";
+    raw.split(",").map(t => t.trim()).filter(Boolean).forEach(t => allTags.add(t));
+  });
+
+  // Render tag toggles (label > [name][input.checkbox][span.switch])
+  if (tagContainer) {
+    const fragment = document.createDocumentFragment();
+    Array.from(allTags).sort().forEach(tag => {
+      const label = document.createElement("label");
+      label.className = "tag-option";
+
+      const nameSpan = document.createElement("span");
+      nameSpan.textContent = tag;
+      nameSpan.className = "tag-name";
+
+      const input = document.createElement("input");
+      input.type = "checkbox";
+      input.value = tag;
+      input.className = "tag-checkbox";
+      input.id = `tag-${cssSafeId(tag)}`;
+      input.setAttribute("aria-label", `Tag: ${tag}`);
+
+      const switchSpan = document.createElement("span");
+      switchSpan.className = "tag-switch";
+
+      // Structure: [nameSpan][input(hidden)][switchSpan]
+      label.appendChild(nameSpan);
+      label.appendChild(input);
+      label.appendChild(switchSpan);
+
+      fragment.appendChild(label);
+    });
+    tagContainer.appendChild(fragment);
+  }
+
+  // Helper to create safe id from tag
+  function cssSafeId(s) {
+    return s.toLowerCase().replace(/[^a-z0-9\-_]/g, "-");
+  }
+
+  // Query checkboxes after render
+  let tagCheckboxes = Array.from(document.querySelectorAll(".tag-checkbox"));
+
+  /* -------------------------
+     FILTER LOGIC
+  ------------------------- */
+  function applyFilters() {
+    const displayVal = displayEl ? displayEl.value : "all";
+    const typeVal = typeEl ? typeEl.value : "all";
+    const layoutVal = layoutEl ? layoutEl.value : "all";
+    const q = searchEl ? searchEl.value.trim().toLowerCase() : "";
+
+    const activeTags = tagCheckboxes.filter(cb => cb.checked).map(cb => cb.value);
+
+    cards.forEach(card => {
+      const cardDisplay = card.dataset.display || "";
+      const cardType = card.dataset.type || "";
+      const cardLayout = card.dataset.layout || "";
+      const cardText = card.innerText.toLowerCase();
+
+      const matchDisplay = displayVal === "all" || cardDisplay === displayVal;
+      const matchType = typeVal === "all" || cardType === typeVal;
+      const matchLayout = layoutVal === "all" || cardLayout === layoutVal;
+      const matchSearch = q === "" || cardText.includes(q);
+
+      const cardTags = (card.dataset.tags || "").split(",").map(s => s.trim()).filter(Boolean);
+      const matchTags = activeTags.length === 0 || activeTags.every(t => cardTags.includes(t));
+
+      card.style.display = (matchDisplay && matchType && matchLayout && matchSearch && matchTags) ? "" : "none";
+    });
+  }
+
+  // Attach filter events
+  if (displayEl) displayEl.addEventListener("change", applyFilters);
+  if (typeEl) typeEl.addEventListener("change", applyFilters);
+  if (layoutEl) layoutEl.addEventListener("change", applyFilters);
+  if (searchEl) searchEl.addEventListener("input", applyFilters);
+  tagCheckboxes.forEach(cb => cb.addEventListener("change", applyFilters));
+
+  // Initial filter pass
+  applyFilters();
+
+  /* -------------------------
+     COMPARE DATA PREP
+  ------------------------- */
   const cardData = {};
   cards.forEach(card => {
-    const id = card.dataset.id;
+    const id = card.dataset.id || card.id || null;
+    if (!id) return;
     cardData[id] = {
       id,
       name: card.querySelector("h3")?.innerText || id,
@@ -87,49 +134,71 @@ document.addEventListener("DOMContentLoaded", () => {
     };
   });
 
-  // Chart instances
+  /* -------------------------
+     CHARTS: helpers + instances
+  ------------------------- */
   let chartResources = null;
   let chartLayout = null;
   let chartTags = null;
 
-  function destroyIfExists(c) { if (c && typeof c.destroy === "function") c.destroy(); }
+  function destroyChart(c) { if (c && typeof c.destroy === "function") c.destroy(); }
 
+  // Map resource labels to numeric scale
+  const resourceMap = {
+    "very low": 0.5, "very-low": 0.5, "very_low": 0.5,
+    "low": 1, "medium": 2, "high": 3, "very high": 4, "very-high": 4
+  };
+
+  /* -------------------------
+     UPDATE STATS (textual)
+  ------------------------- */
   function updateStats(A, B) {
     if (!statsList) return;
     statsList.innerHTML = "";
+
     if (!A || !B) {
-      statsList.innerHTML = "<li>Válassz két elemet a részletes statisztikákhoz</li>";
+      const li = document.createElement("li");
+      li.textContent = "Válassz két elemet a részletes statisztikákhoz";
+      statsList.appendChild(li);
       return;
     }
 
-    // Quick comparisons
     const sameLayout = A.layout === B.layout;
     const sameDisplay = A.display === B.display;
     const sharedTags = A.tags.filter(t => B.tags.includes(t));
     const uniqueA = A.tags.filter(t => !B.tags.includes(t));
     const uniqueB = B.tags.filter(t => !A.tags.includes(t));
 
-    const li = (html) => {
-      const el = document.createElement("li");
-      el.innerHTML = html;
-      statsList.appendChild(el);
+    const add = (html) => {
+      const li = document.createElement("li");
+      li.innerHTML = html;
+      statsList.appendChild(li);
     };
 
-    li(`<strong>${A.name}</strong> vs <strong>${B.name}</strong>`);
-    li(`Közös layout: ${sameLayout ? "igen" : "nem"} (${A.layout} / ${B.layout})`);
-    li(`Közös display server: ${sameDisplay ? "igen" : "nem"} (${A.display} / ${B.display})`);
-    li(`Közös tagek: ${sharedTags.length > 0 ? sharedTags.join(", ") : "nincs közös tag"}`);
-    li(`Egyedi tagek ${A.name}: ${uniqueA.length > 0 ? uniqueA.join(", ") : "nincs"}`);
-    li(`Egyedi tagek ${B.name}: ${uniqueB.length > 0 ? uniqueB.join(", ") : "nincs"}`);
-    li(`Erőforrások: ${A.resources} vs ${B.resources}`);
+    add(`<strong>${escapeHtml(A.name)}</strong> vs <strong>${escapeHtml(B.name)}</strong>`);
+    add(`Layout egyezés: <strong>${sameLayout ? "igen" : "nem"}</strong> (${escapeHtml(A.layout)} / ${escapeHtml(B.layout)})`);
+    add(`Display server egyezés: <strong>${sameDisplay ? "igen" : "nem"}</strong> (${escapeHtml(A.display)} / ${escapeHtml(B.display)})`);
+    add(`Közös tagek: <strong>${sharedTags.length ? escapeHtml(sharedTags.join(", ")) : "nincs"}</strong>`);
+    add(`${escapeHtml(A.name)} egyedi tagek: <strong>${uniqueA.length ? escapeHtml(uniqueA.join(", ")) : "nincs"}</strong>`);
+    add(`${escapeHtml(B.name)} egyedi tagek: <strong>${uniqueB.length ? escapeHtml(uniqueB.join(", ")) : "nincs"}</strong>`);
+    add(`Erőforrás igény: <strong>${escapeHtml(A.resources)}</strong> vs <strong>${escapeHtml(B.resources)}</strong>`);
   }
 
+  function escapeHtml(s) {
+    return String(s).replace(/[&<>"']/g, (m) => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
+  }
+
+  /* -------------------------
+     UPDATE CHARTS
+  ------------------------- */
   function updateCharts() {
+    if (!selectA || !selectB) return;
+
     const idA = selectA.value;
     const idB = selectB.value;
 
     if (!idA || !idB) {
-      destroyIfExists(chartResources); destroyIfExists(chartLayout); destroyIfExists(chartTags);
+      destroyChart(chartResources); destroyChart(chartLayout); destroyChart(chartTags);
       updateStats(null, null);
       return;
     }
@@ -138,82 +207,53 @@ document.addEventListener("DOMContentLoaded", () => {
     const B = cardData[idB];
     if (!A || !B) return;
 
-    // Resources mapping
-    const resourceMap = { "Very Low": 0.5, "Very Low": 0.5, "Very Low": 0.5, "Low": 1, "Medium": 2, "High": 3, "Very High": 4 };
-    const valA = resourceMap[A.resources] || 2;
-    const valB = resourceMap[B.resources] || 2;
+    // Resources chart (bar)
+    const valA = resourceMap[(A.resources || "").toLowerCase()] || 2;
+    const valB = resourceMap[(B.resources || "").toLowerCase()] || 2;
 
-    // Resources bar
-    destroyIfExists(chartResources);
-    chartResources = new Chart(ctxResources, {
-      type: "bar",
-      data: {
-        labels: [A.name, B.name],
-        datasets: [{
-          label: "Erőforrás igény (relatív)",
-          data: [valA, valB],
-          backgroundColor: ["#4da3ff88", "#7bc0ff88"],
-          borderColor: ["#4da3ff", "#7bc0ff"],
-          borderWidth: 2
-        }]
-      },
-      options: {
-        responsive: true,
-        plugins: { legend: { display: false } },
-        scales: { y: { beginAtZero: true, ticks: { stepSize: 1 } } }
-      }
-    });
+    destroyChart(chartResources);
+    if (ctxResources && window.Chart) {
+      chartResources = new Chart(ctxResources, {
+        type: "bar",
+        data: {
+          labels: [A.name, B.name],
+          datasets: [{
+            label: "Erőforrás igény (relatív)",
+            data: [valA, valB],
+            backgroundColor: ["#4da3ff88", "#7bc0ff88"],
+            borderColor: ["#4da3ff", "#7bc0ff"],
+            borderWidth: 2
+          }]
+        },
+        options: {
+          responsive: true,
+          plugins: { legend: { display: false } },
+          scales: { y: { beginAtZero: true, ticks: { stepSize: 1 } } }
+        }
+      });
+    }
 
-    // Layout radar
-    destroyIfExists(chartLayout);
-    chartLayout = new Chart(ctxLayout, {
-      type: "radar",
-      data: {
-        labels: ["Tiling", "Stacking", "Dynamic"],
-        datasets: [
-          {
-            label: A.name,
-            data: [A.layout === "Tiling" ? 1 : 0, A.layout === "Stacking" ? 1 : 0, A.layout === "Dynamic" ? 1 : 0],
-            backgroundColor: "#4da3ff33",
-            borderColor: "#4da3ff",
-            pointBackgroundColor: "#4da3ff"
-          },
-          {
-            label: B.name,
-            data: [B.layout === "Tiling" ? 1 : 0, B.layout === "Stacking" ? 1 : 0, B.layout === "Dynamic" ? 1 : 0],
-            backgroundColor: "#7bc0ff33",
-            borderColor: "#7bc0ff",
-            pointBackgroundColor: "#7bc0ff"
-          }
-        ]
-      },
-      options: { responsive: true, scales: { r: { beginAtZero: true, ticks: { stepSize: 1 } } } }
-    });
-
-    // Tags bar
-    const all = Array.from(new Set([...A.tags, ...B.tags]));
-    destroyIfExists(chartTags);
-    chartTags = new Chart(ctxTags, {
-      type: "bar",
-      data: {
-        labels: all,
-        datasets: [
-          { label: A.name, data: all.map(t => A.tags.includes(t) ? 1 : 0), backgroundColor: "#4da3ff88" },
-          { label: B.name, data: all.map(t => B.tags.includes(t) ? 1 : 0), backgroundColor: "#7bc0ff88" }
-        ]
-      },
-      options: {
-        responsive: true,
-        plugins: { legend: { position: "top" } },
-        scales: { y: { beginAtZero: true, ticks: { stepSize: 1 } } }
-      }
-    });
-
-    // Update textual stats
-    updateStats(A, B);
-  }
-
-  if (selectA) selectA.addEventListener("change", updateCharts);
-  if (selectB) selectB.addEventListener("change", updateCharts);
-
-});
+    // Layout chart (radar)
+    destroyChart(chartLayout);
+    if (ctxLayout && window.Chart) {
+      chartLayout = new Chart(ctxLayout, {
+        type: "radar",
+        data: {
+          labels: ["Tiling", "Stacking", "Dynamic"],
+          datasets: [
+            {
+              label: A.name,
+              data: [A.layout === "Tiling" ? 1 : 0, A.layout === "Stacking" ? 1 : 0, A.layout === "Dynamic" ? 1 : 0],
+              backgroundColor: "#4da3ff33",
+              borderColor: "#4da3ff",
+              pointBackgroundColor: "#4da3ff"
+            },
+            {
+              label: B.name,
+              data: [B.layout === "Tiling" ? 1 : 0, B.layout === "Stacking" ? 1 : 0, B.layout === "Dynamic" ? 1 : 0],
+              backgroundColor: "#7bc0ff33",
+              borderColor: "#7bc0ff",
+              pointBackgroundColor: "#7bc0ff"
+            }
+          ]
+        },
