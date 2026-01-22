@@ -1,13 +1,15 @@
 title: "Pure de Arch"
 description: "Fedezd fel a Linux Desktop világát"
-theme: minima
 markdown: kramdown
+theme: minima
 
 collections:
   de:
-    output: false
+    output: true
+    permalink: /de/:name/
   wm:
-    output: false
+    output: true
+    permalink: /wm/:name/
 
 defaults:
   - scope:
