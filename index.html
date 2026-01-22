@@ -4,27 +4,58 @@ title: Pure de Arch
 ---
 
 <!-- ========================================================= -->
-<!-- 1) HERO – EZ VAN A LEGFELÜL                               -->
+<!-- 1) ANIMATED HERO – EZ VAN A LEGFELÜL                      -->
 <!-- ========================================================= -->
 
 <section class="w-full max-w-[1500px] mx-auto mb-10 px-6 md:px-10">
-  <div class="bg-card backdrop-blur-xl border border-border rounded-2xl shadow-xl p-8 md:p-12 text-center text-slate-200">
 
-    <h1 class="text-4xl md:text-5xl font-bold mb-6 bg-gradient-to-r from-neonBlue to-neonPurple bg-clip-text text-transparent">
-      Fedezd fel a Linux Desktop világát
-    </h1>
+  <div class="relative overflow-hidden bg-card backdrop-blur-xl border border-border rounded-2xl shadow-xl p-8 md:p-12 text-center text-slate-200">
 
-    <p class="text-base md:text-lg text-slate-300 leading-relaxed max-w-3xl mx-auto mb-6">
-      Keresd meg a számodra ideális Desktop Environment-et vagy Window Manager-t.<br>
-      Szűrj jellemzők alapján és hasonlítsd össze az erőforrás-használatot.
-    </p>
+    <!-- Animated gradient background -->
+    <div class="absolute inset-0 opacity-30 animate-gradient bg-[length:300%_300%]
+                bg-gradient-to-r from-neonBlue via-neonPurple to-neonCyan"></div>
 
-    <p class="text-sm md:text-base text-slate-400 leading-relaxed max-w-3xl mx-auto">
-      A rendszer Arch Linux alapra épül és minimális módosítással igyekszik visszaadni a DE vagy WM eredeti megjelenését.
-    </p>
+    <!-- Content above animation -->
+    <div class="relative z-10">
 
+      <h1 class="text-4xl md:text-5xl font-bold mb-6 
+                 bg-gradient-to-r from-neonBlue to-neonPurple bg-clip-text text-transparent animate-text">
+        Fedezd fel a Linux Desktop világát
+      </h1>
+
+      <p class="text-base md:text-lg text-slate-300 leading-relaxed max-w-3xl mx-auto mb-6">
+        Keresd meg a számodra ideális Desktop Environment-et vagy Window Manager-t.<br>
+        Szűrj jellemzők alapján és hasonlítsd össze az erőforrás-használatot.
+      </p>
+
+      <p class="text-sm md:text-base text-slate-400 leading-relaxed max-w-3xl mx-auto">
+        A rendszer Arch Linux alapra épül és minimális módosítással igyekszik visszaadni a DE vagy WM eredeti megjelenését.
+      </p>
+
+    </div>
   </div>
 </section>
+
+<!-- Animation keyframes -->
+<style>
+@keyframes gradientShift {
+  0% { background-position: 0% 50% }
+  50% { background-position: 100% 50% }
+  100% { background-position: 0% 50% }
+}
+.animate-gradient {
+  animation: gradientShift 12s ease infinite;
+}
+
+@keyframes textGlow {
+  0% { filter: drop-shadow(0 0 2px rgba(90,176,255,0.4)); }
+  50% { filter: drop-shadow(0 0 8px rgba(179,136,255,0.6)); }
+  100% { filter: drop-shadow(0 0 2px rgba(90,176,255,0.4)); }
+}
+.animate-text {
+  animation: textGlow 4s ease-in-out infinite;
+}
+</style>
 
 
 
@@ -157,10 +188,4 @@ title: Pure de Arch
 
     <p class="text-slate-300 leading-relaxed">
       Fedezd fel a Linux Desktop világát.<br>
-      Keresd meg a számodra ideális Desktop Environment-et vagy Window Manager-t.<br>
-      Szűrj jellemzők alapján és hasonlítsd össze az erőforrás-használatot.<br>
-      A rendszer Arch Linux alapra épül és minimális módosítással igyekszik visszaadni a DE vagy WM eredeti megjelenését.
-    </p>
-
-  </div>
-</div>
+      Keresd meg a számodra ideális Desktop Environment-et vagy Window Manager-t
