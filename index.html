@@ -3,28 +3,6 @@ layout: default
 title: Desktop Environment Comparison
 ---
 
-<!-- HERO -->
-<section class="w-full max-w-[1500px] mx-auto mb-10 px-6 md:px-10">
-  <div class="bg-card backdrop-blur-xl border border-border rounded-2xl shadow-xl p-8 md:p-12 text-center text-slate-200">
-
-    <h1 class="text-4xl md:text-5xl font-bold mb-4 bg-gradient-to-r from-neonBlue to-neonPurple bg-clip-text text-transparent">
-      Pure de Arch
-    </h1>
-
-    <h2 class="text-xl md:text-2xl font-semibold text-neonCyan mb-6">
-      Telepítési útmutató
-    </h2>
-
-    <p class="text-base md:text-lg text-slate-300 leading-relaxed max-w-3xl mx-auto">
-      Fedezd fel a Linux Desktop világát.<br>
-      Keresd meg a számodra ideális Desktop Environment-et vagy Window Manager-t.<br>
-      Szűrj jellemzők alapján és hasonlítsd össze az erőforrás-használatot.<br>
-      A rendszer Arch Linux alapra épül és minimális módosítással igyekszik visszaadni a DE vagy WM eredeti megjelenését.
-    </p>
-
-  </div>
-</section>
-
 <!-- MOBILE HEADER -->
 <div class="md:hidden flex justify-between items-center mb-4 w-full max-w-[1500px]">
   <h1 class="text-2xl font-bold bg-gradient-to-r from-neonBlue to-neonPurple bg-clip-text text-transparent">
@@ -118,9 +96,8 @@ title: Desktop Environment Comparison
           <span class="px-2 py-1 text-xs rounded bg-white/10 border border-border">{{ de.protocol }}</span>
         </div>
 
-        <div class="text-sm text-slate-400 mb-2">RAM: {{ de.ram }} MB</div>
-        <div class="text-sm text-slate-400 mb-2">Disk: {{ de.disk }} MB</div>
-
+        <div class="text-sm text-slate-400 mb-1">RAM: {{ de.ram }} MB</div>
+        <div class="text-sm text-slate-400 mb-1">Disk: {{ de.disk }} MB</div>
         <div class="text-sm text-slate-400">Értékelés: {{ de.rating }}/5</div>
 
       </div>
@@ -129,6 +106,34 @@ title: Desktop Environment Comparison
 
     <div id="no-results" class="text-red-400 mt-4 hidden">
       Nincs találat.
+    </div>
+
+    <!-- BOTTOM COLLAPSIBLE PANEL -->
+    <div class="w-full mt-10">
+      <button id="toggle-info"
+              class="w-full px-6 py-4 rounded-xl bg-card border border-border text-slate-200
+                     hover:border-neonBlue hover:text-neonBlue transition text-center">
+        Telepítési útmutató megnyitása
+      </button>
+
+      <div id="info-panel"
+           class="mt-4 bg-card backdrop-blur-xl border border-border rounded-2xl shadow-xl p-8
+                  hidden transition-all duration-300">
+        <h2 class="text-3xl font-bold mb-4 bg-gradient-to-r from-neonBlue to-neonPurple bg-clip-text text-transparent">
+          Pure de Arch
+        </h2>
+
+        <h3 class="text-xl font-semibold text-neonCyan mb-6">
+          Telepítési útmutató
+        </h3>
+
+        <p class="text-slate-300 leading-relaxed">
+          Fedezd fel a Linux Desktop világát.<br>
+          Keresd meg a számodra ideális Desktop Environment-et vagy Window Manager-t.<br>
+          Szűrj jellemzők alapján és hasonlítsd össze az erőforrás-használatot.<br>
+          A rendszer Arch Linux alapra épül és minimális módosítással igyekszik visszaadni a DE vagy WM eredeti megjelenését.
+        </p>
+      </div>
     </div>
 
   </main>
