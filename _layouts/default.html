@@ -17,7 +17,6 @@
           colors: {
             bg: "#0b0e14",
             card: "rgba(255,255,255,0.04)",
-            sidebar: "rgba(255,255,255,0.03)",
             border: "rgba(255,255,255,0.08)",
             neonBlue: "#5ab0ff",
             neonPurple: "#b388ff",
@@ -36,10 +35,19 @@
       }
     }
   </script>
+
+  <style>
+    body {
+      background-color: #0b0e14;
+    }
+  </style>
 </head>
 
-<body class="bg-bg text-slate-200 min-h-screen flex justify-center p-6 font-sans">
-  {{ content }}
+<body class="text-slate-200 min-h-screen flex justify-center p-6 font-sans">
+  <main class="w-full">
+    {{ content }}
+  </main>
+
   <script src="{{ '/assets/js/app.js' | relative_url }}"></script>
 </body>
 </html>
