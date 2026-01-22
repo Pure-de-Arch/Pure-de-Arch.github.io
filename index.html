@@ -29,26 +29,14 @@ title: Pure de Arch
 
 
 <!-- ========================================================= -->
-<!-- 2) SZŰRŐK + KÁRTYÁK (KÖZÉPEN)                             -->
+<!-- 2) SZŰRŐK (BAL) + KÁRTYÁK (JOBB)                          -->
 <!-- ========================================================= -->
-
-<!-- MOBIL HEADER -->
-<div class="md:hidden flex justify-between items-center mb-4 w-full max-w-[1500px]">
-  <h1 class="text-2xl font-bold bg-gradient-to-r from-neonBlue to-neonPurple bg-clip-text text-transparent">
-    DE Comparison
-  </h1>
-  <button id="mobile-menu-btn" class="px-3 py-2 rounded-lg bg-card border border-border text-slate-300">
-    ☰
-  </button>
-</div>
 
 <div class="flex w-full max-w-[1500px] bg-card backdrop-blur-xl border border-border rounded-2xl shadow-2xl overflow-hidden">
 
-  <!-- SIDEBAR -->
+  <!-- BAL OLDAL – SZŰRŐK -->
   <aside id="sidebar"
-         class="w-80 bg-sidebar border-r border-border p-8 flex flex-col gap-8
-                fixed md:static top-0 left-0 h-full md:h-auto z-50
-                transform -translate-x-full md:translate-x-0 transition-transform duration-300">
+         class="w-80 bg-sidebar border-r border-border p-8 flex flex-col gap-8">
 
     <h2 class="text-slate-300 text-lg tracking-wide font-semibold">Szűrők</h2>
 
@@ -101,13 +89,13 @@ title: Pure de Arch
 
 
 
-  <!-- MAIN CONTENT -->
+  <!-- JOBB OLDAL – KÁRTYÁK -->
   <main class="flex-1 p-10">
 
-    <!-- ACTIVE FILTER CHIPS -->
+    <!-- CHIP-EK -->
     <div id="active-chips" class="flex flex-wrap gap-2 mb-6"></div>
 
-    <!-- CARD GRID -->
+    <!-- KÁRTYÁK GRID -->
     <div id="card-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
       {% for de in site.data.desktops %}
       <div class="de-card bg-card backdrop-blur-xl border border-border rounded-2xl p-6 shadow-xl transition hover:shadow-neonBlue"
@@ -145,7 +133,7 @@ title: Pure de Arch
 
 
 <!-- ========================================================= -->
-<!-- 3) LEGALUL – TELEPÍTÉSI ÚTMUTATÓ GOMB + PANEL             -->
+<!-- 3) LEGALUL – TELEPÍTÉSI ÚTMUTATÓ                          -->
 <!-- ========================================================= -->
 
 <div class="w-full max-w-[1500px] mx-auto mt-10">
