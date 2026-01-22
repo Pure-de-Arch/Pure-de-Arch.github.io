@@ -34,8 +34,8 @@ title: "Pure de Arch"
 </div>
 
 <div class="cards-grid" id="env-cards">
-  {% assign all_de = site.data.desktop_environments %}
-  {% assign all_wm = site.data.window_managers %}
+  {% assign all_de = site.de %}
+  {% assign all_wm = site.wm %}
   {% assign all_env = all_de | concat: all_wm %}
 
   {% for env in all_env %}
@@ -46,15 +46,15 @@ title: "Pure de Arch"
        data-cpu="{{ env.cpu }}"
        data-ram="{{ env.ram }}"
        data-disk="{{ env.disk }}"
-       data-id="{{ env.id }}">
+       data-id="{{ env.slug }}">
     <div class="badge badge-{{ env.type | downcase }}">{{ env.type }}</div>
     <h2>{{ env.name }}</h2>
     <p class="card-desc">{{ env.description }}</p>
     <p class="card-meta">
       CPU: {{ env.cpu }} • RAM: {{ env.ram }} MB • Disk: {{ env.disk }} MB
     </p>
-    <a href="{{ env.arch_wiki }}" target="_blank" class="wiki-link">Arch Wiki</a>
-    <button class="compare-toggle" data-id="{{ env.id }}">Hozzáadás az összehasonlításhoz</button>
+    <a href="{{ env.url | relative_url }}" class="wiki-link">Részletek →</a>
+    <button class="compare-toggle" data-id="{{ env.slug }}">Hozzáadás az összehasonlításhoz</button>
   </div>
   {% endfor %}
 </div>
