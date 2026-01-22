@@ -59,14 +59,14 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   function updateChart() {
+    if (!ctx) return;
+
     const selectedCards = cards.filter(card => selectedIds.has(card.dataset.id));
 
     const labels = selectedCards.map(card => card.querySelector("h2").textContent);
     const cpu = selectedCards.map(card => Number(card.dataset.cpu));
     const ram = selectedCards.map(card => Number(card.dataset.ram));
     const disk = selectedCards.map(card => Number(card.dataset.disk));
-
-    if (!ctx) return;
 
     if (chart) {
       chart.destroy();
