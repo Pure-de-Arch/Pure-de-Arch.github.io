@@ -1,39 +1,23 @@
-- name: KDE Plasma
-  category: Full Desktop
-  toolkit: Qt
-  resource: Medium
-  wayland: Excellent
-  customization: Very High
-  notes: Feature-rich and extremely configurable
-
 - name: GNOME
+  description: Modern és intuitív asztali környezet, vonzó felülettel.
   category: Full Desktop
   toolkit: GTK
-  resource: Medium-High
-  wayland: Excellent
-  customization: Medium
-  notes: Opinionated workflow
+  protocol: Wayland
+  ram: 1200
+  disk: 2500
+  rating: 3
+
+- name: KDE Plasma
+  description: Modern és testreszabható környezet, Qt alapokon.
+  category: Full Desktop
+  toolkit: Qt
+  protocol: Wayland
+  ram: 800
+  disk: 2000
+  rating: 3
 
 - name: Xfce
+  description: Klasszikus, stabil és könnyűsúlyú környezet.
   category: Lightweight
   toolkit: GTK
-  resource: Low
-  wayland: Experimental
-  customization: High
-  notes: Stable and classic
-
-- name: LXQt
-  category: Lightweight
-  toolkit: Qt
-  resource: Low
-  wayland: Limited
-  customization: Medium
-  notes: Modern lightweight Qt desktop
-
-- name: i3
-  category: Tiling WM
-  toolkit: None
-  resource: Very Low
-  wayland: X11 only
-  customization: High
-  notes: Keyboard-driven tiling WM
+  protocol: X11
