@@ -4,20 +4,23 @@ title: Pure de Arch
 ---
 
 <!-- ========================================================= -->
-<!-- 1) SZŰRŐK                                                 -->
+<!-- 1) SZŰRŐK – fiatalos, neon-dark                           -->
 <!-- ========================================================= -->
 
 <section class="w-full max-w-[1500px] mx-auto mb-10 px-6 md:px-10">
 
-  <div class="bg-card backdrop-blur-xl border border-border rounded-3xl shadow-soft p-10">
+  <div class="bg-card backdrop-blur-xl border border-border rounded-3xl shadow-soft p-10
+              hover:shadow-neon transition">
 
-    <h2 class="text-3xl font-bold mb-8 text-neonBlue">Szűrők</h2>
+    <h2 class="text-3xl font-bold mb-8 bg-gradient-to-r from-neonBlue to-neonPurple bg-clip-text text-transparent">
+      Szűrők
+    </h2>
 
     <!-- Search -->
     <div class="flex flex-col gap-2 mb-8">
       <label class="text-sm text-slate-400">Keresés</label>
       <input id="search"
-             class="px-4 py-3 rounded-xl bg-white/5 border border-border focus:border-neonBlue focus:ring-2 focus:ring-neonBlue/40 outline-none"
+             class="px-4 py-3 rounded-xl bg-white/10 border border-border focus:border-neonBlue focus:ring-2 focus:ring-neonBlue/40 outline-none"
              placeholder="Keresés...">
     </div>
 
@@ -65,18 +68,20 @@ title: Pure de Arch
 
 
 <!-- ========================================================= -->
-<!-- 2) KÁRTYÁK                                                -->
+<!-- 2) KÁRTYÁK – fiatalos, neon-dark                          -->
 <!-- ========================================================= -->
 
 <section class="w-full max-w-[1500px] mx-auto mb-10 px-6 md:px-10">
 
-  <div class="bg-card backdrop-blur-xl border border-border rounded-3xl shadow-soft p-10">
+  <div class="bg-card backdrop-blur-xl border border-border rounded-3xl shadow-soft p-10
+              hover:shadow-neon transition">
 
     <div id="active-chips" class="flex flex-wrap gap-2 mb-6"></div>
 
     <div id="card-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
       {% for de in site.data.desktops %}
-      <div class="de-card bg-card backdrop-blur-xl border border-border rounded-2xl p-6 shadow-soft transition hover:shadow-neon hover:border-neonBlue/50"
+      <div class="de-card bg-card backdrop-blur-xl border border-border rounded-2xl p-6 shadow-soft
+                  hover:shadow-neon hover:border-neonBlue/50 transition"
            data-name="{{ de.name }}"
            data-category="{{ de.category }}"
            data-toolkit="{{ de.toolkit }}"
@@ -87,9 +92,9 @@ title: Pure de Arch
         <p class="text-slate-300 text-sm mb-4">{{ de.description }}</p>
 
         <div class="flex flex-wrap gap-2 mb-4">
-          <span class="px-2 py-1 text-xs rounded bg-white/5 border border-border">{{ de.category }}</span>
-          <span class="px-2 py-1 text-xs rounded bg-white/5 border border-border">{{ de.toolkit }}</span>
-          <span class="px-2 py-1 text-xs rounded bg-white/5 border border-border">{{ de.protocol }}</span>
+          <span class="px-2 py-1 text-xs rounded bg-white/10 border border-border">{{ de.category }}</span>
+          <span class="px-2 py-1 text-xs rounded bg-white/10 border border-border">{{ de.toolkit }}</span>
+          <span class="px-2 py-1 text-xs rounded bg-white/10 border border-border">{{ de.protocol }}</span>
         </div>
 
         <div class="text-sm text-slate-400 mb-1">RAM: {{ de.ram }} MB</div>
@@ -110,7 +115,7 @@ title: Pure de Arch
 
 
 <!-- ========================================================= -->
-<!-- 3) TELEPÍTÉSI ÚTMUTATÓ                                    -->
+<!-- 3) TELEPÍTÉSI ÚTMUTATÓ – neon-dark                        -->
 <!-- ========================================================= -->
 
 <section class="w-full max-w-[1500px] mx-auto mt-12 px-6 md:px-10">
