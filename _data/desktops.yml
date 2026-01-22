@@ -8,7 +8,7 @@
   rating: 3
 
 - name: KDE Plasma
-  description: Modern és testreszabható környezet, Qt alapokon.
+  description: Modern és erősen testreszabható Qt alapú környezet.
   category: Full Desktop
   toolkit: Qt
   protocol: Wayland
@@ -17,7 +17,28 @@
   rating: 3
 
 - name: Xfce
-  description: Klasszikus, stabil és könnyűsúlyú környezet.
+  description: Klasszikus, stabil és könnyűsúlyú asztali környezet.
   category: Lightweight
   toolkit: GTK
   protocol: X11
+  ram: 400
+  disk: 800
+  rating: 3
+
+- name: LXQt
+  description: Könnyű Qt alapú környezet, modern felülettel.
+  category: Lightweight
+  toolkit: Qt
+  protocol: X11
+  ram: 250
+  disk: 500
+  rating: 2
+
+- name: i3
+  description: Billentyűzet-központú tiling window manager.
+  category: Tiling WM
+  toolkit: None
+  protocol: X11
+  ram: 150
+  disk: 200
+  rating: 4
