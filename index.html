@@ -4,7 +4,7 @@ title: Desktop Environment Comparison
 ---
 
 <!-- MOBILE HEADER -->
-<div class="md:hidden flex justify-between items-center mb-4">
+<div class="md:hidden flex justify-between items-center mb-4 w-full max-w-[1500px]">
   <h1 class="text-2xl font-bold bg-gradient-to-r from-neonBlue to-neonPurple bg-clip-text text-transparent">
     DE Comparison
   </h1>
@@ -23,6 +23,7 @@ title: Desktop Environment Comparison
 
     <h2 class="text-slate-300 text-lg tracking-wide font-semibold">Filters</h2>
 
+    <!-- Search -->
     <div class="flex flex-col gap-2">
       <label class="text-sm text-slate-400">Search</label>
       <input id="search"
@@ -30,33 +31,129 @@ title: Desktop Environment Comparison
              placeholder="Search...">
     </div>
 
+    <!-- Category multi-select -->
     <div class="flex flex-col gap-2">
       <label class="text-sm text-slate-400">Category</label>
-      <select id="filter-category"
-              class="px-4 py-3 rounded-xl bg-white/5 border border-border focus:border-neonPurple focus:ring-2 focus:ring-neonPurple/40 outline-none">
-        <option value="">All</option>
-        <option>Full Desktop</option>
-        <option>Lightweight</option>
-        <option>Tiling WM</option>
-      </select>
+      <div id="category-options" class="flex flex-wrap gap-2">
+        <button data-value="Full Desktop"
+                class="option-btn px-3 py-1.5 rounded-lg bg-white/5 border border-border text-slate-300 hover:border-neonBlue hover:text-neonBlue transition">
+          Full Desktop
+        </button>
+        <button data-value="Lightweight"
+                class="option-btn px-3 py-1.5 rounded-lg bg-white/5 border border-border text-slate-300 hover:border-neonBlue hover:text-neonBlue transition">
+          Lightweight
+        </button>
+        <button data-value="Tiling WM"
+                class="option-btn px-3 py-1.5 rounded-lg bg-white/5 border border-border text-slate-300 hover:border-neonBlue hover:text-neonBlue transition">
+          Tiling WM
+        </button>
+      </div>
     </div>
 
+    <!-- Toolkit multi-select -->
     <div class="flex flex-col gap-2">
       <label class="text-sm text-slate-400">Toolkit</label>
-      <select id="filter-toolkit"
-              class="px-4 py-3 rounded-xl bg-white/5 border border-border focus:border-neonCyan focus:ring-2 focus:ring-neonCyan/40 outline-none">
-        <option value="">All</option>
-        <option>Qt</option>
-        <option>GTK</option>
-        <option>None</option>
-      </select>
+      <div id="toolkit-options" class="flex flex-wrap gap-2">
+        <button data-value="Qt"
+                class="option-btn px-3 py-1.5 rounded-lg bg-white/5 border border-border text-slate-300 hover:border-neonBlue hover:text-neonBlue transition">
+          Qt
+        </button>
+        <button data-value="GTK"
+                class="option-btn px-3 py-1.5 rounded-lg bg-white/5 border border-border text-slate-300 hover:border-neonBlue hover:text-neonBlue transition">
+          GTK
+        </button>
+        <button data-value="None"
+                class="option-btn px-3 py-1.5 rounded-lg bg-white/5 border border-border text-slate-300 hover:border-neonBlue hover:text-neonBlue transition">
+          None
+        </button>
+      </div>
     </div>
 
+    <!-- Wayland multi-select -->
     <div class="flex flex-col gap-2">
       <label class="text-sm text-slate-400">Wayland support</label>
-      <select id="filter-wayland"
-              class="px-4 py-3 rounded-xl bg-white/5 border border-border focus:border-neonPink focus:ring-2 focus:ring-neonPink/40 outline-none">
-        <option value="">All</option>
-        <option>Excellent</option>
-        <option>Good</option>
-        <option>Medium</option>
+      <div id="wayland-options" class="flex flex-wrap gap-2">
+        <button data-value="Excellent"
+                class="option-btn px-3 py-1.5 rounded-lg bg-white/5 border border-border text-slate-300 hover:border-neonBlue hover:text-neonBlue transition">
+          Excellent
+        </button>
+        <button data-value="Good"
+                class="option-btn px-3 py-1.5 rounded-lg bg-white/5 border border-border text-slate-300 hover:border-neonBlue hover:text-neonBlue transition">
+          Good
+        </button>
+        <button data-value="Medium"
+                class="option-btn px-3 py-1.5 rounded-lg bg-white/5 border border-border text-slate-300 hover:border-neonBlue hover:text-neonBlue transition">
+          Medium
+        </button>
+        <button data-value="Limited"
+                class="option-btn px-3 py-1.5 rounded-lg bg-white/5 border border-border text-slate-300 hover:border-neonBlue hover:text-neonBlue transition">
+          Limited
+        </button>
+        <button data-value="Experimental"
+                class="option-btn px-3 py-1.5 rounded-lg bg-white/5 border border-border text-slate-300 hover:border-neonBlue hover:text-neonBlue transition">
+          Experimental
+        </button>
+      </div>
+    </div>
+
+    <!-- Reset -->
+    <button id="reset"
+            class="px-4 py-3 rounded-xl border border-border text-slate-300 hover:border-neonBlue hover:text-neonBlue transition">
+      Reset filters
+    </button>
+  </aside>
+
+  <!-- MAIN -->
+  <main class="flex-1 p-10">
+
+    <!-- ACTIVE FILTER CHIPS -->
+    <div id="active-chips" class="flex flex-wrap gap-2 mb-6"></div>
+
+    <h1 class="hidden md:block text-3xl font-bold mb-6 bg-gradient-to-r from-neonBlue to-neonPurple bg-clip-text text-transparent">
+      Desktop Environment Comparison
+    </h1>
+
+    <div class="bg-card backdrop-blur-xl border border-border rounded-2xl shadow-xl p-4 overflow-auto">
+
+      <table class="w-full text-sm">
+        <thead class="text-slate-400 uppercase text-xs tracking-wider">
+          <tr>
+            <th data-col="name" class="sortable py-3 px-4 border-b border-border text-left cursor-pointer">Name</th>
+            <th data-col="category" class="sortable py-3 px-4 border-b border-border text-left cursor-pointer">Category</th>
+            <th data-col="toolkit" class="sortable py-3 px-4 border-b border-border text-left cursor-pointer">Toolkit</th>
+            <th data-col="resource" class="sortable py-3 px-4 border-b border-border text-left cursor-pointer">Resource</th>
+            <th data-col="wayland" class="sortable py-3 px-4 border-b border-border text-left cursor-pointer">Wayland</th>
+            <th data-col="customization" class="sortable py-3 px-4 border-b border-border text-left cursor-pointer">Customization</th>
+            <th data-col="notes" class="sortable py-3 px-4 border-b border-border text-left cursor-pointer">Notes</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          {% for de in site.data.desktops %}
+          <tr class="row transition hover:bg-white/10"
+              data-name="{{ de.name | escape }}"
+              data-category="{{ de.category | escape }}"
+              data-toolkit="{{ de.toolkit | escape }}"
+              data-wayland="{{ de.wayland | escape }}"
+              data-notes="{{ de.notes | escape }}"
+          >
+            <td class="py-3 px-4 border-b border-border">{{ de.name }}</td>
+            <td class="py-3 px-4 border-b border-border">{{ de.category }}</td>
+            <td class="py-3 px-4 border-b border-border">{{ de.toolkit }}</td>
+            <td class="py-3 px-4 border-b border-border">{{ de.resource }}</td>
+            <td class="py-3 px-4 border-b border-border">{{ de.wayland }}</td>
+            <td class="py-3 px-4 border-b border-border">{{ de.customization }}</td>
+            <td class="py-3 px-4 border-b border-border">{{ de.notes }}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+
+      <div id="no-results" class="text-red-400 mt-4 hidden">
+        No results found.
+      </div>
+
+    </div>
+  </main>
+
+</div>
