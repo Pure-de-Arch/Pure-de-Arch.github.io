@@ -1,0 +1,44 @@
+- name: KDE Plasma
+  category: Full Desktop
+  toolkit: Qt
+  distro_integration: Strong
+  resource_usage: Medium
+  wayland_support: Good
+  customization: Very High
+  notes: Feature-rich, highly configurable
+
+- name: GNOME
+  category: Full Desktop
+  toolkit: GTK
+  distro_integration: Strong
+  resource_usage: Medium-High
+  wayland_support: Excellent
+  customization: Medium
+  notes: Opinionated, workflow-focused
+
+- name: Xfce
+  category: Lightweight
+  toolkit: GTK
+  distro_integration: Good
+  resource_usage: Low
+  wayland_support: Experimental
+  customization: High
+  notes: Classic, stable, low resource usage
+
+- name: LXQt
+  category: Lightweight
+  toolkit: Qt
+  distro_integration: Medium
+  resource_usage: Low
+  wayland_support: Limited
+  customization: Medium
+  notes: Modern lightweight Qt desktop
+
+- name: i3
+  category: Tiling WM
+  toolkit: None
+  distro_integration: Variable
+  resource_usage: Very Low
+  wayland_support: i3-specific: X11 only (Sway for Wayland)
+  customization: High
+  notes: Keyboard-driven tiling window manager
