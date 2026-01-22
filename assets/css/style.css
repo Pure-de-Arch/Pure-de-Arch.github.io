@@ -1,0 +1,217 @@
+:root {
+  --bg: #0f172a;
+  --bg-elevated: #111827;
+  --bg-sidebar: #020617;
+  --border-subtle: #1f2937;
+  --accent: #38bdf8;
+  --accent-soft: rgba(56, 189, 248, 0.15);
+  --text: #e5e7eb;
+  --text-muted: #9ca3af;
+  --danger: #f97373;
+  --radius-lg: 12px;
+  --radius-md: 8px;
+  --shadow-soft: 0 18px 45px rgba(15, 23, 42, 0.7);
+  --font-sans: system-ui, -apple-system, BlinkMacSystemFont, "SF Pro Text",
+    "Segoe UI", sans-serif;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: var(--font-sans);
+  background: radial-gradient(circle at top, #1e293b 0, #020617 55%);
+  color: var(--text);
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: stretch;
+  padding: 24px;
+}
+
+.page {
+  width: 100%;
+  max-width: 1200px;
+  background: linear-gradient(135deg, #020617 0%, #020617 40%, #0b1120 100%);
+  border-radius: 24px;
+  box-shadow: var(--shadow-soft);
+  border: 1px solid rgba(148, 163, 184, 0.25);
+  overflow: hidden;
+  display: flex;
+}
+
+.app-container {
+  display: flex;
+  width: 100%;
+  min-height: 600px;
+}
+
+/* Sidebar */
+
+.sidebar {
+  width: 280px;
+  background: radial-gradient(circle at top left, #020617 0, #020617 40%, #020617 100%);
+  border-right: 1px solid var(--border-subtle);
+  padding: 20px 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.sidebar h2 {
+  font-size: 1rem;
+  font-weight: 600;
+  margin: 0 0 4px;
+}
+
+.filter-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-bottom: 10px;
+}
+
+.filter-group label {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+}
+
+.sidebar input,
+.sidebar select {
+  background: #020617;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border-subtle);
+  padding: 8px 10px;
+  color: var(--text);
+  font-size: 0.85rem;
+  outline: none;
+}
+
+.sidebar input:focus,
+.sidebar select:focus {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 1px var(--accent-soft);
+}
+
+.reset-button {
+  margin-top: 8px;
+  padding: 8px 10px;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border-subtle);
+  background: transparent;
+  color: var(--text-muted);
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s, border-color 0.15s;
+}
+
+.reset-button:hover {
+  background: var(--accent-soft);
+  color: var(--accent);
+  border-color: var(--accent);
+}
+
+/* Main content */
+
+.main-content {
+  flex: 1;
+  padding: 20px 22px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.main-header h1 {
+  font-size: 1.4rem;
+  margin: 0 0 4px;
+}
+
+.main-header p {
+  margin: 0;
+  font-size: 0.9rem;
+  color: var(--text-muted);
+}
+
+/* Table */
+
+.table-wrapper {
+  background: var(--bg-elevated);
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--border-subtle);
+  padding: 12px;
+  overflow: auto;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.85rem;
+}
+
+thead {
+  background: #020617;
+}
+
+th,
+td {
+  padding: 8px 10px;
+  text-align: left;
+  border-bottom: 1px solid rgba(31, 41, 55, 0.7);
+}
+
+th {
+  font-weight: 500;
+  color: var(--text-muted);
+  white-space: nowrap;
+}
+
+tbody tr:hover {
+  background: rgba(15, 23, 42, 0.9);
+}
+
+.no-results {
+  margin-top: 10px;
+  font-size: 0.9rem;
+  color: var(--danger);
+}
+
+/* Responsive */
+
+@media (max-width: 900px) {
+  body {
+    padding: 12px;
+  }
+
+  .page {
+    flex-direction: column;
+  }
+
+  .app-container {
+    flex-direction: column;
+  }
+
+  .sidebar {
+    width: 100%;
+    border-right: none;
+    border-bottom: 1px solid var(--border-subtle);
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+
+  .filter-group {
+    flex: 1 1 45%;
+  }
+
+  .main-content {
+    padding: 16px;
+  }
+
+  table {
+    font-size: 0.8rem;
+  }
+}
