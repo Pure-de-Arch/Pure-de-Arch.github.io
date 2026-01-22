@@ -1,5 +1,5 @@
 - name: GNOME
-  description: Modern és intuitív asztali környezet, vonzó felülettel.
+  description: Modern és intuitív asztali környezet.
   category: Full Desktop
   toolkit: GTK
   protocol: Wayland
@@ -8,7 +8,7 @@
   rating: 3
 
 - name: KDE Plasma
-  description: Modern és erősen testreszabható Qt alapú környezet.
+  description: Modern, testreszabható Qt alapú környezet.
   category: Full Desktop
   toolkit: Qt
   protocol: Wayland
@@ -17,7 +17,7 @@
   rating: 3
 
 - name: Xfce
-  description: Klasszikus, stabil és könnyűsúlyú asztali környezet.
+  description: Klasszikus, stabil és könnyűsúlyú környezet.
   category: Lightweight
   toolkit: GTK
   protocol: X11
@@ -26,7 +26,7 @@
   rating: 3
 
 - name: LXQt
-  description: Könnyű Qt alapú környezet, modern felülettel.
+  description: Könnyű Qt alapú környezet.
   category: Lightweight
   toolkit: Qt
   protocol: X11
