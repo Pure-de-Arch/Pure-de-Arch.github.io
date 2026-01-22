@@ -1,75 +1,54 @@
 document.addEventListener("DOMContentLoaded", () => {
-  const searchInput = document.getElementById("search");
-  const categorySelect = document.getElementById("filter-category");
-  const toolkitSelect = document.getElementById("filter-toolkit");
-  const waylandSelect = document.getElementById("filter-wayland");
-  const resetButton = document.getElementById("reset-filters");
-  const rows = Array.from(document.querySelectorAll(".desktop-row"));
+  const rows = [...document.querySelectorAll(".row")];
+  const search = document.getElementById("search");
+  const cat = document.getElementById("filter-category");
+  const toolkit = document.getElementById("filter-toolkit");
+  const wayland = document.getElementById("filter-wayland");
+  const reset = document.getElementById("reset");
   const noResults = document.getElementById("no-results");
 
-  function normalize(str) {
-    return (str || "").toLowerCase();
+  function norm(s) {
+    return (s || "").toLowerCase();
   }
 
-  function applyFilters() {
-    const search = normalize(searchInput.value);
-    const category = categorySelect.value;
-    const toolkit = toolkitSelect.value;
-    const wayland = waylandSelect.value;
+  function apply() {
+    const s = norm(search.value);
+    const c = cat.value;
+    const t = toolkit.value;
+    const w = wayland.value;
 
-    let visibleCount = 0;
+    let visible = 0;
 
-    rows.forEach((row) => {
-      const name = normalize(row.dataset.name);
-      const notes = normalize(row.dataset.notes);
-      const rowCategory = row.dataset.category;
-      const rowToolkit = row.dataset.toolkit;
-      const rowWayland = row.dataset.wayland;
+    rows.forEach(r => {
+      const name = norm(r.dataset.name);
+      const notes = norm(r.dataset.notes);
 
-      let matches = true;
+      let ok = true;
 
-      if (search) {
-        const combined = `${name} ${notes}`;
-        if (!combined.includes(search)) {
-          matches = false;
-        }
-      }
+      if (s && !`${name} ${notes}`.includes(s)) ok = false;
+      if (c && r.dataset.category !== c) ok = false;
+      if (t && r.dataset.toolkit !== t) ok = false;
+      if (w && r.dataset.wayland !== w) ok = false;
 
-      if (category && rowCategory !== category) {
-        matches = false;
-      }
-
-      if (toolkit && rowToolkit !== toolkit) {
-        matches = false;
-      }
-
-      if (wayland && rowWayland !== wayland) {
-        matches = false;
-      }
-
-      if (matches) {
-        row.style.display = "";
-        visibleCount++;
-      } else {
-        row.style.display = "none";
-      }
+      r.style.display = ok ? "" : "none";
+      if (ok) visible++;
     });
 
-    noResults.style.display = visibleCount === 0 ? "block" : "none";
+    noResults.classList.toggle("hidden", visible !== 0);
   }
 
-  searchInput.addEventListener("input", applyFilters);
-  categorySelect.addEventListener("change", applyFilters);
-  toolkitSelect.addEventListener("change", applyFilters);
-  waylandSelect.addEventListener("change", applyFilters);
+  search.addEventListener("input", apply);
+  cat.addEventListener("change", apply);
+  toolkit.addEventListener("change", apply);
+  wayland.addEventListener("change", apply);
 
-  resetButton.addEventListener("click", () => {
-    searchInput.value = "";
-    categorySelect.value = "";
-    toolkitSelect.value = "";
-    waylandSelect.value = "";
-    applyFilters();
+  reset.addEventListener("click", () => {
+    search.value = "";
+    cat.value = "";
+    toolkit.value = "";
+    wayland.value = "";
+    apply();
   });
 
-  applyFilters();
+  apply();
 });
