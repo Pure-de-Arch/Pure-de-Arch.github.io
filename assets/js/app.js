@@ -1,5 +1,6 @@
 document.addEventListener("DOMContentLoaded", () => {
-  const rows = [...document.querySelectorAll(".row")];
+
+  const cards = [...document.querySelectorAll(".de-card")];
   const search = document.getElementById("search");
   const reset = document.getElementById("reset");
   const chips = document.getElementById("active-chips");
@@ -10,7 +11,6 @@ document.addEventListener("DOMContentLoaded", () => {
   let selectedCategories = [];
   let selectedToolkits = [];
   let selectedWayland = [];
-  let sortState = { column: null, direction: 1 };
 
   function norm(s) {
     return (s || "").toLowerCase();
@@ -20,12 +20,12 @@ document.addEventListener("DOMContentLoaded", () => {
     const s = norm(search.value);
     let visible = 0;
 
-    rows.forEach(r => {
-      const name = norm(r.dataset.name);
-      const notes = norm(r.dataset.notes);
-      const cat = r.dataset.category;
-      const tk = r.dataset.toolkit;
-      const wl = r.dataset.wayland;
+    cards.forEach(card => {
+      const name = norm(card.dataset.name);
+      const notes = norm(card.dataset.notes);
+      const cat = card.dataset.category;
+      const tk = card.dataset.toolkit;
+      const wl = card.dataset.wayland;
 
       let ok = true;
 
@@ -35,7 +35,7 @@ document.addEventListener("DOMContentLoaded", () => {
       if (selectedToolkits.length > 0 && !selectedToolkits.includes(tk)) ok = false;
       if (selectedWayland.length > 0 && !selectedWayland.includes(wl)) ok = false;
 
-      r.style.display = ok ? "" : "none";
+      card.style.display = ok ? "" : "none";
       if (ok) visible++;
     });
 
@@ -49,7 +49,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const active = [];
 
     if (search.value.trim() !== "") {
-      active.push({ type: "search", label: `Search: ${search.value}`, color: "neonBlue" });
+      active.push({ type: "search", label: `Keresés: ${search.value}`, color: "neonBlue" });
     }
 
     selectedCategories.forEach(v =>
@@ -133,62 +133,6 @@ document.addEventListener("DOMContentLoaded", () => {
         btn.classList.remove("bg-neonBlue/20", "border-neonBlue", "text-neonBlue", "shadow-neonBlue");
       }
     });
-  }
-
-  const headers = document.querySelectorAll("th.sortable");
-
-  headers.forEach(h => {
-    h.addEventListener("click", () => {
-      const col = h.dataset.col;
-
-      if (sortState.column === col) {
-        sortState.direction *= -1;
-      } else {
-        sortState.column = col;
-        sortState.direction = 1;
-      }
-
-      sortTable(col, sortState.direction);
-      updateSortIndicators();
-    });
-  });
-
-  function sortTable(col, dir) {
-    const tbody = document.querySelector("tbody");
-    const rowsArr = [...tbody.querySelectorAll("tr")];
-
-    rowsArr.sort((a, b) => {
-      const A = a.querySelector(`td:nth-child(${getColIndex(col)})`).innerText.toLowerCase();
-      const B = b.querySelector(`td:nth-child(${getColIndex(col)})`).innerText.toLowerCase();
-      return A.localeCompare(B) * dir;
-    });
-
-    rowsArr.forEach(r => tbody.appendChild(r));
-  }
-
-  function getColIndex(col) {
-    const map = {
-      name: 1,
-      category: 2,
-      toolkit: 3,
-      resource: 4,
-      wayland: 5,
-      customization: 6,
-      notes: 7
-    };
-    return map[col];
-  }
-
-  function updateSortIndicators() {
-    headers.forEach(h => {
-      h.innerHTML = h.innerText;
-    });
-
-    if (sortState.column) {
-      const active = document.querySelector(`th[data-col="${sortState.column}"]`);
-      const arrow = sortState.direction === 1 ? "▲" : "▼";
-      active.innerHTML = `${active.innerText} <span class="text-neonBlue">${arrow}</span>`;
-    }
   }
 
   reset.addEventListener("click", () => {
