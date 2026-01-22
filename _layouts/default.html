@@ -1,53 +1,85 @@
-<!DOCTYPE html>
-<html lang="hu">
-<head>
-  <meta charset="utf-8" />
-  <title>{{ page.title }} | Pure de Arch</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
+---
+layout: default
+title: Pure de Arch
+---
 
-  <!-- Tailwind CDN -->
-  <script src="https://cdn.tailwindcss.com"></script>
+<!-- ========================================================= -->
+<!-- 1) HERO – teljes szélesség                                -->
+<!-- ========================================================= -->
 
-  <!-- Tailwind Config -->
-  <script>
-    tailwind.config = {
-      darkMode: "class",
-      theme: {
-        extend: {
-          colors: {
-            bg: "#0b0e14",
-            card: "rgba(255,255,255,0.04)",
-            border: "rgba(255,255,255,0.08)",
-            neonBlue: "#5ab0ff",
-            neonPurple: "#b388ff",
-            neonCyan: "#3de4d3",
-            neonPink: "#ff7ab8",
-            neonYellow: "#ffe66d"
-          },
-          fontFamily: {
-            sans: ["Inter", "system-ui", "sans-serif"]
-          },
-          boxShadow: {
-            soft: "0 0 20px rgba(0,0,0,0.25)",
-            neon: "0 0 12px rgba(90,176,255,0.35)"
-          }
-        }
-      }
-    }
-  </script>
+<section class="w-full max-w-[1500px] mx-auto mb-12 px-6 md:px-10">
 
-  <style>
-    body {
-      background-color: #0b0e14;
-    }
-  </style>
-</head>
+  <div class="relative overflow-hidden bg-card backdrop-blur-xl border border-border rounded-3xl shadow-soft p-12 text-center">
 
-<body class="text-slate-200 min-h-screen flex justify-center p-6 font-sans">
-  <main class="w-full">
-    {{ content }}
-  </main>
+    <!-- Animated gradient background -->
+    <div class="absolute inset-0 opacity-20 animate-gradient bg-[length:300%_300%]
+                bg-gradient-to-r from-neonBlue via-neonPurple to-neonCyan"></div>
 
-  <script src="{{ '/assets/js/app.js' | relative_url }}"></script>
-</body>
-</html>
+    <!-- Content -->
+    <div class="relative z-10">
+
+      <h1 class="text-5xl md:text-6xl font-extrabold mb-2 
+                 bg-gradient-to-r from-neonBlue to-neonPurple bg-clip-text text-transparent animate-text">
+        Pure de Arch
+      </h1>
+
+      <p class="text-lg md:text-xl text-slate-300 leading-relaxed max-w-3xl mx-auto">
+        DE & WM kereső
+      </p>
+
+    </div>
+  </div>
+</section>
+
+<style>
+@keyframes gradientShift {
+  0% { background-position: 0% 50% }
+  50% { background-position: 100% 50% }
+  100% { background-position: 0% 50% }
+}
+.animate-gradient {
+  animation: gradientShift 14s ease infinite;
+}
+
+@keyframes textGlow {
+  0% { filter: drop-shadow(0 0 2px rgba(90,176,255,0.3)); }
+  50% { filter: drop-shadow(0 0 10px rgba(179,136,255,0.5)); }
+  100% { filter: drop-shadow(0 0 2px rgba(90,176,255,0.3)); }
+}
+.animate-text {
+  animation: textGlow 5s ease-in-out infinite;
+}
+</style>
+
+
+
+<!-- ========================================================= -->
+<!-- 2) SZŰRŐK – teljes szélesség                              -->
+<!-- ========================================================= -->
+
+<section class="w-full max-w-[1500px] mx-auto mb-10 px-6 md:px-10">
+
+  <div class="bg-card backdrop-blur-xl border border-border rounded-3xl shadow-soft p-10">
+
+    <h2 class="text-3xl font-bold mb-8 text-neonBlue">Szűrők</h2>
+
+    <!-- Search -->
+    <div class="flex flex-col gap-2 mb-8">
+      <label class="text-sm text-slate-400">Keresés</label>
+      <input id="search"
+             class="px-4 py-3 rounded-xl bg-white/5 border border-border focus:border-neonBlue focus:ring-2 focus:ring-neonBlue/40 outline-none"
+             placeholder="Keresés...">
+    </div>
+
+    <!-- Category -->
+    <div class="flex flex-col gap-2 mb-8">
+      <label class="text-sm text-slate-400">Kategória</label>
+      <div id="category-options" class="flex flex-wrap gap-2">
+        <button data-value="Full Desktop" class="option-btn">Full Desktop</button>
+        <button data-value="Lightweight" class="option-btn">Lightweight</button>
+        <button data-value="Tiling WM" class="option-btn">Tiling WM</button>
+      </div>
+    </div>
+
+    <!-- Toolkit -->
+    <div class="flex flex-col gap-2 mb-8">
