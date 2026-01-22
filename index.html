@@ -3,6 +3,28 @@ layout: default
 title: Desktop Environment Comparison
 ---
 
+<!-- HERO -->
+<section class="w-full max-w-[1500px] mx-auto mb-10 px-6 md:px-10">
+  <div class="bg-card backdrop-blur-xl border border-border rounded-2xl shadow-xl p-8 md:p-12 text-center text-slate-200">
+
+    <h1 class="text-4xl md:text-5xl font-bold mb-4 bg-gradient-to-r from-neonBlue to-neonPurple bg-clip-text text-transparent">
+      Pure de Arch
+    </h1>
+
+    <h2 class="text-xl md:text-2xl font-semibold text-neonCyan mb-6">
+      Telepítési útmutató
+    </h2>
+
+    <p class="text-base md:text-lg text-slate-300 leading-relaxed max-w-3xl mx-auto">
+      Fedezd fel a Linux Desktop világát.<br>
+      Keresd meg a számodra ideális Desktop Environment-et vagy Window Manager-t.<br>
+      Szűrj jellemzők alapján és hasonlítsd össze az erőforrás-használatot.<br>
+      A rendszer Arch Linux alapra épül és minimális módosítással igyekszik visszaadni a DE vagy WM eredeti megjelenését.
+    </p>
+
+  </div>
+</section>
+
 <!-- MOBILE HEADER -->
 <div class="md:hidden flex justify-between items-center mb-4 w-full max-w-[1500px]">
   <h1 class="text-2xl font-bold bg-gradient-to-r from-neonBlue to-neonPurple bg-clip-text text-transparent">
@@ -21,85 +43,52 @@ title: Desktop Environment Comparison
                 fixed md:static top-0 left-0 h-full md:h-auto z-50
                 transform -translate-x-full md:translate-x-0 transition-transform duration-300">
 
-    <h2 class="text-slate-300 text-lg tracking-wide font-semibold">Filters</h2>
+    <h2 class="text-slate-300 text-lg tracking-wide font-semibold">Szűrők</h2>
 
     <!-- Search -->
     <div class="flex flex-col gap-2">
-      <label class="text-sm text-slate-400">Search</label>
+      <label class="text-sm text-slate-400">Keresés</label>
       <input id="search"
              class="px-4 py-3 rounded-xl bg-white/5 border border-border focus:border-neonBlue focus:ring-2 focus:ring-neonBlue/40 outline-none"
-             placeholder="Search...">
+             placeholder="Keresés...">
     </div>
 
-    <!-- Category multi-select -->
+    <!-- Category -->
     <div class="flex flex-col gap-2">
-      <label class="text-sm text-slate-400">Category</label>
+      <label class="text-sm text-slate-400">Kategória</label>
       <div id="category-options" class="flex flex-wrap gap-2">
-        <button data-value="Full Desktop"
-                class="option-btn px-3 py-1.5 rounded-lg bg-white/5 border border-border text-slate-300 hover:border-neonBlue hover:text-neonBlue transition">
-          Full Desktop
-        </button>
-        <button data-value="Lightweight"
-                class="option-btn px-3 py-1.5 rounded-lg bg-white/5 border border-border text-slate-300 hover:border-neonBlue hover:text-neonBlue transition">
-          Lightweight
-        </button>
-        <button data-value="Tiling WM"
-                class="option-btn px-3 py-1.5 rounded-lg bg-white/5 border border-border text-slate-300 hover:border-neonBlue hover:text-neonBlue transition">
-          Tiling WM
-        </button>
+        <button data-value="Full Desktop" class="option-btn px-3 py-1.5 rounded-lg bg-white/5 border border-border text-slate-300 hover:border-neonBlue hover:text-neonBlue transition">Full Desktop</button>
+        <button data-value="Lightweight" class="option-btn px-3 py-1.5 rounded-lg bg-white/5 border border-border text-slate-300 hover:border-neonBlue hover:text-neonBlue transition">Lightweight</button>
+        <button data-value="Tiling WM" class="option-btn px-3 py-1.5 rounded-lg bg-white/5 border border-border text-slate-300 hover:border-neonBlue hover:text-neonBlue transition">Tiling WM</button>
       </div>
     </div>
 
-    <!-- Toolkit multi-select -->
+    <!-- Toolkit -->
     <div class="flex flex-col gap-2">
       <label class="text-sm text-slate-400">Toolkit</label>
       <div id="toolkit-options" class="flex flex-wrap gap-2">
-        <button data-value="Qt"
-                class="option-btn px-3 py-1.5 rounded-lg bg-white/5 border border-border text-slate-300 hover:border-neonBlue hover:text-neonBlue transition">
-          Qt
-        </button>
-        <button data-value="GTK"
-                class="option-btn px-3 py-1.5 rounded-lg bg-white/5 border border-border text-slate-300 hover:border-neonBlue hover:text-neonBlue transition">
-          GTK
-        </button>
-        <button data-value="None"
-                class="option-btn px-3 py-1.5 rounded-lg bg-white/5 border border-border text-slate-300 hover:border-neonBlue hover:text-neonBlue transition">
-          None
-        </button>
+        <button data-value="Qt" class="option-btn px-3 py-1.5 rounded-lg bg-white/5 border border-border text-slate-300 hover:border-neonBlue hover:text-neonBlue transition">Qt</button>
+        <button data-value="GTK" class="option-btn px-3 py-1.5 rounded-lg bg-white/5 border border-border text-slate-300 hover:border-neonBlue hover:text-neonBlue transition">GTK</button>
+        <button data-value="None" class="option-btn px-3 py-1.5 rounded-lg bg-white/5 border border-border text-slate-300 hover:border-neonBlue hover:text-neonBlue transition">None</button>
       </div>
     </div>
 
-    <!-- Wayland multi-select -->
+    <!-- Wayland -->
     <div class="flex flex-col gap-2">
-      <label class="text-sm text-slate-400">Wayland support</label>
+      <label class="text-sm text-slate-400">Wayland támogatás</label>
       <div id="wayland-options" class="flex flex-wrap gap-2">
-        <button data-value="Excellent"
-                class="option-btn px-3 py-1.5 rounded-lg bg-white/5 border border-border text-slate-300 hover:border-neonBlue hover:text-neonBlue transition">
-          Excellent
-        </button>
-        <button data-value="Good"
-                class="option-btn px-3 py-1.5 rounded-lg bg-white/5 border border-border text-slate-300 hover:border-neonBlue hover:text-neonBlue transition">
-          Good
-        </button>
-        <button data-value="Medium"
-                class="option-btn px-3 py-1.5 rounded-lg bg-white/5 border border-border text-slate-300 hover:border-neonBlue hover:text-neonBlue transition">
-          Medium
-        </button>
-        <button data-value="Limited"
-                class="option-btn px-3 py-1.5 rounded-lg bg-white/5 border border-border text-slate-300 hover:border-neonBlue hover:text-neonBlue transition">
-          Limited
-        </button>
-        <button data-value="Experimental"
-                class="option-btn px-3 py-1.5 rounded-lg bg-white/5 border border-border text-slate-300 hover:border-neonBlue hover:text-neonBlue transition">
-          Experimental
-        </button>
+        <button data-value="Excellent" class="option-btn px-3 py-1.5 rounded-lg bg-white/5 border border-border text-slate-300 hover:border-neonBlue hover:text-neonBlue transition">Excellent</button>
+        <button data-value="Good" class="option-btn px-3 py-1.5 rounded-lg bg-white/5 border border-border text-slate-300 hover:border-neonBlue hover:text-neonBlue transition">Good</button>
+        <button data-value="Medium" class="option-btn px-3 py-1.5 rounded-lg bg-white/5 border border-border text-slate-300 hover:border-neonBlue hover:text-neonBlue transition">Medium</button>
+        <button data-value="Limited" class="option-btn px-3 py-1.5 rounded-lg bg-white/5 border border-border text-slate-300 hover:border-neonBlue hover:text-neonBlue transition">Limited</button>
+        <button data-value="Experimental" class="option-btn px-3 py-1.5 rounded-lg bg-white/5 border border-border text-slate-300 hover:border-neonBlue hover:text-neonBlue transition">Experimental</button>
       </div>
     </div>
 
     <!-- Reset -->
     <button id="reset"
             class="px-4 py-3 rounded-xl border border-border text-slate-300 hover:border-neonBlue hover:text-neonBlue transition">
-      Reset filters
+      Szűrők törlése
     </button>
   </aside>
 
@@ -109,51 +98,39 @@ title: Desktop Environment Comparison
     <!-- ACTIVE FILTER CHIPS -->
     <div id="active-chips" class="flex flex-wrap gap-2 mb-6"></div>
 
-    <h1 class="hidden md:block text-3xl font-bold mb-6 bg-gradient-to-r from-neonBlue to-neonPurple bg-clip-text text-transparent">
-      Desktop Environment Comparison
-    </h1>
+    <!-- CARD GRID -->
+    <div id="card-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      {% for de in site.data.desktops %}
+      <div class="de-card bg-card backdrop-blur-xl border border-border rounded-2xl p-6 shadow-xl transition hover:shadow-neonBlue"
+           data-name="{{ de.name | escape }}"
+           data-category="{{ de.category | escape }}"
+           data-toolkit="{{ de.toolkit | escape }}"
+           data-wayland="{{ de.protocol | escape }}"
+           data-notes="{{ de.description | escape }}">
 
-    <div class="bg-card backdrop-blur-xl border border-border rounded-2xl shadow-xl p-4 overflow-auto">
+        <h3 class="text-xl font-bold mb-2 text-neonBlue">{{ de.name }}</h3>
 
-      <table class="w-full text-sm">
-        <thead class="text-slate-400 uppercase text-xs tracking-wider">
-          <tr>
-            <th data-col="name" class="sortable py-3 px-4 border-b border-border text-left cursor-pointer">Name</th>
-            <th data-col="category" class="sortable py-3 px-4 border-b border-border text-left cursor-pointer">Category</th>
-            <th data-col="toolkit" class="sortable py-3 px-4 border-b border-border text-left cursor-pointer">Toolkit</th>
-            <th data-col="resource" class="sortable py-3 px-4 border-b border-border text-left cursor-pointer">Resource</th>
-            <th data-col="wayland" class="sortable py-3 px-4 border-b border-border text-left cursor-pointer">Wayland</th>
-            <th data-col="customization" class="sortable py-3 px-4 border-b border-border text-left cursor-pointer">Customization</th>
-            <th data-col="notes" class="sortable py-3 px-4 border-b border-border text-left cursor-pointer">Notes</th>
-          </tr>
-        </thead>
+        <p class="text-slate-300 text-sm mb-4">{{ de.description }}</p>
 
-        <tbody>
-          {% for de in site.data.desktops %}
-          <tr class="row transition hover:bg-white/10"
-              data-name="{{ de.name | escape }}"
-              data-category="{{ de.category | escape }}"
-              data-toolkit="{{ de.toolkit | escape }}"
-              data-wayland="{{ de.wayland | escape }}"
-              data-notes="{{ de.notes | escape }}"
-          >
-            <td class="py-3 px-4 border-b border-border">{{ de.name }}</td>
-            <td class="py-3 px-4 border-b border-border">{{ de.category }}</td>
-            <td class="py-3 px-4 border-b border-border">{{ de.toolkit }}</td>
-            <td class="py-3 px-4 border-b border-border">{{ de.resource }}</td>
-            <td class="py-3 px-4 border-b border-border">{{ de.wayland }}</td>
-            <td class="py-3 px-4 border-b border-border">{{ de.customization }}</td>
-            <td class="py-3 px-4 border-b border-border">{{ de.notes }}</td>
-          </tr>
-          {% endfor %}
-        </tbody>
-      </table>
+        <div class="flex flex-wrap gap-2 mb-4">
+          <span class="px-2 py-1 text-xs rounded bg-white/10 border border-border">{{ de.category }}</span>
+          <span class="px-2 py-1 text-xs rounded bg-white/10 border border-border">{{ de.toolkit }}</span>
+          <span class="px-2 py-1 text-xs rounded bg-white/10 border border-border">{{ de.protocol }}</span>
+        </div>
 
-      <div id="no-results" class="text-red-400 mt-4 hidden">
-        No results found.
+        <div class="text-sm text-slate-400 mb-2">RAM: {{ de.ram }} MB</div>
+        <div class="text-sm text-slate-400 mb-2">Disk: {{ de.disk }} MB</div>
+
+        <div class="text-sm text-slate-400">Értékelés: {{ de.rating }}/5</div>
+
       </div>
-
+      {% endfor %}
     </div>
+
+    <div id="no-results" class="text-red-400 mt-4 hidden">
+      Nincs találat.
+    </div>
+
   </main>
 
 </div>
