@@ -5,8 +5,6 @@ document.addEventListener("DOMContentLoaded", () => {
   const reset = document.getElementById("reset");
   const chips = document.getElementById("active-chips");
   const noResults = document.getElementById("no-results");
-  const sidebar = document.getElementById("sidebar");
-  const mobileBtn = document.getElementById("mobile-menu-btn");
 
   let selectedCategories = [];
   let selectedToolkits = [];
@@ -69,9 +67,9 @@ document.addEventListener("DOMContentLoaded", () => {
       chip.className = `
         inline-flex items-center gap-2 px-4 py-1.5 rounded-full
         border border-${f.color} text-${f.color}
-        bg-${f.color}/10 shadow-${f.color}
+        bg-${f.color}/10 shadow-soft
         backdrop-blur-md text-sm font-medium
-        hover:bg-${f.color}/20 hover:shadow-${f.color}
+        hover:bg-${f.color}/20 hover:shadow-neon
         transition cursor-pointer
       `;
 
@@ -85,13 +83,10 @@ document.addEventListener("DOMContentLoaded", () => {
           search.value = "";
         } else if (f.type === "category") {
           selectedCategories = selectedCategories.filter(x => x !== f.value);
-          syncButtons("category-options", selectedCategories);
         } else if (f.type === "toolkit") {
           selectedToolkits = selectedToolkits.filter(x => x !== f.value);
-          syncButtons("toolkit-options", selectedToolkits);
         } else if (f.type === "wayland") {
           selectedWayland = selectedWayland.filter(x => x !== f.value);
-          syncButtons("wayland-options", selectedWayland);
         }
         apply();
       });
@@ -105,6 +100,14 @@ document.addEventListener("DOMContentLoaded", () => {
     const buttons = container.querySelectorAll(".option-btn");
 
     buttons.forEach(btn => {
+      btn.classList.add(
+        "px-3", "py-1.5", "rounded-lg",
+        "bg-white/5", "border", "border-border",
+        "text-slate-300",
+        "hover:border-neonBlue", "hover:text-neonBlue",
+        "transition"
+      );
+
       btn.addEventListener("click", () => {
         const value = btn.dataset.value;
 
@@ -114,61 +117,33 @@ document.addEventListener("DOMContentLoaded", () => {
           targetArray.push(value);
         }
 
-        syncButtons(id, targetArray);
+        buttons.forEach(b => {
+          if (targetArray.includes(b.dataset.value)) {
+            b.classList.add("border-neonBlue", "text-neonBlue");
+          } else {
+            b.classList.remove("border-neonBlue", "text-neonBlue");
+          }
+        });
+
         apply();
       });
     });
   }
 
-  function syncButtons(id, targetArray) {
-    const container = document.getElementById(id);
-    const buttons = container.querySelectorAll(".option-btn");
-
-    buttons.forEach(btn => {
-      const value = btn.dataset.value;
-      if (targetArray.includes(value)) {
-        btn.classList.add("bg-neonBlue/20", "border-neonBlue", "text-neonBlue", "shadow-neonBlue");
-      } else {
-        btn.classList.remove("bg-neonBlue/20", "border-neonBlue", "text-neonBlue", "shadow-neonBlue");
-      }
-    });
-  }
-
-  reset.addEventListener("click", () => {
-    search.value = "";
-    selectedCategories = [];
-    selectedToolkits = [];
-    selectedWayland = [];
-
-    ["category-options", "toolkit-options", "wayland-options"].forEach(id =>
-      syncButtons(id, [])
-    );
-
-    apply();
-  });
-
   setupMultiSelect("category-options", selectedCategories);
   setupMultiSelect("toolkit-options", selectedToolkits);
   setupMultiSelect("wayland-options", selectedWayland);
 
-  if (mobileBtn && sidebar) {
-    mobileBtn.addEventListener("click", () => {
-      sidebar.classList.toggle("-translate-x-full");
-    });
-  }
-
-  // Bottom info panel toggle
+  // Telepítési útmutató panel
   const toggleBtn = document.getElementById("toggle-info");
   const infoPanel = document.getElementById("info-panel");
 
   if (toggleBtn && infoPanel) {
     toggleBtn.addEventListener("click", () => {
       infoPanel.classList.toggle("hidden");
-      if (infoPanel.classList.contains("hidden")) {
-        toggleBtn.textContent = "Telepítési útmutató megnyitása";
-      } else {
-        toggleBtn.textContent = "Telepítési útmutató bezárása";
-      }
+      toggleBtn.textContent = infoPanel.classList.contains("hidden")
+        ? "Telepítési útmutató megnyitása"
+        : "Telepítési útmutató bezárása";
     });
   }
 
