@@ -1,12 +1,13 @@
-title: Desktop Environment Comparison
-description: A Jekyll-based desktop environment comparison site
-baseurl: ""
-url: "https://example.com"
-
-theme: null
+title: "Pure de Arch"
+description: "Fedezd fel a Linux Desktop világát"
+theme: minima
+markdown: kramdown
 
 collections:
-  # nem feltétlen kell, most csak data + indexet használunk
+  de:
+    output: false
+  wm:
+    output: false
 
 defaults:
   - scope:
