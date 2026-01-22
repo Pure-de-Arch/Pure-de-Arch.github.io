@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="hu">
 <head>
   <meta charset="utf-8" />
   <title>{{ page.title }} | {{ site.title }}</title>
@@ -19,44 +19,38 @@
             card: "rgba(255,255,255,0.05)",
             sidebar: "rgba(255,255,255,0.04)",
             border: "rgba(255,255,255,0.10)",
-
-            neonBlue:   "#5ab0ff",
+            neonBlue: "#5ab0ff",
             neonPurple: "#b388ff",
-            neonCyan:   "#3de4d3",
-            neonPink:   "#ff7ab8",
-            neonYellow: "#ffe66d",
+            neonCyan: "#3de4d3",
+            neonPink: "#ff7ab8",
+            neonYellow: "#ffe66d"
           },
-
           boxShadow: {
-            neonBlue:   "0 0 12px rgba(90,176,255,0.45)",
+            neonBlue: "0 0 12px rgba(90,176,255,0.45)",
             neonPurple: "0 0 12px rgba(179,136,255,0.45)",
-            neonCyan:   "0 0 12px rgba(61,228,211,0.45)",
-            neonPink:   "0 0 12px rgba(255,122,184,0.45)",
+            neonCyan: "0 0 12px rgba(61,228,211,0.45)",
+            neonPink: "0 0 12px rgba(255,122,184,0.45)"
           },
-
           backdropBlur: {
             xs: "2px",
             sm: "4px",
             md: "8px",
-            lg: "12px",
+            lg: "12px"
           },
-
           borderRadius: {
             xl: "1rem",
             "2xl": "1.25rem",
-            "3xl": "1.75rem",
+            "3xl": "1.75rem"
           },
-
           fontFamily: {
-            sans: ["Inter", "system-ui", "sans-serif"],
-          },
+            sans: ["Inter", "system-ui", "sans-serif"]
+          }
         }
       }
     }
   </script>
 </head>
-
-<body class="bg-bg text-slate-200 min-h-screen flex justify-center p-8 font-sans">
+<body class="bg-bg text-slate-200 min-h-screen flex justify-center p-6 font-sans">
   {{ content }}
   <script src="{{ '/assets/js/app.js' | relative_url }}"></script>
 </body>
