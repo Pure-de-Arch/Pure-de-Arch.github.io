@@ -102,7 +102,7 @@ document.addEventListener("DOMContentLoaded", () => {
     buttons.forEach(btn => {
       btn.classList.add(
         "px-3", "py-1.5", "rounded-lg",
-        "bg-white/5", "border", "border-border",
+        "bg-white/10", "border", "border-border",
         "text-slate-300",
         "hover:border-neonBlue", "hover:text-neonBlue",
         "transition"
