@@ -1,6 +1,8 @@
 document.addEventListener("DOMContentLoaded", () => {
   const cards = Array.from(document.querySelectorAll(".card"));
-  const chips = Array.from(document.querySelectorAll(".chip"));
+  const typeChips = Array.from(document.querySelectorAll(".chip-type"));
+  const compChips = Array.from(document.querySelectorAll(".chip-comp"));
+  const wayChips = Array.from(document.querySelectorAll(".chip-way"));
   const compareButtons = Array.from(document.querySelectorAll(".compare-toggle"));
   const ctx = document.getElementById("compareChart");
   let selectedIds = new Set();
@@ -28,32 +30,32 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  chips.forEach(chip => {
+  typeChips.forEach(chip => {
     chip.addEventListener("click", () => {
       const filterType = chip.dataset.filterType;
+      typeChips.forEach(c => c.classList.remove("bg-sky-500/80", "text-slate-900"));
+      chip.classList.add("bg-sky-500/80", "text-slate-900");
+      state.type = filterType;
+      applyFilters();
+    });
+  });
+
+  compChips.forEach(chip => {
+    chip.addEventListener("click", () => {
       const filterComp = chip.dataset.filterCompositing;
+      compChips.forEach(c => c.classList.remove("bg-sky-500/80", "text-slate-900"));
+      chip.classList.add("bg-sky-500/80", "text-slate-900");
+      state.compositing = filterComp === "true";
+      applyFilters();
+    });
+  });
+
+  wayChips.forEach(chip => {
+    chip.addEventListener("click", () => {
       const filterWay = chip.dataset.filterWayland;
-
-      if (filterType) {
-        document.querySelectorAll("[data-filter-type]").forEach(c => c.classList.remove("active"));
-        chip.classList.add("active");
-        state.type = filterType;
-      }
-
-      if (filterComp !== undefined) {
-        const group = chip.parentElement.querySelectorAll("[data-filter-compositing]");
-        group.forEach(c => c.classList.remove("active"));
-        chip.classList.add("active");
-        state.compositing = filterComp === "true";
-      }
-
-      if (filterWay !== undefined) {
-        const group = chip.parentElement.querySelectorAll("[data-filter-wayland]");
-        group.forEach(c => c.classList.remove("active"));
-        chip.classList.add("active");
-        state.wayland = filterWay === "true";
-      }
-
+      wayChips.forEach(c => c.classList.remove("bg-sky-500/80", "text-slate-900"));
+      chip.classList.add("bg-sky-500/80", "text-slate-900");
+      state.wayland = filterWay === "true";
       applyFilters();
     });
   });
@@ -121,12 +123,12 @@ document.addEventListener("DOMContentLoaded", () => {
       const id = btn.dataset.id;
       if (selectedIds.has(id)) {
         selectedIds.delete(id);
-        btn.classList.remove("active");
         btn.textContent = "Hozzáadás az összehasonlításhoz";
+        btn.classList.remove("bg-sky-500/80", "text-slate-900", "border-transparent");
       } else {
         selectedIds.add(id);
-        btn.classList.add("active");
         btn.textContent = "Eltávolítás az összehasonlításból";
+        btn.classList.add("bg-sky-500/80", "text-slate-900", "border-transparent");
       }
       updateChart();
     });
