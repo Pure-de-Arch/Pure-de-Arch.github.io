@@ -1,4 +1,15 @@
-title: "Oldal címe"
-description: "Rövid leírás"
-baseurl: "" # ha user.github.io akkor üres; ha /repo akkor /repo
-url: "https://username.github.io"
+title: Desktop Environment Comparison
+description: A Jekyll-based desktop environment comparison site
+baseurl: ""
+url: "https://example.com"
+
+theme: null
+
+collections:
+  # nem feltétlen kell, most csak data + indexet használunk
+
+defaults:
+  - scope:
+      path: ""
+    values:
+      layout: default
