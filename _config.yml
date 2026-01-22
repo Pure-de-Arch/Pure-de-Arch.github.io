@@ -1,0 +1,4 @@
+title: "Oldal címe"
+description: "Rövid leírás"
+baseurl: "" # ha user.github.io akkor üres; ha /repo akkor /repo
+url: "https://username.github.io"
