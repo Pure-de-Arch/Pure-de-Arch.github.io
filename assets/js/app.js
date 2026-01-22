@@ -30,7 +30,6 @@ document.addEventListener("DOMContentLoaded", () => {
       let ok = true;
 
       if (s && !`${name} ${notes}`.includes(s)) ok = false;
-
       if (selectedCategories.length > 0 && !selectedCategories.includes(cat)) ok = false;
       if (selectedToolkits.length > 0 && !selectedToolkits.includes(tk)) ok = false;
       if (selectedWayland.length > 0 && !selectedWayland.includes(wl)) ok = false;
@@ -155,6 +154,21 @@ document.addEventListener("DOMContentLoaded", () => {
   if (mobileBtn && sidebar) {
     mobileBtn.addEventListener("click", () => {
       sidebar.classList.toggle("-translate-x-full");
+    });
+  }
+
+  // Bottom info panel toggle
+  const toggleBtn = document.getElementById("toggle-info");
+  const infoPanel = document.getElementById("info-panel");
+
+  if (toggleBtn && infoPanel) {
+    toggleBtn.addEventListener("click", () => {
+      infoPanel.classList.toggle("hidden");
+      if (infoPanel.classList.contains("hidden")) {
+        toggleBtn.textContent = "Telepítési útmutató megnyitása";
+      } else {
+        toggleBtn.textContent = "Telepítési útmutató bezárása";
+      }
     });
   }
 
