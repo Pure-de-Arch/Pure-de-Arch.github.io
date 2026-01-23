@@ -13,6 +13,8 @@
     category: "",
     layout: "",
     os: "",
+    compositor: "",
+    performance: ""
   };
 
   function normalize(str) {
@@ -25,6 +27,8 @@
     const category = normalize(state.category);
     const layout = normalize(state.layout);
     const os = normalize(state.os);
+    const compositor = normalize(state.compositor);
+    const performance = normalize(state.performance);
 
     cards.forEach((card) => {
       const name = card.dataset.name || "";
@@ -32,17 +36,26 @@
       const lay = card.dataset.layout || "";
       const osList = card.dataset.os || "";
       const tags = card.dataset.tags || "";
+      const compositorField = card.dataset.compositor || "";
+      const performanceField = card.dataset.performance || "";
 
       let visible = true;
 
       if (search) {
-        const haystack = [name, cat, lay, osList, tags].join(" ");
+        const haystack = [name, cat, lay, osList, tags, compositorField, performanceField].join(" ");
         if (!haystack.includes(search)) visible = false;
       }
 
       if (category && !cat.includes(category)) visible = false;
       if (layout && !lay.includes(layout)) visible = false;
       if (os && !osList.includes(os)) visible = false;
+
+      if (compositor && !compositorField.includes(compositor)) visible = false;
+
+      if (performance) {
+        // "Lightweight only" → performance mező tartalmazza a "high" szót
+        if (!performanceField.includes(performance)) visible = false;
+      }
 
       card.style.display = visible ? "" : "none";
       if (visible) visibleCount++;
@@ -76,28 +89,34 @@
     });
   }
 
-  // OS chips
-  if (osChipContainer) {
-    osChipContainer.addEventListener("click", (e) => {
+  // Generic chip filter setup
+  function setupChipFilter(containerSelector, stateKey) {
+    const container = document.querySelector(containerSelector);
+    if (!container) return;
+
+    container.addEventListener("click", (e) => {
       const btn = e.target.closest(".filter-chip");
       if (!btn) return;
 
-      const value = btn.dataset.value || "";
-
-      // toggle active
-      Array.from(osChipContainer.querySelectorAll(".filter-chip")).forEach((chip) =>
+      Array.from(container.querySelectorAll(".filter-chip")).forEach((chip) =>
         chip.classList.remove("active")
       );
-      btn.classList.add("active");
 
-      state.os = value;
+      btn.classList.add("active");
+      state[stateKey] = btn.dataset.value || "";
       applyFilters();
     });
 
-    // set "All" active by default
-    const firstChip = osChipContainer.querySelector('.filter-chip[data-value=""]');
+    const firstChip = container.querySelector('.filter-chip[data-value=""]');
     if (firstChip) firstChip.classList.add("active");
   }
+
+  // OS chips
+  setupChipFilter('[data-filter="os"]', "os");
+  // Compositor chips (Wayland only)
+  setupChipFilter('[data-filter="compositor"]', "compositor");
+  // Performance chips (Lightweight only)
+  setupChipFilter('[data-filter="performance"]', "performance");
 
   // Init counts
   if (totalCountEl) {
