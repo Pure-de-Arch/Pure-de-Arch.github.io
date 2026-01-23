@@ -33,6 +33,7 @@ layout: none
 
       <section class="filter-panel">
         <div class="filter-row">
+          <!-- Search (buborékos input) -->
           <div class="filter-group">
             <label class="filter-label" for="search">Search</label>
             <input
@@ -44,26 +45,29 @@ layout: none
             />
           </div>
 
+          <!-- Category – buborékos chips -->
           <div class="filter-group">
-            <label class="filter-label" for="category">Category</label>
-            <select id="category" class="filter-select" data-filter="category">
-              <option value="">All</option>
-              <option value="Full DE">Full DE</option>
-              <option value="Tiling WM">Tiling WM</option>
-              <option value="Stacking WM">Stacking WM</option>
-            </select>
+            <label class="filter-label">Category</label>
+            <div class="filter-chips" data-filter="category">
+              <button class="filter-chip" data-value="">All</button>
+              <button class="filter-chip" data-value="full de">Full DE</button>
+              <button class="filter-chip" data-value="tiling wm">Tiling WM</button>
+              <button class="filter-chip" data-value="stacking wm">Stacking WM</button>
+            </div>
           </div>
 
+          <!-- Layout – buborékos chips -->
           <div class="filter-group">
-            <label class="filter-label" for="layout">Layout</label>
-            <select id="layout" class="filter-select" data-filter="layout">
-              <option value="">All</option>
-              <option value="Modern">Modern</option>
-              <option value="Traditional">Traditional</option>
-              <option value="Tiling">Tiling</option>
-            </select>
+            <label class="filter-label">Layout</label>
+            <div class="filter-chips" data-filter="layout">
+              <button class="filter-chip" data-value="">All</button>
+              <button class="filter-chip" data-value="modern">Modern</button>
+              <button class="filter-chip" data-value="traditional">Traditional</button>
+              <button class="filter-chip" data-value="tiling">Tiling</button>
+            </div>
           </div>
 
+          <!-- Platform -->
           <div class="filter-group">
             <label class="filter-label">Platform</label>
             <div class="filter-chips" data-filter="os">
@@ -73,6 +77,7 @@ layout: none
             </div>
           </div>
 
+          <!-- Compositor -->
           <div class="filter-group">
             <label class="filter-label">Compositor</label>
             <div class="filter-chips" data-filter="compositor">
@@ -81,11 +86,45 @@ layout: none
             </div>
           </div>
 
+          <!-- Performance -->
           <div class="filter-group">
             <label class="filter-label">Performance</label>
             <div class="filter-chips" data-filter="performance">
               <button class="filter-chip" data-value="">All</button>
               <button class="filter-chip" data-value="high">Lightweight only</button>
+            </div>
+          </div>
+
+          <!-- Toolkit -->
+          <div class="filter-group">
+            <label class="filter-label">Toolkit</label>
+            <div class="filter-chips" data-filter="toolkit">
+              <button class="filter-chip" data-value="">All</button>
+              <button class="filter-chip" data-value="gtk">GTK</button>
+              <button class="filter-chip" data-value="qt">Qt</button>
+              <button class="filter-chip" data-value="none">None</button>
+            </div>
+          </div>
+
+          <!-- Config style -->
+          <div class="filter-group">
+            <label class="filter-label">Config style</label>
+            <div class="filter-chips" data-filter="config_style">
+              <button class="filter-chip" data-value="">All</button>
+              <button class="filter-chip" data-value="gui">GUI</button>
+              <button class="filter-chip" data-value="text">Text</button>
+              <button class="filter-chip" data-value="hybrid">Hybrid</button>
+            </div>
+          </div>
+
+          <!-- Target usage -->
+          <div class="filter-group">
+            <label class="filter-label">Target usage</label>
+            <div class="filter-chips" data-filter="target_usage">
+              <button class="filter-chip" data-value="">All</button>
+              <button class="filter-chip" data-value="general">General</button>
+              <button class="filter-chip" data-value="lightweight">Lightweight</button>
+              <button class="filter-chip" data-value="power user">Power user</button>
             </div>
           </div>
         </div>
@@ -115,6 +154,9 @@ layout: none
             data-tags="{{ de.tags | join: ',' | downcase }}"
             data-compositor="{{ de.compositor | downcase }}"
             data-performance="{{ de.performance | downcase }}"
+            data-toolkit="{{ de.toolkit | downcase }}"
+            data-config_style="{{ de.config_style | downcase }}"
+            data-target_usage="{{ de.target_usage | downcase }}"
           >
             <div class="de-card-header">
               <div>
@@ -127,6 +169,7 @@ layout: none
                   <span class="de-meta-pill">Perf: {{ de.performance }}</span>
                   <span class="de-meta-pill">Complexity: {{ de.complexity }}</span>
                   <span class="de-meta-pill">{{ de.compositor }}</span>
+                  <span class="de-meta-pill">{{ de.toolkit }}</span>
                 </div>
               </div>
             </div>
