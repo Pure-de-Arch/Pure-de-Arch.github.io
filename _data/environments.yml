@@ -1,63 +1,36 @@
-- name: GNOME
-  type: DE
-  toolkit: GTK
-  cpu: 20
-  ram: 2000
-  hdd: 2500
-  tags: [modern, wayland]
+headers:
+  - name: "Tulajdonság"
+    key: "feature"
+  - name: "GNOME"
+    key: "gnome"
+  - name: "KDE Plasma"
+    key: "kde"
+  - name: "XFCE"
+    key: "xfce"
+  - name: "Tiling WM (i3/Sway)"
+    key: "tiling"
 
-- name: KDE Plasma
-  type: DE
-  toolkit: Qt
-  cpu: 18
-  ram: 1800
-  hdd: 3000
-  tags: [customizable]
+rows:
+  - feature: "Erőforrásigény (RAM)"
+    gnome: "Magas (~1GB+)"
+    kde: "Közepes (~600MB)"
+    xfce: "Alacsony (~400MB)"
+    tiling: "Minimális (<200MB)"
+  
+  - feature: "Testreszabhatóság"
+    gnome: "Korlátozott (Extensions)"
+    kde: "Extrém magas"
+    xfce: "Magas"
+    tiling: "Config fájlokkal teljes"
 
-- name: Xfce
-  type: DE
-  toolkit: GTK
-  cpu: 8
-  ram: 800
-  hdd: 1200
-  tags: [lightweight]
+  - feature: "Kezdőbarát?"
+    gnome: "Igen, egyszerű"
+    kde: "Igen, de sűrű menük"
+    xfce: "Igen, klasszikus"
+    tiling: "Nem (tanulást igényel)"
 
-- name: LXQt
-  type: DE
-  toolkit: Qt
-  cpu: 6
-  ram: 600
-  hdd: 900
-  tags: [lightweight]
-
-- name: i3
-  type: WM
-  toolkit: none
-  cpu: 3
-  ram: 300
-  hdd: 150
-  tags: [tiling, keyboard, lightweight]
-
-- name: bspwm
-  type: WM
-  toolkit: none
-  cpu: 3
-  ram: 280
-  hdd: 140
-  tags: [tiling, lightweight]
-
-- name: Openbox
-  type: WM
-  toolkit: GTK
-  cpu: 4
-  ram: 350
-  hdd: 200
-  tags: [stacking, lightweight]
-
-- name: AwesomeWM
-  type: WM
-  toolkit: none
-  cpu: 4
-  ram: 320
-  hdd: 180
-  tags: [tiling, lua, keyboard]
+  - feature: "Vizuális Effektek"
+    gnome: "Modern, letisztult"
+    kde: "Blur, animációk, üveg"
+    xfce: "Egyszerű, statikus"
+    tiling: "Nincs / Kompozitor kell"
