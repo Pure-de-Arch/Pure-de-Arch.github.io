@@ -3,19 +3,23 @@ layout: default
 title: Desktop Environment Comparison
 ---
 
-<div class="container">
+<div class="w-full max-w-[1400px] bg-card backdrop-blur-xl border border-border rounded-2xl shadow-2xl flex overflow-hidden">
 
-  <aside class="sidebar">
-    <h2>Filters</h2>
+  <!-- Sidebar -->
+  <aside class="w-80 bg-sidebar border-r border-border p-8 flex flex-col gap-8">
+    <h2 class="text-slate-400 text-lg tracking-wide font-semibold">Filters</h2>
 
-    <div class="filter">
-      <label>Search</label>
-      <input id="search" type="text" placeholder="Search...">
+    <div class="flex flex-col gap-2">
+      <label class="text-sm text-slate-400">Search</label>
+      <input id="search"
+             class="px-4 py-3 rounded-xl bg-white/5 border border-border focus:border-accent focus:ring-2 focus:ring-accent/40 outline-none"
+             placeholder="Search...">
     </div>
 
-    <div class="filter">
-      <label>Category</label>
-      <select id="filter-category">
+    <div class="flex flex-col gap-2">
+      <label class="text-sm text-slate-400">Category</label>
+      <select id="filter-category"
+              class="px-4 py-3 rounded-xl bg-white/5 border border-border focus:border-accent focus:ring-2 focus:ring-accent/40 outline-none">
         <option value="">All</option>
         <option>Full Desktop</option>
         <option>Lightweight</option>
@@ -23,9 +27,10 @@ title: Desktop Environment Comparison
       </select>
     </div>
 
-    <div class="filter">
-      <label>Toolkit</label>
-      <select id="filter-toolkit">
+    <div class="flex flex-col gap-2">
+      <label class="text-sm text-slate-400">Toolkit</label>
+      <select id="filter-toolkit"
+              class="px-4 py-3 rounded-xl bg-white/5 border border-border focus:border-accent focus:ring-2 focus:ring-accent/40 outline-none">
         <option value="">All</option>
         <option>Qt</option>
         <option>GTK</option>
@@ -33,9 +38,10 @@ title: Desktop Environment Comparison
       </select>
     </div>
 
-    <div class="filter">
-      <label>Wayland support</label>
-      <select id="filter-wayland">
+    <div class="flex flex-col gap-2">
+      <label class="text-sm text-slate-400">Wayland support</label>
+      <select id="filter-wayland"
+              class="px-4 py-3 rounded-xl bg-white/5 border border-border focus:border-accent focus:ring-2 focus:ring-accent/40 outline-none">
         <option value="">All</option>
         <option>Excellent</option>
         <option>Good</option>
@@ -45,47 +51,58 @@ title: Desktop Environment Comparison
       </select>
     </div>
 
-    <button id="reset">Reset filters</button>
+    <button id="reset"
+            class="px-4 py-3 rounded-xl border border-border text-slate-400 hover:border-accent hover:text-accent transition">
+      Reset filters
+    </button>
   </aside>
 
-  <main class="main">
-    <h1>Desktop Environment Comparison</h1>
+  <!-- Main -->
+  <main class="flex-1 p-10">
+    <h1 class="text-3xl font-bold mb-6 bg-gradient-to-r from-blue-300 to-blue-500 bg-clip-text text-transparent">
+      Desktop Environment Comparison
+    </h1>
 
-    <div class="table-wrapper">
-      <table id="de-table">
-        <thead>
+    <div class="bg-card backdrop-blur-xl border border-border rounded-2xl shadow-xl p-4 overflow-auto">
+
+      <table class="w-full text-sm">
+        <thead class="text-slate-400 uppercase text-xs tracking-wider">
           <tr>
-            <th>Name</th>
-            <th>Category</th>
-            <th>Toolkit</th>
-            <th>Resource</th>
-            <th>Wayland</th>
-            <th>Customization</th>
-            <th>Notes</th>
+            <th class="py-3 px-4 border-b border-border text-left">Name</th>
+            <th class="py-3 px-4 border-b border-border text-left">Category</th>
+            <th class="py-3 px-4 border-b border-border text-left">Toolkit</th>
+            <th class="py-3 px-4 border-b border-border text-left">Resource</th>
+            <th class="py-3 px-4 border-b border-border text-left">Wayland</th>
+            <th class="py-3 px-4 border-b border-border text-left">Customization</th>
+            <th class="py-3 px-4 border-b border-border text-left">Notes</th>
           </tr>
         </thead>
+
         <tbody>
           {% for de in site.data.desktops %}
-          <tr class="row"
-            data-name="{{ de.name | escape }}"
-            data-category="{{ de.category | escape }}"
-            data-toolkit="{{ de.toolkit | escape }}"
-            data-wayland="{{ de.wayland | escape }}"
-            data-notes="{{ de.notes | escape }}"
+          <tr class="row transition hover:bg-white/10"
+              data-name="{{ de.name | escape }}"
+              data-category="{{ de.category | escape }}"
+              data-toolkit="{{ de.toolkit | escape }}"
+              data-wayland="{{ de.wayland | escape }}"
+              data-notes="{{ de.notes | escape }}"
           >
-            <td>{{ de.name }}</td>
-            <td>{{ de.category }}</td>
-            <td>{{ de.toolkit }}</td>
-            <td>{{ de.resource }}</td>
-            <td>{{ de.wayland }}</td>
-            <td>{{ de.customization }}</td>
-            <td>{{ de.notes }}</td>
+            <td class="py-3 px-4 border-b border-border">{{ de.name }}</td>
+            <td class="py-3 px-4 border-b border-border">{{ de.category }}</td>
+            <td class="py-3 px-4 border-b border-border">{{ de.toolkit }}</td>
+            <td class="py-3 px-4 border-b border-border">{{ de.resource }}</td>
+            <td class="py-3 px-4 border-b border-border">{{ de.wayland }}</td>
+            <td class="py-3 px-4 border-b border-border">{{ de.customization }}</td>
+            <td class="py-3 px-4 border-b border-border">{{ de.notes }}</td>
           </tr>
           {% endfor %}
         </tbody>
       </table>
 
-      <div id="no-results" class="no-results">No results found.</div>
+      <div id="no-results" class="text-red-400 mt-4 hidden">
+        No results found.
+      </div>
+
     </div>
   </main>
 
