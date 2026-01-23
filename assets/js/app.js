@@ -1,8 +1,5 @@
 (function () {
   const searchInput = document.querySelector('[data-filter="search"]');
-  const categorySelect = document.querySelector('[data-filter="category"]');
-  const layoutSelect = document.querySelector('[data-filter="layout"]');
-  const osChipContainer = document.querySelector('[data-filter="os"]');
   const cards = Array.from(document.querySelectorAll(".de-card"));
   const totalCountEl = document.getElementById("total-count");
   const visibleCountEl = document.getElementById("visible-count");
@@ -14,7 +11,10 @@
     layout: "",
     os: "",
     compositor: "",
-    performance: ""
+    performance: "",
+    toolkit: "",
+    config_style: "",
+    target_usage: ""
   };
 
   function normalize(str) {
@@ -29,6 +29,9 @@
     const os = normalize(state.os);
     const compositor = normalize(state.compositor);
     const performance = normalize(state.performance);
+    const toolkit = normalize(state.toolkit);
+    const configStyle = normalize(state.config_style);
+    const targetUsage = normalize(state.target_usage);
 
     cards.forEach((card) => {
       const name = card.dataset.name || "";
@@ -38,24 +41,40 @@
       const tags = card.dataset.tags || "";
       const compositorField = card.dataset.compositor || "";
       const performanceField = card.dataset.performance || "";
+      const toolkitField = card.dataset.toolkit || "";
+      const configField = card.dataset.config_style || "";
+      const targetField = card.dataset.target_usage || "";
 
       let visible = true;
 
       if (search) {
-        const haystack = [name, cat, lay, osList, tags, compositorField, performanceField].join(" ");
+        const haystack = [
+          name,
+          cat,
+          lay,
+          osList,
+          tags,
+          compositorField,
+          performanceField,
+          toolkitField,
+          configField,
+          targetField
+        ].join(" ");
         if (!haystack.includes(search)) visible = false;
       }
 
       if (category && !cat.includes(category)) visible = false;
       if (layout && !lay.includes(layout)) visible = false;
       if (os && !osList.includes(os)) visible = false;
-
       if (compositor && !compositorField.includes(compositor)) visible = false;
 
       if (performance) {
-        // "Lightweight only" → performance mező tartalmazza a "high" szót
         if (!performanceField.includes(performance)) visible = false;
       }
+
+      if (toolkit && !toolkitField.includes(toolkit)) visible = false;
+      if (configStyle && !configField.includes(configStyle)) visible = false;
+      if (targetUsage && !targetField.includes(targetUsage)) visible = false;
 
       card.style.display = visible ? "" : "none";
       if (visible) visibleCount++;
@@ -69,22 +88,6 @@
   if (searchInput) {
     searchInput.addEventListener("input", (e) => {
       state.search = e.target.value;
-      applyFilters();
-    });
-  }
-
-  // Category
-  if (categorySelect) {
-    categorySelect.addEventListener("change", (e) => {
-      state.category = e.target.value;
-      applyFilters();
-    });
-  }
-
-  // Layout
-  if (layoutSelect) {
-    layoutSelect.addEventListener("change", (e) => {
-      state.layout = e.target.value;
       applyFilters();
     });
   }
@@ -111,18 +114,15 @@
     if (firstChip) firstChip.classList.add("active");
   }
 
-  // OS chips
+  setupChipFilter('[data-filter="category"]', "category");
+  setupChipFilter('[data-filter="layout"]', "layout");
   setupChipFilter('[data-filter="os"]', "os");
-  // Compositor chips (Wayland only)
   setupChipFilter('[data-filter="compositor"]', "compositor");
-  // Performance chips (Lightweight only)
   setupChipFilter('[data-filter="performance"]', "performance");
+  setupChipFilter('[data-filter="toolkit"]', "toolkit");
+  setupChipFilter('[data-filter="config_style"]', "config_style");
+  setupChipFilter('[data-filter="target_usage"]', "target_usage");
 
-  // Init counts
-  if (totalCountEl) {
-    totalCountEl.textContent = cards.length;
-  }
-  if (visibleCountEl) {
-    visibleCountEl.textContent = cards.length;
-  }
+  if (totalCountEl) totalCountEl.textContent = cards.length;
+  if (visibleCountEl) visibleCountEl.textContent = cards.length;
 })();
