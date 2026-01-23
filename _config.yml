@@ -1,18 +1,7 @@
-title: "Pure de Arch"
-description: "Fedezd fel a Linux Desktop világát"
-markdown: kramdown
+title: DE vs WM Compare
+description: Desktop Environment és Window Manager összehasonlító
 theme: minima
 
 collections:
-  de:
+  posts:
     output: true
-    permalink: /de/:name/
-  wm:
-    output: true
-    permalink: /wm/:name/
-
-defaults:
-  - scope:
-      path: ""
-    values:
-      layout: default
