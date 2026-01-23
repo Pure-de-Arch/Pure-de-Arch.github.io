@@ -8,11 +8,7 @@ title: Asztali Környezetek
         Találd meg a <span class="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-fuchsia-500">tökéletes</span> környezetet.
     </h2>
     
-    <p class="text-lg text-gray-400 max-w-2xl mx-auto leading-relaxed mb-6">
-        Jelöld ki a számodra fontos szempontokat! A szűrés valós időben frissül.
-    </p>
-
-    <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-cyan-950/30 border border-cyan-800/50 text-cyan-400 text-sm font-medium backdrop-blur-sm">
+    <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-cyan-950/30 border border-cyan-800/50 text-cyan-400 text-sm font-medium backdrop-blur-sm mb-6">
         <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
         </svg>
@@ -20,50 +16,80 @@ title: Asztali Környezetek
     </div>
 </div>
 
-<div class="max-w-6xl mx-auto mb-10 flex flex-wrap justify-center gap-3">
-    <button onclick="clearFilters()" id="clear-btn" class="px-5 py-2.5 rounded-full text-sm font-bold border transition-all duration-300 bg-darkbg-800 text-gray-400 border-darkbg-700 hover:bg-darkbg-700 hover:text-white hidden items-center gap-2">
-        <span class="text-xs">✕</span> Törlés
-    </button>
+<div class="max-w-7xl mx-auto mb-6">
+    <p class="text-gray-400 text-sm uppercase tracking-widest font-bold mb-3 text-center">Mit keresel?</p>
+    <div class="flex flex-wrap justify-center gap-2">
+        {% for filter in site.data.environments.feature_filters %}
+        <button 
+            onclick="toggleColFilter('{{ filter.id }}')" 
+            id="col-btn-{{ filter.id }}"
+            class="col-filter-btn px-4 py-1.5 rounded-lg text-xs font-bold border border-darkbg-700 bg-darkbg-800 text-gray-400 hover:text-white hover:border-gray-500 transition-all uppercase tracking-wide"
+            data-filter-id="{{ filter.id }}">
+            {{ filter.name }}
+        </button>
+        {% endfor %}
+        
+        <button onclick="clearAllFilters()" id="reset-btn" class="hidden px-4 py-1.5 rounded-lg text-xs font-bold border border-red-900/50 bg-red-900/20 text-red-400 hover:bg-red-900/40 transition-all uppercase tracking-wide">
+            Reset ✕
+        </button>
+    </div>
+</div>
 
+<div class="max-w-6xl mx-auto mb-10 flex flex-wrap justify-center gap-3 border-t border-darkbg-700/50 pt-6">
     {% for cat in site.data.environments.categories %}
     <button 
-        onclick="toggleFilter('{{ cat.id }}')" 
-        id="btn-{{ cat.id }}"
-        class="filter-btn px-5 py-2.5 rounded-full text-sm font-bold border transition-all duration-300 bg-darkbg-800 text-gray-300 border-darkbg-700 hover:border-gray-500 hover:text-white shadow-sm select-none relative group overflow-hidden"
+        onclick="toggleRowFilter('{{ cat.id }}')" 
+        id="row-btn-{{ cat.id }}"
+        class="row-filter-btn px-5 py-2 rounded-full text-sm font-semibold border transition-all duration-300 bg-transparent text-gray-500 border-transparent hover:text-gray-300"
         data-category="{{ cat.id }}">
-        <span class="absolute inset-0 w-full h-full bg-white/5 opacity-0 group-hover:opacity-100 transition-opacity"></span>
-        <span class="relative z-10">{{ cat.name }}</span>
+        {{ cat.name }}
     </button>
     {% endfor %}
 </div>
 
-<div class="bg-darkbg-800 rounded-2xl shadow-2xl border border-darkbg-700 overflow-hidden transition-all duration-500 relative backdrop-blur-sm bg-opacity-90">
+<div class="bg-darkbg-800 rounded-2xl shadow-2xl border border-darkbg-700 overflow-hidden transition-all duration-500 relative backdrop-blur-sm bg-opacity-90 max-w-[95%] mx-auto">
     <div class="overflow-x-auto">
-        <table class="w-full text-left border-collapse">
+        <table class="w-full text-left border-collapse" id="main-table">
             <thead>
                 <tr class="bg-darkbg-900/50 border-b border-darkbg-700 text-xs uppercase tracking-wider text-gray-400 font-bold">
                     {% for header in site.data.environments.headers %}
-                    <th class="p-5 min-w-[160px] whitespace-nowrap {% if forloop.first %}sticky left-0 bg-darkbg-900 z-10 border-r border-darkbg-700 shadow-[2px_0_5px_rgba(0,0,0,0.2)]{% endif %}">
-                        {{ header.name }}
-                    </th>
+                        <th class="p-5 min-w-[160px] whitespace-nowrap 
+                            col-cell col-{{ header.key }}
+                            {% if header.key == 'feature' %}sticky left-0 bg-darkbg-900 z-20 border-r border-darkbg-700 shadow-[2px_0_5px_rgba(0,0,0,0.2)]{% endif %}"
+                            data-key="{{ header.key }}"
+                            data-tags="{{ header.tags | join: ',' }}">
+                            
+                            {{ header.name }}
+                            
+                            {% if header.tags %}
+                            <div class="flex flex-wrap gap-1 mt-2 opacity-50 font-normal normal-case">
+                                {% for tag in header.tags limit:2 %}
+                                <span class="text-[9px] px-1 rounded border border-gray-700">{{ tag }}</span>
+                                {% endfor %}
+                                {% if header.tags.size > 2 %}<span class="text-[9px]">+</span>{% endif %}
+                            </div>
+                            {% endif %}
+                        </th>
                     {% endfor %}
                 </tr>
             </thead>
-            <tbody class="divide-y divide-darkbg-700/50" id="comparison-table">
+            <tbody class="divide-y divide-darkbg-700/50">
                 {% for row in site.data.environments.rows %}
                 <tr class="table-row-item hover:bg-darkbg-700/40 transition-colors group" data-category="{{ row.category }}">
-                    <td class="p-5 font-semibold text-gray-200 sticky left-0 bg-darkbg-800 group-hover:bg-darkbg-800/90 border-r border-darkbg-700 shadow-[2px_0_5px_rgba(0,0,0,0.2)]">
-                        {{ row.feature }}
-                        <span class="category-indicator inline-block w-1.5 h-1.5 rounded-full ml-2 mb-0.5" data-cat-id="{{ row.category }}"></span>
-                    </td>
-                    <td class="p-5 text-gray-400">{{ row.gnome }}</td>
-                    <td class="p-5 text-gray-400">{{ row.kde }}</td>
-                    <td class="p-5 text-gray-400">{{ row.xfce }}</td>
-                    <td class="p-5 text-gray-400">
-                        <span class="inline-flex items-center px-3 py-1 rounded-md text-xs font-bold bg-cyan-950/50 text-cyan-400 border border-cyan-900/50">
-                            {{ row.tiling }}
-                        </span>
-                    </td>
+                    
+                    {% for header in site.data.environments.headers %}
+                        {% if header.key == 'feature' %}
+                            <td class="p-5 font-semibold text-gray-200 sticky left-0 bg-darkbg-800 group-hover:bg-darkbg-800/90 border-r border-darkbg-700 shadow-[2px_0_5px_rgba(0,0,0,0.2)] z-10">
+                                {{ row.feature }}
+                                <span class="category-indicator inline-block w-1.5 h-1.5 rounded-full ml-2 mb-0.5" data-cat-id="{{ row.category }}"></span>
+                            </td>
+                        {% else %}
+                            <td class="p-5 text-gray-400 col-cell col-{{ header.key }}">
+                                {{ row[header.key] }}
+                            </td>
+                        {% endif %}
+                    {% endfor %}
+
                 </tr>
                 {% endfor %}
             </tbody>
@@ -71,111 +97,151 @@ title: Asztali Környezetek
     </div>
     
     <div id="no-results" class="hidden p-12 text-center text-gray-500">
-        <p class="text-xl font-semibold mb-2">Nincs találat 😕</p>
+        <p class="text-xl font-semibold mb-2">Nincs ilyen kombináció 😕</p>
         <p>Próbálj meg kevesebb szűrőt használni.</p>
     </div>
 </div>
 
 <script>
-    let selectedCategories = new Set();
-
-    // --- SZÍNTÉRKÉP ---
-    // Itt definiáljuk, melyik kategória milyen színt kapjon aktiváláskor.
-    // Használjunk élénk, neon színeket a sötét alaphoz.
-    const colorMap = {
-        // Teljesítmény: Neon Zöld (Lime)
-        'performance': { 
-            activeClasses: ['bg-lime-500', 'text-black', 'border-lime-500', 'shadow-lime-500/50', 'shadow-lg'],
-            inactiveClasses: ['bg-darkbg-800', 'text-gray-300', 'border-darkbg-700', 'shadow-sm']
-        },
-        // UX: Neon Cián/Kék
-        'ux': { 
-            activeClasses: ['bg-cyan-500', 'text-black', 'border-cyan-500', 'shadow-cyan-500/50', 'shadow-lg'],
-            inactiveClasses: ['bg-darkbg-800', 'text-gray-300', 'border-darkbg-700', 'shadow-sm']
-        },
-        // Technikai: Neon Lila/Pink (Fuchsia)
-        'tech': { 
-            activeClasses: ['bg-fuchsia-500', 'text-white', 'border-fuchsia-500', 'shadow-fuchsia-500/50', 'shadow-lg'],
-            inactiveClasses: ['bg-darkbg-800', 'text-gray-300', 'border-darkbg-700', 'shadow-sm']
-        }
-        // Ha új kategóriát adsz hozzá a YAML-ben, ide is fel kell venni!
+    // --- KONFIGURÁCIÓ ---
+    // Sor szűrő színek (Categories)
+    const rowColorMap = {
+        'performance': { active: ['text-lime-400', 'bg-lime-900/20', 'border-lime-500/50'], inactive: ['text-gray-500', 'border-transparent'] },
+        'ux': { active: ['text-cyan-400', 'bg-cyan-900/20', 'border-cyan-500/50'], inactive: ['text-gray-500', 'border-transparent'] },
+        'tech': { active: ['text-fuchsia-400', 'bg-fuchsia-900/20', 'border-fuchsia-500/50'], inactive: ['text-gray-500', 'border-transparent'] }
     };
+    
+    // Oszlop szűrő színek (Features) - Egységes "Neon Kék" stílus aktiváláskor
+    const activeColBtnClasses = ['bg-cyan-500', 'text-black', 'border-cyan-400', 'shadow-[0_0_10px_rgba(6,182,212,0.5)]'];
+    const inactiveColBtnClasses = ['bg-darkbg-800', 'text-gray-400', 'border-darkbg-700'];
 
-    // Indikátor pöttyök színezése a táblázatban
+    // --- ÁLLAPOT ---
+    let selectedRowCategories = new Set();
+    let selectedColFilters = new Set(); // Pl. 'wayland', 'tiling'
+
+    // --- INIT ---
     document.addEventListener("DOMContentLoaded", () => {
+        // Pöttyök színezése
         document.querySelectorAll('.category-indicator').forEach(indicator => {
             const catId = indicator.getAttribute('data-cat-id');
-            if (colorMap[catId]) {
-                // Kiszedjük a háttérszínt az activeClasses tömbből (pl. bg-lime-500)
-                const bgColorClass = colorMap[catId].activeClasses.find(cls => cls.startsWith('bg-'));
-                indicator.classList.add(bgColorClass);
-            }
+            const colorClass = catId === 'performance' ? 'bg-lime-500' : (catId === 'ux' ? 'bg-cyan-500' : 'bg-fuchsia-500');
+            indicator.classList.add(colorClass);
         });
     });
 
-
-    function toggleFilter(categoryId) {
-        const btn = document.getElementById(`btn-${categoryId}`);
-        const colors = colorMap[categoryId];
-
-        if (!colors) return; // Ha nincs szín definiálva, ne csináljon semmit
-
-        if (selectedCategories.has(categoryId)) {
-            // DEAKTIVÁLÁS
-            selectedCategories.delete(categoryId);
-            btn.classList.remove(...colors.activeClasses);
-            btn.classList.add(...colors.inactiveClasses);
+    // --- OSZLOP SZŰRÉS (DE / WM FILTER) ---
+    function toggleColFilter(filterId) {
+        const btn = document.getElementById(`col-btn-${filterId}`);
+        
+        if (selectedColFilters.has(filterId)) {
+            selectedColFilters.delete(filterId);
+            btn.classList.remove(...activeColBtnClasses);
+            btn.classList.add(...inactiveColBtnClasses);
         } else {
-            // AKTIVÁLÁS
-            selectedCategories.add(categoryId);
-            btn.classList.remove(...colors.inactiveClasses);
-            btn.classList.add(...colors.activeClasses);
+            selectedColFilters.add(filterId);
+            btn.classList.remove(...inactiveColBtnClasses);
+            btn.classList.add(...activeColBtnClasses);
         }
-
-        updateTable();
+        
+        updateView();
     }
 
-    function clearFilters() {
-        selectedCategories.clear();
-        // Minden gomb visszaállítása alapállapotba
-        document.querySelectorAll('.filter-btn').forEach(btn => {
-            const catId = btn.getAttribute('data-category');
-            if (colorMap[catId]) {
-                btn.classList.remove(...colorMap[catId].activeClasses);
-                btn.classList.add(...colorMap[catId].inactiveClasses);
+    // --- SOR SZŰRÉS (CATEGORY FILTER) ---
+    function toggleRowFilter(catId) {
+        const btn = document.getElementById(`row-btn-${catId}`);
+        const styles = rowColorMap[catId];
+
+        if (selectedRowCategories.has(catId)) {
+            selectedRowCategories.delete(catId);
+            btn.classList.remove(...styles.active);
+            btn.classList.add(...styles.inactive);
+        } else {
+            selectedRowCategories.add(catId);
+            btn.classList.remove(...styles.inactive);
+            btn.classList.add(...styles.active);
+        }
+        updateView();
+    }
+
+    function clearAllFilters() {
+        selectedColFilters.clear();
+        selectedRowCategories.clear();
+        
+        // UI Reset
+        document.querySelectorAll('.col-filter-btn').forEach(btn => {
+            btn.classList.remove(...activeColBtnClasses);
+            btn.classList.add(...inactiveColBtnClasses);
+        });
+        document.querySelectorAll('.row-filter-btn').forEach(btn => {
+            // Itt egyszerűbb trükköt használunk a resetre
+            btn.className = "row-filter-btn px-5 py-2 rounded-full text-sm font-semibold border transition-all duration-300 bg-transparent text-gray-500 border-transparent hover:text-gray-300";
+        });
+
+        updateView();
+    }
+
+    // --- LOGIKA ---
+    function updateView() {
+        // 1. Reset gomb kezelése
+        const resetBtn = document.getElementById('reset-btn');
+        if (selectedColFilters.size > 0 || selectedRowCategories.size > 0) {
+            resetBtn.classList.remove('hidden');
+        } else {
+            resetBtn.classList.add('hidden');
+        }
+
+        // 2. OSZLOP SZŰRÉS LOGIKA
+        // Megkeressük az összes fejlécet, ami nem a 'feature' oszlop
+        const headers = document.querySelectorAll('th.col-cell:not(.sticky)');
+        
+        headers.forEach(th => {
+            const key = th.getAttribute('data-key');
+            const tags = th.getAttribute('data-tags').split(','); // Pl. ['wayland', 'gtk']
+            
+            // Ellenőrizzük, hogy a DE rendelkezik-e AZ ÖSSZES kiválasztott szűrővel
+            // (AND logika: ha Wayland ÉS Tiling van kijelölve, csak a Hyprland marad)
+            const matchesAllFilters = Array.from(selectedColFilters).every(filter => tags.includes(filter));
+            
+            // Megkeressük az összes cellát, ami ehhez az oszlophoz tartozik
+            const cells = document.querySelectorAll(`.col-${key}`);
+            
+            if (matchesAllFilters) {
+                // Megjelenítés
+                th.style.display = '';
+                cells.forEach(cell => cell.style.display = '');
+            } else {
+                // Elrejtés
+                th.style.display = 'none';
+                cells.forEach(cell => cell.style.display = 'none');
             }
         });
-        updateTable();
-    }
 
-    function updateTable() {
+        // 3. SOR SZŰRÉS LOGIKA
         const rows = document.querySelectorAll('.table-row-item');
-        const clearBtn = document.getElementById('clear-btn');
-        let visibleCount = 0;
-
-        if (selectedCategories.size > 0) {
-            clearBtn.classList.remove('hidden');
-            clearBtn.classList.add('inline-flex');
-        } else {
-            clearBtn.classList.add('hidden');
-            clearBtn.classList.remove('inline-flex');
-        }
+        let visibleRows = 0;
 
         rows.forEach(row => {
             const rowCat = row.getAttribute('data-category');
-            if (selectedCategories.size === 0 || selectedCategories.has(rowCat)) {
+            if (selectedRowCategories.size === 0 || selectedRowCategories.has(rowCat)) {
                 row.style.display = '';
-                visibleCount++;
+                visibleRows++;
             } else {
                 row.style.display = 'none';
             }
         });
 
+        // 4. ÜRES ÁLLAPOT
+        // Itt egy trükk: ha minden oszlopot elrejtettünk (kivéve az elsőt), akkor is mutassunk "nincs találat"-ot
+        const visibleCols = Array.from(headers).filter(th => th.style.display !== 'none').length;
         const noResults = document.getElementById('no-results');
-        if (visibleCount === 0) {
+        const table = document.querySelector('table');
+
+        if (visibleRows === 0 || visibleCols === 0) {
             noResults.classList.remove('hidden');
+            table.classList.add('opacity-50'); // Halványítjuk a táblázatot
         } else {
             noResults.classList.add('hidden');
+            table.classList.remove('opacity-50');
         }
     }
 </script>
