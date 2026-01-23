@@ -1,5 +1,4 @@
 :root {
-  /* Colors – közel a mintához */
   --bg: #0a0a0f;
   --bg-elevated: #11121a;
   --bg-card: #0f111a;
@@ -10,7 +9,6 @@
   --muted: #9ca3af;
   --border: #1f2937;
 
-  /* Spacing scale */
   --space-1: 4px;
   --space-2: 8px;
   --space-3: 12px;
@@ -18,11 +16,9 @@
   --space-5: 20px;
   --space-6: 24px;
 
-  /* Radii */
   --radius-md: 10px;
   --radius-lg: 18px;
 
-  /* Shadows */
   --shadow-card: 0 20px 40px rgba(0, 0, 0, 0.55);
   --shadow-hover: 0 25px 55px rgba(0, 0, 0, 0.75);
   --transition-fast: 0.18s ease-out;
@@ -141,12 +137,13 @@ body {
   letter-spacing: 0.08em;
 }
 
-.filter-select,
+/* Buborékos search */
+
 .filter-input {
   background: radial-gradient(circle at top left, #020617, #020617);
-  border-radius: var(--radius-md);
+  border-radius: 999px;
   border: 1px solid rgba(51, 65, 85, 0.9);
-  padding: 7px 10px;
+  padding: 8px 12px;
   color: var(--text);
   font-size: 0.85rem;
   outline: none;
@@ -154,7 +151,6 @@ body {
     background var(--transition-fast), transform var(--transition-fast);
 }
 
-.filter-select:focus,
 .filter-input:focus {
   border-color: var(--accent);
   box-shadow: 0 0 0 1px var(--accent-glow);
@@ -164,6 +160,8 @@ body {
 .filter-input::placeholder {
   color: rgba(148, 163, 184, 0.7);
 }
+
+/* Chips – minden filter buborékos */
 
 .filter-chips {
   display: flex;
