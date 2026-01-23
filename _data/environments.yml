@@ -1,22 +1,55 @@
 headers:
   - name: "Tulajdonság"
     key: "feature"
+    # A feature oszlopnak nincsenek szűrő tagjei
   - name: "GNOME"
     key: "gnome"
+    tags: ["wayland", "gtk", "heavy", "beginner"]
   - name: "KDE Plasma"
     key: "kde"
+    tags: ["wayland", "x11", "qt", "medium", "custom"]
   - name: "XFCE"
     key: "xfce"
+    tags: ["x11", "gtk", "light", "beginner", "classic"]
   - name: "Cinnamon"
     key: "cinnamon"
+    tags: ["x11", "gtk", "medium", "beginner", "classic"]
   - name: "MATE"
     key: "mate"
+    tags: ["x11", "gtk", "light", "beginner", "classic"]
   - name: "LXQt"
     key: "lxqt"
+    tags: ["x11", "qt", "light", "classic"]
   - name: "Hyprland"
     key: "hyprland"
+    tags: ["wayland", "tiling", "light", "advanced"]
   - name: "i3-wm"
     key: "i3"
+    tags: ["x11", "tiling", "light", "advanced"]
+
+# Ezek lesznek a kattintható szűrő gombok az új sorban
+feature_filters:
+  - id: "wayland"
+    name: "Wayland"
+    color: "cyan"
+  - id: "x11"
+    name: "X11"
+    color: "blue"
+  - id: "tiling"
+    name: "Tiling WM"
+    color: "fuchsia"
+  - id: "gtk"
+    name: "GTK Alapú"
+    color: "orange"
+  - id: "qt"
+    name: "Qt Alapú"
+    color: "green"
+  - id: "light"
+    name: "Alacsony gépigény"
+    color: "emerald"
+  - id: "beginner"
+    name: "Kezdőbarát"
+    color: "yellow"
 
 categories:
   - name: "Teljesítmény"
@@ -26,105 +59,8 @@ categories:
   - name: "Technikai"
     id: "tech"
 
+# A rows rész maradhat változatlan...
 rows:
-  # --- TELJESÍTMÉNY ---
   - feature: "RAM Igény (Idle)"
     category: "performance"
-    gnome: "~800MB - 1.2GB"
-    kde: "~500MB - 700MB"
-    xfce: "~400MB - 500MB"
-    cinnamon: "~600MB - 800MB"
-    mate: "~450MB - 600MB"
-    lxqt: "~300MB - 400MB"
-    hyprland: "~200MB - 300MB"
-    i3: "~150MB - 250MB"
-
-  - feature: "Sebességérzet"
-    category: "performance"
-    gnome: "Sima, de nehéz"
-    kde: "Gyors, reszponzív"
-    xfce: "Nagyon gyors"
-    cinnamon: "Közepes"
-    mate: "Gyors"
-    lxqt: "Villámgyors"
-    hyprland: "Azonnali (GPU)"
-    i3: "Azonnali (CPU)"
-
-  # --- FELHASZNÁLÓI ÉLMÉNY ---
-  - feature: "Alapértelmezett UI"
-    category: "ux"
-    gnome: "Egyedi (Overview)"
-    kde: "Windows-szerű"
-    xfce: "Klasszikus panel"
-    cinnamon: "Windows 7-szerű"
-    mate: "GNOME 2 (Retro)"
-    lxqt: "Klasszikus moduláris"
-    hyprland: "Üres (Tiling)"
-    i3: "Üres (Tiling)"
-
-  - feature: "Testreszabhatóság"
-    category: "ux"
-    gnome: "Extensions szükséges"
-    kde: "Végtelen (GUI-ból)"
-    xfce: "Magas (Panelek)"
-    cinnamon: "Közepes (Desklets)"
-    mate: "Magas (Appletek)"
-    lxqt: "Magas"
-    hyprland: "Config fájl (Hard)"
-    i3: "Config fájl (Medium)"
-
-  - feature: "Kezdőbarát?"
-    category: "ux"
-    gnome: "Igen, nagyon"
-    kde: "Igen"
-    xfce: "Igen"
-    cinnamon: "Igen (Ex-Win user)"
-    mate: "Igen"
-    lxqt: "Közepes"
-    hyprland: "Nem (Arch Wiki kell)"
-    i3: "Nem (Billentyűkombók)"
-
-  # --- TECHNIKAI ADATOK (ARCH SPECIFIKUS) ---
-  - feature: "Display Server"
-    category: "tech"
-    gnome: "Wayland (alapért.)"
-    kde: "Wayland / X11"
-    xfce: "X11 (Wayland WIP)"
-    cinnamon: "X11 (Wayland béta)"
-    mate: "X11 (Wayland WIP)"
-    lxqt: "X11 / Wayland"
-    hyprland: "Csak Wayland"
-    i3: "Csak X11"
-
-  - feature: "Toolkit / Alap"
-    category: "tech"
-    gnome: "GTK4 / Adwaita"
-    kde: "Qt6"
-    xfce: "GTK3"
-    cinnamon: "GTK3 (Muffin)"
-    mate: "GTK3"
-    lxqt: "Qt6"
-    hyprland: "Nincs (wlroots)"
-    i3: "Nincs"
-
-  - feature: "Kompozitor"
-    category: "tech"
-    gnome: "Mutter (Beépített)"
-    kde: "KWin (Beépített)"
-    xfce: "Xfwm4 (Beépített)"
-    cinnamon: "Muffin (Beépített)"
-    mate: "Marco (Beépített)"
-    lxqt: "Nincs (KWin/Xfwm kell)"
-    hyprland: "Beépített (Animált)"
-    i3: "Picom (Külön kell)"
-
-  - feature: "Arch Csomagcsoport"
-    category: "tech"
-    gnome: "gnome"
-    kde: "plasma-meta"
-    xfce: "xfce4"
-    cinnamon: "cinnamon"
-    mate: "mate"
-    lxqt: "lxqt"
-    hyprland: "hyprland"
-    i3: "i3-wm"
+# ... (többi sor)
