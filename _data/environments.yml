@@ -1,7 +1,6 @@
 headers:
   - name: "Tulajdonság"
     key: "feature"
-    # Nincs metrika
   - name: "GNOME"
     key: "gnome"
     tags: ["wayland", "gtk", "heavy", "beginner"]
@@ -67,6 +66,7 @@ headers:
       cpu: 10
       disk: 150
 
+# Szűrő gombok (Buborékok)
 feature_filters:
   - id: "wayland"
     name: "Wayland"
@@ -138,7 +138,7 @@ rows:
     hyprland: "Config fájl (Hard)"
     i3: "Config fájl (Medium)"
 
-  # --- TECHNIKAI ADATOK (ARCH SPECIFIKUS) ---
+  # --- TECHNIKAI ADATOK ---
   - feature: "Display Server"
     category: "tech"
     gnome: "Wayland"
