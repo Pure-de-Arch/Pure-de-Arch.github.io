@@ -1,39 +1,71 @@
-- name: KDE Plasma
-  category: Full Desktop
-  toolkit: Qt
-  resource: Medium
-  wayland: Excellent
-  customization: Very High
-  notes: Feature-rich and extremely configurable
-
 - name: GNOME
-  category: Full Desktop
-  toolkit: GTK
-  resource: Medium-High
-  wayland: Excellent
-  customization: Medium
-  notes: Opinionated workflow
+  category: "Full DE"
+  os: ["Linux"]
+  layout: "Modern"
+  compositor: "Wayland, X11"
+  performance: "Medium"
+  complexity: "Medium"
+  description: "Modern, extension-based desktop with strong integration on GNOME-based distros."
+  website: "https://www.gnome.org/"
+  docs: "https://help.gnome.org/"
+  tags: ["Wayland-first", "GTK", "Extensions"]
+
+- name: KDE Plasma
+  category: "Full DE"
+  os: ["Linux", "BSD"]
+  layout: "Traditional"
+  compositor: "Wayland, X11"
+  performance: "Medium"
+  complexity: "High"
+  description: "Highly customizable desktop with rich configuration options and modern effects."
+  website: "https://kde.org/plasma-desktop/"
+  docs: "https://docs.kde.org/"
+  tags: ["Qt", "Highly customizable"]
 
 - name: Xfce
-  category: Lightweight
-  toolkit: GTK
-  resource: Low
-  wayland: Experimental
-  customization: High
-  notes: Stable and classic
+  category: "Full DE"
+  os: ["Linux", "BSD"]
+  layout: "Traditional"
+  compositor: "X11"
+  performance: "High"
+  complexity: "Low"
+  description: "Lightweight, classic desktop focused on stability and low resource usage."
+  website: "https://xfce.org/"
+  docs: "https://docs.xfce.org/"
+  tags: ["Lightweight", "GTK"]
 
 - name: LXQt
-  category: Lightweight
-  toolkit: Qt
-  resource: Low
-  wayland: Limited
-  customization: Medium
-  notes: Modern lightweight Qt desktop
+  category: "Full DE"
+  os: ["Linux", "BSD"]
+  layout: "Traditional"
+  compositor: "X11"
+  performance: "High"
+  complexity: "Low"
+  description: "Qt-based lightweight desktop, successor to LXDE, focused on low resource usage."
+  website: "https://lxqt-project.org/"
+  docs: ""
+  tags: ["Lightweight", "Qt"]
 
 - name: i3
-  category: Tiling WM
-  toolkit: None
-  resource: Very Low
-  wayland: X11 only
-  customization: High
-  notes: Keyboard-driven tiling WM
+  category: "Tiling WM"
+  os: ["Linux", "BSD"]
+  layout: "Tiling"
+  compositor: "X11"
+  performance: "Very high"
+  complexity: "Medium"
+  description: "Keyboard-driven tiling window manager with a simple, declarative config."
+  website: "https://i3wm.org/"
+  docs: "https://i3wm.org/docs/"
+  tags: ["Tiling", "Keyboard-centric"]
+
+- name: Sway
+  category: "Tiling WM"
+  os: ["Linux"]
+  layout: "Tiling"
+  compositor: "Wayland"
+  performance: "Very high"
+  complexity: "Medium"
+  description: "i3-compatible tiling window manager for Wayland."
+  website: "https://swaywm.org/"
+  docs: ""
+  tags: ["Wayland", "Tiling"]
