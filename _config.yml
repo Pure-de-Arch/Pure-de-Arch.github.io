@@ -1,7 +1,15 @@
-title: DE vs WM Compare
-description: Desktop Environment és Window Manager összehasonlító
-theme: minima
+title: Desktop Environment Comparison
+description: A Jekyll-based desktop environment comparison site
+baseurl: ""
+url: "https://example.com"
+
+theme: null
 
 collections:
-  posts:
-    output: true
+  # nem feltétlen kell, most csak data + indexet használunk
+
+defaults:
+  - scope:
+      path: ""
+    values:
+      layout: default
