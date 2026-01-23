@@ -10,7 +10,14 @@ const environments = [
     hdd: 350,
     description: "Modern, Wayland-alapú, integrált desktop környezet.",
     homepage: "https://www.gnome.org/",
-    image: "/assets/images/gnome.png"
+    image: "/assets/images/gnome.png",
+    features: [
+      "Wayland support",
+      "Extensions",
+      "Touch-friendly",
+      "Dynamic workspaces",
+      "Integrated apps"
+    ]
   },
   {
     id: "kde",
@@ -23,7 +30,14 @@ const environments = [
     hdd: 500,
     description: "Rendkívül testreszabható, gyors és modern DE.",
     homepage: "https://kde.org/",
-    image: "/assets/images/kde.png"
+    image: "/assets/images/kde.png",
+    features: [
+      "Highly customizable",
+      "Wayland support",
+      "Widgets",
+      "Keyboard shortcuts",
+      "Lightweight"
+    ]
   },
   {
     id: "i3",
@@ -36,6 +50,13 @@ const environments = [
     hdd: 20,
     description: "Minimalista, gyors, tiling window manager.",
     homepage: "https://i3wm.org/",
-    image: "/assets/images/i3.png"
+    image: "/assets/images/i3.png",
+    features: [
+      "Tiling",
+      "Keyboard-driven",
+      "Lightweight",
+      "Configurable",
+      "Xorg"
+    ]
   }
 ];
