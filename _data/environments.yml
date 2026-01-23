@@ -5,13 +5,15 @@ headers:
   - name: "GNOME"
     key: "gnome"
     tags: ["wayland", "gtk", "heavy", "beginner"]
+    color: "#3b82f6" # Kék
     metrics:
-      ram: 950       # MB
-      cpu: 85        # Relatív terhelés index (0-100)
-      disk: 2500     # MB telepített méret
+      ram: 950
+      cpu: 85
+      disk: 2500
   - name: "KDE Plasma"
     key: "kde"
     tags: ["wayland", "x11", "qt", "medium", "custom"]
+    color: "#f97316" # Narancs
     metrics:
       ram: 650
       cpu: 60
@@ -19,6 +21,7 @@ headers:
   - name: "XFCE"
     key: "xfce"
     tags: ["x11", "gtk", "light", "beginner", "classic"]
+    color: "#22c55e" # Zöld
     metrics:
       ram: 450
       cpu: 30
@@ -26,6 +29,7 @@ headers:
   - name: "Cinnamon"
     key: "cinnamon"
     tags: ["x11", "gtk", "medium", "beginner", "classic"]
+    color: "#ef4444" # Piros
     metrics:
       ram: 700
       cpu: 50
@@ -33,6 +37,7 @@ headers:
   - name: "MATE"
     key: "mate"
     tags: ["x11", "gtk", "light", "beginner", "classic"]
+    color: "#a855f7" # Lila
     metrics:
       ram: 500
       cpu: 35
@@ -40,6 +45,7 @@ headers:
   - name: "LXQt"
     key: "lxqt"
     tags: ["x11", "qt", "light", "classic"]
+    color: "#06b6d4" # Cián
     metrics:
       ram: 350
       cpu: 20
@@ -47,6 +53,7 @@ headers:
   - name: "Hyprland"
     key: "hyprland"
     tags: ["wayland", "tiling", "light", "advanced"]
+    color: "#eab308" # Sárga
     metrics:
       ram: 250
       cpu: 15
@@ -54,34 +61,27 @@ headers:
   - name: "i3-wm"
     key: "i3"
     tags: ["x11", "tiling", "light", "advanced"]
+    color: "#ec4899" # Pink
     metrics:
       ram: 200
       cpu: 10
       disk: 150
 
-# Ezek lesznek a kattintható szűrő gombok az új sorban
 feature_filters:
   - id: "wayland"
     name: "Wayland"
-    color: "cyan"
   - id: "x11"
     name: "X11"
-    color: "blue"
   - id: "tiling"
     name: "Tiling WM"
-    color: "fuchsia"
   - id: "gtk"
     name: "GTK Alapú"
-    color: "orange"
   - id: "qt"
     name: "Qt Alapú"
-    color: "green"
   - id: "light"
     name: "Alacsony gépigény"
-    color: "emerald"
   - id: "beginner"
     name: "Kezdőbarát"
-    color: "yellow"
 
 categories:
   - name: "Teljesítmény"
@@ -91,8 +91,83 @@ categories:
   - name: "Technikai"
     id: "tech"
 
-# A rows rész maradhat változatlan...
 rows:
+  # --- TELJESÍTMÉNY ---
   - feature: "RAM Igény (Idle)"
     category: "performance"
-# ... (többi sor)
+    gnome: "~950MB"
+    kde: "~650MB"
+    xfce: "~450MB"
+    cinnamon: "~700MB"
+    mate: "~500MB"
+    lxqt: "~350MB"
+    hyprland: "~250MB"
+    i3: "~200MB"
+
+  - feature: "Sebességérzet"
+    category: "performance"
+    gnome: "Sima, animált"
+    kde: "Gyors, reszponzív"
+    xfce: "Nagyon gyors"
+    cinnamon: "Közepes"
+    mate: "Gyors"
+    lxqt: "Villámgyors"
+    hyprland: "Azonnali (GPU)"
+    i3: "Azonnali (CPU)"
+
+  # --- FELHASZNÁLÓI ÉLMÉNY ---
+  - feature: "Alapértelmezett UI"
+    category: "ux"
+    gnome: "Egyedi (Overview)"
+    kde: "Windows-szerű"
+    xfce: "Klasszikus panel"
+    cinnamon: "Windows 7-szerű"
+    mate: "GNOME 2 (Retro)"
+    lxqt: "Klasszikus moduláris"
+    hyprland: "Üres (Tiling)"
+    i3: "Üres (Tiling)"
+
+  - feature: "Testreszabhatóság"
+    category: "ux"
+    gnome: "Extensions szükséges"
+    kde: "Végtelen (GUI-ból)"
+    xfce: "Magas (Panelek)"
+    cinnamon: "Közepes (Desklets)"
+    mate: "Magas (Appletek)"
+    lxqt: "Magas"
+    hyprland: "Config fájl (Hard)"
+    i3: "Config fájl (Medium)"
+
+  # --- TECHNIKAI ADATOK (ARCH SPECIFIKUS) ---
+  - feature: "Display Server"
+    category: "tech"
+    gnome: "Wayland"
+    kde: "Wayland / X11"
+    xfce: "X11 (Wayland WIP)"
+    cinnamon: "X11 (Wayland béta)"
+    mate: "X11 (Wayland WIP)"
+    lxqt: "X11 / Wayland"
+    hyprland: "Csak Wayland"
+    i3: "Csak X11"
+
+  - feature: "Kompozitor"
+    category: "tech"
+    gnome: "Mutter"
+    kde: "KWin"
+    xfce: "Xfwm4"
+    cinnamon: "Muffin"
+    mate: "Marco"
+    lxqt: "Nincs (KWin ajánlott)"
+    hyprland: "Beépített"
+    i3: "Picom (Külön kell)"
+
+  - feature: "Arch Csomag"
+    category: "tech"
+    gnome: "gnome"
+    kde: "plasma-meta"
+    xfce: "xfce4"
+    cinnamon: "cinnamon"
+    mate: "mate"
+    lxqt: "lxqt"
+    hyprland: "hyprland"
+    i3: "i3-wm"
