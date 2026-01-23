@@ -1,128 +1,110 @@
 ---
 layout: default
-title: Dashboard
+title: Finder
 ---
 
-<div class="max-w-7xl mx-auto space-y-8">
+<div class="max-w-7xl mx-auto px-6 py-10 space-y-10">
 
-    <div class="flex flex-col md:flex-row md:items-end justify-between gap-4">
-        <div>
-            <h1 class="text-3xl font-bold tracking-tight text-primary mb-2">Desktop Environment Finder</h1>
-            <p class="text-muted text-sm max-w-xl">
-                Hasonlítsd össze az Arch Linux felületeket valós idejű metrikák alapján.
+    <div class="flex flex-col gap-4 md:flex-row md:items-end md:justify-between border-b border-[#27272a] pb-8">
+        <div class="space-y-2">
+            <h1 class="text-3xl font-extrabold tracking-tighter sm:text-4xl md:text-5xl lg:text-6xl text-foreground">
+                Desktop Environment<br class="hidden md:block" />
+                Comparison
+            </h1>
+            <p class="max-w-[700px] text-muted-foreground md:text-xl">
+                Találd meg a tökéletes egyensúlyt a teljesítmény és a kinézet között.
+                <span class="text-white font-medium">Arch Linux</span> alapokon mérve.
             </p>
         </div>
-        <div class="flex items-center gap-2 px-3 py-1.5 rounded-full bg-cyan-950/20 border border-cyan-900/50 text-cyan-400 text-xs font-medium">
-            <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
-            Arch Linux Base
+        
+        <div class="flex gap-2">
+             <button onclick="document.getElementById('filter-section').scrollIntoView({behavior: 'smooth'})" 
+                class="inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-white text-black hover:bg-white/90 h-10 px-4 py-2">
+                Kezdés
+            </button>
+             <button onclick="clearAllFilters()" id="reset-hero-btn" 
+                class="hidden inline-flex items-center justify-center rounded-md text-sm font-medium transition-colors border border-[#27272a] hover:bg-[#27272a] hover:text-white h-10 px-4 py-2">
+                Szűrők törlése
+            </button>
         </div>
     </div>
 
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-        <div class="bg-surface border border-border rounded-xl p-5 shadow-sm relative overflow-hidden group hover:border-brand-purple/50 transition-colors">
-            <div class="flex justify-between items-start mb-4">
-                <div>
-                    <p class="text-xs font-medium text-muted uppercase tracking-wider">Memória (Idle)</p>
-                    <h3 class="text-2xl font-bold text-white mt-1">RAM</h3>
-                </div>
-                <div class="p-2 bg-brand-purple/10 rounded-lg text-brand-purple">
-                    <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z" /></svg>
-                </div>
+    <div id="filter-section" class="space-y-6">
+        <div class="flex flex-col gap-2">
+            <h3 class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 text-muted-foreground">
+                Szűrés tulajdonságok szerint
+            </h3>
+            
+            <div class="flex flex-wrap gap-2">
+                {% for filter in site.data.environments.feature_filters %}
+                <button 
+                    onclick="toggleColFilter('{{ filter.id }}')" 
+                    id="col-btn-{{ filter.id }}"
+                    class="col-filter-btn inline-flex items-center justify-center rounded-full border border-[#27272a] bg-transparent px-4 py-1.5 text-sm font-medium text-muted-foreground transition-all hover:bg-[#27272a] hover:text-white data-[state=on]:bg-white data-[state=on]:text-black data-[state=on]:border-white"
+                    data-state="off"
+                    data-filter-id="{{ filter.id }}">
+                    {{ filter.name }}
+                </button>
+                {% endfor %}
             </div>
-            <div class="h-32 w-full">
+        </div>
+    </div>
+
+    <div class="grid gap-4 md:grid-cols-3">
+        <div class="rounded-xl border border-[#27272a] bg-[#09090b] text-card-foreground shadow-sm">
+            <div class="flex flex-col space-y-1.5 p-6 pb-2">
+                <h3 class="font-semibold leading-none tracking-tight text-white">Memória (RAM)</h3>
+                <p class="text-sm text-muted-foreground">Idle állapotban (MB)</p>
+            </div>
+            <div class="p-6 pt-0 h-40">
                 <canvas id="chartRam"></canvas>
             </div>
         </div>
-
-        <div class="bg-surface border border-border rounded-xl p-5 shadow-sm relative overflow-hidden group hover:border-brand-cyan/50 transition-colors">
-            <div class="flex justify-between items-start mb-4">
-                <div>
-                    <p class="text-xs font-medium text-muted uppercase tracking-wider">Rendszerigény</p>
-                    <h3 class="text-2xl font-bold text-white mt-1">CPU Index</h3>
-                </div>
-                <div class="p-2 bg-brand-cyan/10 rounded-lg text-brand-cyan">
-                    <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" /></svg>
-                </div>
+        <div class="rounded-xl border border-[#27272a] bg-[#09090b] text-card-foreground shadow-sm">
+            <div class="flex flex-col space-y-1.5 p-6 pb-2">
+                <h3 class="font-semibold leading-none tracking-tight text-white">CPU Index</h3>
+                <p class="text-sm text-muted-foreground">Rendszerigény pontszám</p>
             </div>
-            <div class="h-32 w-full">
+            <div class="p-6 pt-0 h-40">
                 <canvas id="chartCpu"></canvas>
             </div>
         </div>
-
-        <div class="bg-surface border border-border rounded-xl p-5 shadow-sm relative overflow-hidden group hover:border-brand-lime/50 transition-colors">
-            <div class="flex justify-between items-start mb-4">
-                <div>
-                    <p class="text-xs font-medium text-muted uppercase tracking-wider">Telepített méret</p>
-                    <h3 class="text-2xl font-bold text-white mt-1">Storage</h3>
-                </div>
-                <div class="p-2 bg-brand-lime/10 rounded-lg text-brand-lime">
-                    <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 7v10c0 2.21 3.582 4 8 4s8-1.79 8-4V7M4 7c0 2.21 3.582 4 8 4s8-1.79 8-4M4 7c0-2.21 3.582-4 8-4s8 1.79 8 4m0 5c0 2.21-3.582 4-8 4s-8-1.79-8-4" /></svg>
-                </div>
+        <div class="rounded-xl border border-[#27272a] bg-[#09090b] text-card-foreground shadow-sm">
+            <div class="flex flex-col space-y-1.5 p-6 pb-2">
+                <h3 class="font-semibold leading-none tracking-tight text-white">Tárhely</h3>
+                <p class="text-sm text-muted-foreground">Telepített méret (MB)</p>
             </div>
-            <div class="h-32 w-full">
+            <div class="p-6 pt-0 h-40">
                 <canvas id="chartDisk"></canvas>
             </div>
         </div>
     </div>
 
-    <div class="bg-surface/50 border border-border rounded-lg p-1.5 flex flex-wrap gap-1 items-center backdrop-blur-sm">
-        <span class="text-xs font-medium text-muted px-3 uppercase tracking-wider">Szűrők:</span>
-        
-        {% for filter in site.data.environments.feature_filters %}
-        <button 
-            onclick="toggleColFilter('{{ filter.id }}')" 
-            id="col-btn-{{ filter.id }}"
-            class="col-filter-btn px-3 py-1.5 rounded-md text-xs font-medium transition-all border border-transparent text-muted hover:text-white hover:bg-white/5"
-            data-filter-id="{{ filter.id }}">
-            {{ filter.name }}
-        </button>
-        {% endfor %}
-
-        <div class="h-4 w-px bg-border mx-2"></div>
-
-        <button onclick="clearAllFilters()" id="reset-btn" class="hidden px-3 py-1.5 rounded-md text-xs font-medium text-red-400 hover:bg-red-500/10 transition-colors ml-auto">
-            Szűrők törlése ✕
-        </button>
-    </div>
-
-    <div class="border border-border rounded-xl overflow-hidden bg-surface shadow-sm">
-        <div class="overflow-x-auto">
-            <table class="w-full text-left border-collapse" id="main-table">
-                <thead>
-                    <tr class="bg-zinc-900/50 border-b border-border text-xs uppercase tracking-wider text-muted font-medium">
+    <div class="rounded-md border border-[#27272a] overflow-hidden">
+        <div class="relative w-full overflow-auto">
+            <table class="w-full text-sm text-left">
+                <thead class="[&_tr]:border-b [&_tr]:border-[#27272a]">
+                    <tr class="border-b transition-colors hover:bg-muted/50 data-[state=selected]:bg-muted">
                         {% for header in site.data.environments.headers %}
-                            <th class="p-4 whitespace-nowrap col-cell col-{{ header.key }} 
-                                {% if header.key == 'feature' %}sticky left-0 bg-surface z-20 border-r border-border{% endif %}"
+                            <th class="h-12 px-4 align-middle font-medium text-muted-foreground col-cell col-{{ header.key }} 
+                                {% if header.key == 'feature' %}sticky left-0 bg-[#09090b] z-20 border-r border-[#27272a]{% endif %}"
                                 data-key="{{ header.key }}"
                                 data-tags="{{ header.tags | join: ',' }}">
-                                
-                                <div class="flex flex-col gap-1">
-                                    <span class="text-white">{{ header.name }}</span>
-                                    {% if header.tags %}
-                                    <div class="flex gap-1 opacity-60">
-                                        {% for tag in header.tags limit:2 %}
-                                            <span class="px-1 py-0.5 rounded-[2px] bg-white/5 text-[9px] leading-none">{{ tag }}</span>
-                                        {% endfor %}
-                                    </div>
-                                    {% endif %}
-                                </div>
+                                {{ header.name }}
                             </th>
                         {% endfor %}
                     </tr>
                 </thead>
-                <tbody class="divide-y divide-border/50 text-sm">
+                <tbody class="[&_tr:last-child]:border-0">
                     {% for row in site.data.environments.rows %}
-                    <tr class="table-row-item hover:bg-white/[0.02] transition-colors group" data-category="{{ row.category }}">
+                    <tr class="border-b border-[#27272a] transition-colors hover:bg-[#27272a]/40 table-row-item" data-category="{{ row.category }}">
                         {% for header in site.data.environments.headers %}
                             {% if header.key == 'feature' %}
-                                <td class="p-4 font-medium text-white sticky left-0 bg-surface group-hover:bg-[#1c1c20] border-r border-border z-10">
-                                    <div class="flex items-center gap-2">
-                                        <div class="w-1 h-4 rounded-full category-indicator opacity-80" data-cat-id="{{ row.category }}"></div>
-                                        {{ row.feature }}
-                                    </div>
+                                <td class="p-4 align-middle font-medium text-white sticky left-0 bg-[#09090b] z-10 border-r border-[#27272a]">
+                                    {{ row.feature }}
                                 </td>
                             {% else %}
-                                <td class="p-4 text-muted col-cell col-{{ header.key }}">
+                                <td class="p-4 align-middle text-muted-foreground col-cell col-{{ header.key }}">
                                     {{ row[header.key] }}
                                 </td>
                             {% endif %}
@@ -133,24 +115,16 @@ title: Dashboard
             </table>
         </div>
         
-        <div id="no-results" class="hidden py-16 text-center">
-            <div class="inline-flex items-center justify-center w-12 h-12 rounded-full bg-border/50 mb-4">
-                <svg class="w-6 h-6 text-muted" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" /></svg>
-            </div>
-            <p class="text-muted font-medium">Nincs találat a kiválasztott szűrőkre.</p>
+        <div id="no-results" class="hidden flex flex-col items-center justify-center py-10 text-muted-foreground">
+            <p>Nincs találat a kiválasztott szűrőkre.</p>
+            <button onclick="clearAllFilters()" class="mt-2 underline hover:text-white">Szűrők törlése</button>
         </div>
-    </div>
-    
-    <div class="flex justify-center gap-6 mt-4 text-xs text-muted">
-         <div class="flex items-center gap-2"><span class="w-2 h-2 rounded-full bg-brand-lime"></span> Teljesítmény</div>
-         <div class="flex items-center gap-2"><span class="w-2 h-2 rounded-full bg-brand-cyan"></span> UX / Design</div>
-         <div class="flex items-center gap-2"><span class="w-2 h-2 rounded-full bg-brand-purple"></span> Technikai</div>
     </div>
 
 </div>
 
 <script>
-    // --- ADATOK GENERÁLÁSA ---
+    // --- ADATOK ---
     const envData = [
         {% for header in site.data.environments.headers %}
         {% if header.key != 'feature' %}
@@ -167,70 +141,43 @@ title: Dashboard
 
     // --- CHART.JS CONFIG ---
     Chart.defaults.font.family = 'Inter';
-    Chart.defaults.color = '#71717a'; // zinc-500
+    Chart.defaults.color = '#71717a';
     
     let chartRam, chartCpu, chartDisk;
 
     function initCharts() {
         const commonOptions = {
-            responsive: true,
-            maintainAspectRatio: false,
-            plugins: { legend: { display: false }, tooltip: { backgroundColor: '#18181b', borderColor: '#27272a', borderWidth: 1, padding: 10 } },
+            responsive: true, maintainAspectRatio: false,
+            plugins: { legend: { display: false } },
             scales: {
-                y: { display: false, beginAtZero: true }, // Rejtett Y tengely a tisztább look érdekében
-                x: { grid: { display: false }, ticks: { font: { size: 10 } } }
+                y: { display: false },
+                x: { grid: { display: false }, ticks: { display: false } } // Még minimalistább chartok
             },
-            animation: { duration: 600, easing: 'easeOutQuart' }
+            animation: { duration: 500 }
         };
 
-        // Gradiens segédfüggvény
-        const createGradient = (ctx, colorStart, colorEnd) => {
-            const gradient = ctx.createLinearGradient(0, 0, 0, 300);
-            gradient.addColorStop(0, colorStart);
-            gradient.addColorStop(1, colorEnd);
-            return gradient;
-        };
-
-        const ctxRam = document.getElementById('chartRam').getContext('2d');
-        chartRam = new Chart(ctxRam, {
+        chartRam = new Chart(document.getElementById('chartRam'), {
             type: 'bar',
-            data: { labels: [], datasets: [{ data: [], backgroundColor: '#d8b4fe', borderRadius: 4, barThickness: 20 }] },
+            data: { labels: [], datasets: [{ data: [], backgroundColor: '#fff', borderRadius: 4, barThickness: 40 }] }, // Fehér oszlopok (Shadcn stílus)
             options: commonOptions
         });
-
-        const ctxCpu = document.getElementById('chartCpu').getContext('2d');
-        chartCpu = new Chart(ctxCpu, {
+        chartCpu = new Chart(document.getElementById('chartCpu'), {
             type: 'bar',
-            data: { labels: [], datasets: [{ data: [], backgroundColor: '#22d3ee', borderRadius: 4, barThickness: 20 }] },
+            data: { labels: [], datasets: [{ data: [], backgroundColor: '#a1a1aa', borderRadius: 4, barThickness: 40 }] }, // Szürke oszlopok
             options: commonOptions
         });
-
-        const ctxDisk = document.getElementById('chartDisk').getContext('2d');
-        chartDisk = new Chart(ctxDisk, {
+        chartDisk = new Chart(document.getElementById('chartDisk'), {
             type: 'bar',
-            data: { labels: [], datasets: [{ data: [], backgroundColor: '#bef264', borderRadius: 4, barThickness: 20 }] },
+            data: { labels: [], datasets: [{ data: [], backgroundColor: '#52525b', borderRadius: 4, barThickness: 40 }] }, // Sötétebb szürke
             options: commonOptions
         });
     }
 
     // --- SZŰRÉS LOGIKA ---
-    
-    // Színek V0 stílusban: Aktív gombok "világítanak" (fehér bg, fekete text), inaktívak beleolvadnak
-    const activeBtnClass = ['bg-white', 'text-black', 'shadow-md'];
-    const inactiveBtnClass = ['text-muted', 'hover:text-white', 'hover:bg-white/5'];
-
     let selectedColFilters = new Set(); 
 
     document.addEventListener("DOMContentLoaded", () => {
         initCharts();
-        
-        // Kategória jelzők színezése (sorok elején)
-        document.querySelectorAll('.category-indicator').forEach(indicator => {
-            const catId = indicator.getAttribute('data-cat-id');
-            const colorClass = catId === 'performance' ? 'bg-brand-lime' : (catId === 'ux' ? 'bg-brand-cyan' : 'bg-brand-purple');
-            indicator.classList.add(colorClass);
-        });
-        
         updateView();
     });
 
@@ -239,12 +186,11 @@ title: Dashboard
         
         if (selectedColFilters.has(filterId)) {
             selectedColFilters.delete(filterId);
-            btn.classList.remove(...activeBtnClass);
-            btn.classList.add(...inactiveBtnClass);
+            // v0 stílus: data attribútum állítása
+            btn.setAttribute('data-state', 'off');
         } else {
             selectedColFilters.add(filterId);
-            btn.classList.remove(...inactiveBtnClass);
-            btn.classList.add(...activeBtnClass);
+            btn.setAttribute('data-state', 'on');
         }
         updateView();
     }
@@ -252,25 +198,23 @@ title: Dashboard
     function clearAllFilters() {
         selectedColFilters.clear();
         document.querySelectorAll('.col-filter-btn').forEach(btn => {
-            btn.classList.remove(...activeBtnClass);
-            btn.classList.add(...inactiveBtnClass);
+            btn.setAttribute('data-state', 'off');
         });
         updateView();
     }
 
     function updateView() {
-        // 1. Reset gomb
-        const resetBtn = document.getElementById('reset-btn');
-        resetBtn.style.display = selectedColFilters.size > 0 ? 'inline-block' : 'none';
+        // Reset gomb a Hero szekcióban
+        const heroReset = document.getElementById('reset-hero-btn');
+        heroReset.style.display = selectedColFilters.size > 0 ? 'inline-flex' : 'none';
 
-        // 2. Oszlopok kezelése
+        // Oszlopok és Chartok
         const headers = document.querySelectorAll('th.col-cell:not(.sticky)');
         let visibleKeys = [];
 
         headers.forEach(th => {
             const key = th.getAttribute('data-key');
             const tags = th.getAttribute('data-tags').split(',');
-            // Logika: Ha nincs szűrő, mind látszik. Ha van, akkor CSAK az, ami minden szűrőnek megfelel.
             const matches = selectedColFilters.size === 0 || Array.from(selectedColFilters).every(filter => tags.includes(filter));
             
             const cells = document.querySelectorAll(`.col-${key}`);
@@ -285,7 +229,7 @@ title: Dashboard
             }
         });
 
-        // 3. Diagramok frissítése
+        // Diagram Frissítés
         const filteredData = envData.filter(item => visibleKeys.includes(item.key));
         const labels = filteredData.map(d => d.name);
         
@@ -293,16 +237,16 @@ title: Dashboard
         updateChart(chartCpu, labels, filteredData.map(d => d.cpu));
         updateChart(chartDisk, labels, filteredData.map(d => d.disk));
 
-        // 4. Empty State
+        // Empty State
         const noResults = document.getElementById('no-results');
-        const table = document.querySelector('table');
+        const tableWrapper = document.querySelector('.overflow-auto');
         
         if (visibleKeys.length === 0) {
             noResults.classList.remove('hidden');
-            table.classList.add('opacity-10', 'blur-sm');
+            tableWrapper.classList.add('hidden');
         } else {
             noResults.classList.add('hidden');
-            table.classList.remove('opacity-10', 'blur-sm');
+            tableWrapper.classList.remove('hidden');
         }
     }
 
