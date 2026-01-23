@@ -68,8 +68,24 @@ layout: none
             <label class="filter-label">Platform</label>
             <div class="filter-chips" data-filter="os">
               <button class="filter-chip" data-value="">All</button>
-              <button class="filter-chip" data-value="Linux">Linux</button>
-              <button class="filter-chip" data-value="BSD">BSD</button>
+              <button class="filter-chip" data-value="linux">Linux</button>
+              <button class="filter-chip" data-value="bsd">BSD</button>
+            </div>
+          </div>
+
+          <div class="filter-group">
+            <label class="filter-label">Compositor</label>
+            <div class="filter-chips" data-filter="compositor">
+              <button class="filter-chip" data-value="">All</button>
+              <button class="filter-chip" data-value="wayland">Wayland only</button>
+            </div>
+          </div>
+
+          <div class="filter-group">
+            <label class="filter-label">Performance</label>
+            <div class="filter-chips" data-filter="performance">
+              <button class="filter-chip" data-value="">All</button>
+              <button class="filter-chip" data-value="high">Lightweight only</button>
             </div>
           </div>
         </div>
@@ -97,6 +113,8 @@ layout: none
             data-layout="{{ de.layout | downcase }}"
             data-os="{{ de.os | join: ',' | downcase }}"
             data-tags="{{ de.tags | join: ',' | downcase }}"
+            data-compositor="{{ de.compositor | downcase }}"
+            data-performance="{{ de.performance | downcase }}"
           >
             <div class="de-card-header">
               <div>
