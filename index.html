@@ -1,77 +1,156 @@
 ---
 layout: default
-title: Asztali Környezetek
+title: Dashboard
 ---
 
-<div class="max-w-7xl mx-auto mb-12 grid grid-cols-1 md:grid-cols-3 gap-6 px-4">
-    <div class="bg-darkbg-800 border border-darkbg-700 rounded-xl p-4 shadow-lg relative overflow-hidden">
-        <h3 class="text-gray-400 text-xs uppercase font-bold mb-4 tracking-widest flex items-center gap-2">
-            <span class="w-2 h-2 rounded-full bg-fuchsia-500"></span> RAM Használat (MB)
-        </h3>
-        <div class="relative h-48 w-full">
-            <canvas id="chartRam"></canvas>
+<div class="max-w-7xl mx-auto space-y-8">
+
+    <div class="flex flex-col md:flex-row md:items-end justify-between gap-4">
+        <div>
+            <h1 class="text-3xl font-bold tracking-tight text-primary mb-2">Desktop Environment Finder</h1>
+            <p class="text-muted text-sm max-w-xl">
+                Hasonlítsd össze az Arch Linux felületeket valós idejű metrikák alapján.
+            </p>
+        </div>
+        <div class="flex items-center gap-2 px-3 py-1.5 rounded-full bg-cyan-950/20 border border-cyan-900/50 text-cyan-400 text-xs font-medium">
+            <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+            Arch Linux Base
         </div>
     </div>
 
-    <div class="bg-darkbg-800 border border-darkbg-700 rounded-xl p-4 shadow-lg relative overflow-hidden">
-        <h3 class="text-gray-400 text-xs uppercase font-bold mb-4 tracking-widest flex items-center gap-2">
-            <span class="w-2 h-2 rounded-full bg-cyan-500"></span> CPU / Bloat Index
-        </h3>
-        <div class="relative h-48 w-full">
-            <canvas id="chartCpu"></canvas>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <div class="bg-surface border border-border rounded-xl p-5 shadow-sm relative overflow-hidden group hover:border-brand-purple/50 transition-colors">
+            <div class="flex justify-between items-start mb-4">
+                <div>
+                    <p class="text-xs font-medium text-muted uppercase tracking-wider">Memória (Idle)</p>
+                    <h3 class="text-2xl font-bold text-white mt-1">RAM</h3>
+                </div>
+                <div class="p-2 bg-brand-purple/10 rounded-lg text-brand-purple">
+                    <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z" /></svg>
+                </div>
+            </div>
+            <div class="h-32 w-full">
+                <canvas id="chartRam"></canvas>
+            </div>
+        </div>
+
+        <div class="bg-surface border border-border rounded-xl p-5 shadow-sm relative overflow-hidden group hover:border-brand-cyan/50 transition-colors">
+            <div class="flex justify-between items-start mb-4">
+                <div>
+                    <p class="text-xs font-medium text-muted uppercase tracking-wider">Rendszerigény</p>
+                    <h3 class="text-2xl font-bold text-white mt-1">CPU Index</h3>
+                </div>
+                <div class="p-2 bg-brand-cyan/10 rounded-lg text-brand-cyan">
+                    <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" /></svg>
+                </div>
+            </div>
+            <div class="h-32 w-full">
+                <canvas id="chartCpu"></canvas>
+            </div>
+        </div>
+
+        <div class="bg-surface border border-border rounded-xl p-5 shadow-sm relative overflow-hidden group hover:border-brand-lime/50 transition-colors">
+            <div class="flex justify-between items-start mb-4">
+                <div>
+                    <p class="text-xs font-medium text-muted uppercase tracking-wider">Telepített méret</p>
+                    <h3 class="text-2xl font-bold text-white mt-1">Storage</h3>
+                </div>
+                <div class="p-2 bg-brand-lime/10 rounded-lg text-brand-lime">
+                    <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 7v10c0 2.21 3.582 4 8 4s8-1.79 8-4V7M4 7c0 2.21 3.582 4 8 4s8-1.79 8-4M4 7c0-2.21 3.582-4 8-4s8 1.79 8 4m0 5c0 2.21-3.582 4-8 4s-8-1.79-8-4" /></svg>
+                </div>
+            </div>
+            <div class="h-32 w-full">
+                <canvas id="chartDisk"></canvas>
+            </div>
         </div>
     </div>
 
-    <div class="bg-darkbg-800 border border-darkbg-700 rounded-xl p-4 shadow-lg relative overflow-hidden">
-        <h3 class="text-gray-400 text-xs uppercase font-bold mb-4 tracking-widest flex items-center gap-2">
-            <span class="w-2 h-2 rounded-full bg-lime-500"></span> Tárhely Igény (MB)
-        </h3>
-        <div class="relative h-48 w-full">
-            <canvas id="chartDisk"></canvas>
-        </div>
-    </div>
-</div>
+    <div class="bg-surface/50 border border-border rounded-lg p-1.5 flex flex-wrap gap-1 items-center backdrop-blur-sm">
+        <span class="text-xs font-medium text-muted px-3 uppercase tracking-wider">Szűrők:</span>
+        
+        {% for filter in site.data.environments.feature_filters %}
+        <button 
+            onclick="toggleColFilter('{{ filter.id }}')" 
+            id="col-btn-{{ filter.id }}"
+            class="col-filter-btn px-3 py-1.5 rounded-md text-xs font-medium transition-all border border-transparent text-muted hover:text-white hover:bg-white/5"
+            data-filter-id="{{ filter.id }}">
+            {{ filter.name }}
+        </button>
+        {% endfor %}
 
-<div class="bg-darkbg-800 rounded-2xl shadow-2xl border border-darkbg-700 overflow-hidden transition-all duration-500 relative backdrop-blur-sm bg-opacity-90 max-w-[95%] mx-auto">
-    <div class="overflow-x-auto">
-        <table class="w-full text-left border-collapse" id="main-table">
-            <thead>
-                <tr class="bg-darkbg-900/50 border-b border-darkbg-700 text-xs uppercase tracking-wider text-gray-400 font-bold">
-                    {% for header in site.data.environments.headers %}
-                        <th class="p-5 min-w-[160px] whitespace-nowrap col-cell col-{{ header.key }} {% if header.key == 'feature' %}sticky left-0 bg-darkbg-900 z-20 border-r border-darkbg-700 shadow-[2px_0_5px_rgba(0,0,0,0.2)]{% endif %}"
-                            data-key="{{ header.key }}"
-                            data-tags="{{ header.tags | join: ',' }}">
-                            {{ header.name }}
-                        </th>
+        <div class="h-4 w-px bg-border mx-2"></div>
+
+        <button onclick="clearAllFilters()" id="reset-btn" class="hidden px-3 py-1.5 rounded-md text-xs font-medium text-red-400 hover:bg-red-500/10 transition-colors ml-auto">
+            Szűrők törlése ✕
+        </button>
+    </div>
+
+    <div class="border border-border rounded-xl overflow-hidden bg-surface shadow-sm">
+        <div class="overflow-x-auto">
+            <table class="w-full text-left border-collapse" id="main-table">
+                <thead>
+                    <tr class="bg-zinc-900/50 border-b border-border text-xs uppercase tracking-wider text-muted font-medium">
+                        {% for header in site.data.environments.headers %}
+                            <th class="p-4 whitespace-nowrap col-cell col-{{ header.key }} 
+                                {% if header.key == 'feature' %}sticky left-0 bg-surface z-20 border-r border-border{% endif %}"
+                                data-key="{{ header.key }}"
+                                data-tags="{{ header.tags | join: ',' }}">
+                                
+                                <div class="flex flex-col gap-1">
+                                    <span class="text-white">{{ header.name }}</span>
+                                    {% if header.tags %}
+                                    <div class="flex gap-1 opacity-60">
+                                        {% for tag in header.tags limit:2 %}
+                                            <span class="px-1 py-0.5 rounded-[2px] bg-white/5 text-[9px] leading-none">{{ tag }}</span>
+                                        {% endfor %}
+                                    </div>
+                                    {% endif %}
+                                </div>
+                            </th>
+                        {% endfor %}
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-border/50 text-sm">
+                    {% for row in site.data.environments.rows %}
+                    <tr class="table-row-item hover:bg-white/[0.02] transition-colors group" data-category="{{ row.category }}">
+                        {% for header in site.data.environments.headers %}
+                            {% if header.key == 'feature' %}
+                                <td class="p-4 font-medium text-white sticky left-0 bg-surface group-hover:bg-[#1c1c20] border-r border-border z-10">
+                                    <div class="flex items-center gap-2">
+                                        <div class="w-1 h-4 rounded-full category-indicator opacity-80" data-cat-id="{{ row.category }}"></div>
+                                        {{ row.feature }}
+                                    </div>
+                                </td>
+                            {% else %}
+                                <td class="p-4 text-muted col-cell col-{{ header.key }}">
+                                    {{ row[header.key] }}
+                                </td>
+                            {% endif %}
+                        {% endfor %}
+                    </tr>
                     {% endfor %}
-                </tr>
-            </thead>
-            <tbody class="divide-y divide-darkbg-700/50">
-                {% for row in site.data.environments.rows %}
-                <tr class="table-row-item hover:bg-darkbg-700/40 transition-colors group" data-category="{{ row.category }}">
-                    {% for header in site.data.environments.headers %}
-                        {% if header.key == 'feature' %}
-                            <td class="p-5 font-semibold text-gray-200 sticky left-0 bg-darkbg-800 group-hover:bg-darkbg-800/90 border-r border-darkbg-700 shadow-[2px_0_5px_rgba(0,0,0,0.2)] z-10">
-                                {{ row.feature }}
-                                <span class="category-indicator inline-block w-1.5 h-1.5 rounded-full ml-2 mb-0.5" data-cat-id="{{ row.category }}"></span>
-                            </td>
-                        {% else %}
-                            <td class="p-5 text-gray-400 col-cell col-{{ header.key }}">
-                                {{ row[header.key] }}
-                            </td>
-                        {% endif %}
-                    {% endfor %}
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
+                </tbody>
+            </table>
+        </div>
+        
+        <div id="no-results" class="hidden py-16 text-center">
+            <div class="inline-flex items-center justify-center w-12 h-12 rounded-full bg-border/50 mb-4">
+                <svg class="w-6 h-6 text-muted" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" /></svg>
+            </div>
+            <p class="text-muted font-medium">Nincs találat a kiválasztott szűrőkre.</p>
+        </div>
     </div>
-    <div id="no-results" class="hidden p-12 text-center text-gray-500">Nincs találat</div>
+    
+    <div class="flex justify-center gap-6 mt-4 text-xs text-muted">
+         <div class="flex items-center gap-2"><span class="w-2 h-2 rounded-full bg-brand-lime"></span> Teljesítmény</div>
+         <div class="flex items-center gap-2"><span class="w-2 h-2 rounded-full bg-brand-cyan"></span> UX / Design</div>
+         <div class="flex items-center gap-2"><span class="w-2 h-2 rounded-full bg-brand-purple"></span> Technikai</div>
+    </div>
+
 </div>
 
 <script>
-    // --- ADATOK BETÖLTÉSE ---
-    // A Jekyll Liquid segítségével generálunk egy JS objektumot a metrikákból
+    // --- ADATOK GENERÁLÁSA ---
     const envData = [
         {% for header in site.data.environments.headers %}
         {% if header.key != 'feature' %}
@@ -86,10 +165,9 @@ title: Asztali Környezetek
         {% endfor %}
     ];
 
-    // --- CHART.JS KONFIGURÁCIÓ ---
-    // Közös beállítások a sötét témához
-    Chart.defaults.color = '#9CA3AF';
-    Chart.defaults.borderColor = '#374151';
+    // --- CHART.JS CONFIG ---
+    Chart.defaults.font.family = 'Inter';
+    Chart.defaults.color = '#71717a'; // zinc-500
     
     let chartRam, chartCpu, chartDisk;
 
@@ -97,170 +175,138 @@ title: Asztali Környezetek
         const commonOptions = {
             responsive: true,
             maintainAspectRatio: false,
-            plugins: { legend: { display: false } },
+            plugins: { legend: { display: false }, tooltip: { backgroundColor: '#18181b', borderColor: '#27272a', borderWidth: 1, padding: 10 } },
             scales: {
-                y: { beginAtZero: true, grid: { color: '#374151' } },
-                x: { grid: { display: false } }
+                y: { display: false, beginAtZero: true }, // Rejtett Y tengely a tisztább look érdekében
+                x: { grid: { display: false }, ticks: { font: { size: 10 } } }
             },
-            animation: { duration: 750 }
+            animation: { duration: 600, easing: 'easeOutQuart' }
         };
 
-        // RAM Chart (Fuchsia)
-        chartRam = new Chart(document.getElementById('chartRam'), {
+        // Gradiens segédfüggvény
+        const createGradient = (ctx, colorStart, colorEnd) => {
+            const gradient = ctx.createLinearGradient(0, 0, 0, 300);
+            gradient.addColorStop(0, colorStart);
+            gradient.addColorStop(1, colorEnd);
+            return gradient;
+        };
+
+        const ctxRam = document.getElementById('chartRam').getContext('2d');
+        chartRam = new Chart(ctxRam, {
             type: 'bar',
-            data: { labels: [], datasets: [{ label: 'RAM (MB)', data: [], backgroundColor: '#d946ef', borderRadius: 4 }] },
+            data: { labels: [], datasets: [{ data: [], backgroundColor: '#d8b4fe', borderRadius: 4, barThickness: 20 }] },
             options: commonOptions
         });
 
-        // CPU Chart (Cyan)
-        chartCpu = new Chart(document.getElementById('chartCpu'), {
+        const ctxCpu = document.getElementById('chartCpu').getContext('2d');
+        chartCpu = new Chart(ctxCpu, {
             type: 'bar',
-            data: { labels: [], datasets: [{ label: 'Bloat Index', data: [], backgroundColor: '#06b6d4', borderRadius: 4 }] },
+            data: { labels: [], datasets: [{ data: [], backgroundColor: '#22d3ee', borderRadius: 4, barThickness: 20 }] },
             options: commonOptions
         });
 
-        // Disk Chart (Lime)
-        chartDisk = new Chart(document.getElementById('chartDisk'), {
+        const ctxDisk = document.getElementById('chartDisk').getContext('2d');
+        chartDisk = new Chart(ctxDisk, {
             type: 'bar',
-            data: { labels: [], datasets: [{ label: 'Disk (MB)', data: [], backgroundColor: '#84cc16', borderRadius: 4 }] },
+            data: { labels: [], datasets: [{ data: [], backgroundColor: '#bef264', borderRadius: 4, barThickness: 20 }] },
             options: commonOptions
         });
     }
 
-    // --- SZŰRÉS LOGIKA (Összefésülve a diagramokkal) ---
+    // --- SZŰRÉS LOGIKA ---
     
-    const rowColorMap = {
-        'performance': { active: ['text-lime-400', 'bg-lime-900/20', 'border-lime-500/50'], inactive: ['text-gray-500', 'border-transparent'] },
-        'ux': { active: ['text-cyan-400', 'bg-cyan-900/20', 'border-cyan-500/50'], inactive: ['text-gray-500', 'border-transparent'] },
-        'tech': { active: ['text-fuchsia-400', 'bg-fuchsia-900/20', 'border-fuchsia-500/50'], inactive: ['text-gray-500', 'border-transparent'] }
-    };
-    const activeColBtnClasses = ['bg-cyan-500', 'text-black', 'border-cyan-400', 'shadow-[0_0_10px_rgba(6,182,212,0.5)]'];
-    const inactiveColBtnClasses = ['bg-darkbg-800', 'text-gray-400', 'border-darkbg-700'];
+    // Színek V0 stílusban: Aktív gombok "világítanak" (fehér bg, fekete text), inaktívak beleolvadnak
+    const activeBtnClass = ['bg-white', 'text-black', 'shadow-md'];
+    const inactiveBtnClass = ['text-muted', 'hover:text-white', 'hover:bg-white/5'];
 
-    let selectedRowCategories = new Set();
     let selectedColFilters = new Set(); 
 
     document.addEventListener("DOMContentLoaded", () => {
-        initCharts(); // Diagramok indítása
+        initCharts();
         
-        // Pöttyök színezése
+        // Kategória jelzők színezése (sorok elején)
         document.querySelectorAll('.category-indicator').forEach(indicator => {
             const catId = indicator.getAttribute('data-cat-id');
-            const colorClass = catId === 'performance' ? 'bg-lime-500' : (catId === 'ux' ? 'bg-cyan-500' : 'bg-fuchsia-500');
+            const colorClass = catId === 'performance' ? 'bg-brand-lime' : (catId === 'ux' ? 'bg-brand-cyan' : 'bg-brand-purple');
             indicator.classList.add(colorClass);
         });
         
-        updateView(); // Első render
+        updateView();
     });
 
     function toggleColFilter(filterId) {
         const btn = document.getElementById(`col-btn-${filterId}`);
+        
         if (selectedColFilters.has(filterId)) {
             selectedColFilters.delete(filterId);
-            btn.classList.remove(...activeColBtnClasses);
-            btn.classList.add(...inactiveColBtnClasses);
+            btn.classList.remove(...activeBtnClass);
+            btn.classList.add(...inactiveBtnClass);
         } else {
             selectedColFilters.add(filterId);
-            btn.classList.remove(...inactiveColBtnClasses);
-            btn.classList.add(...activeColBtnClasses);
-        }
-        updateView();
-    }
-
-    function toggleRowFilter(catId) {
-        const btn = document.getElementById(`row-btn-${catId}`);
-        const styles = rowColorMap[catId];
-        if (selectedRowCategories.has(catId)) {
-            selectedRowCategories.delete(catId);
-            btn.classList.remove(...styles.active);
-            btn.classList.add(...styles.inactive);
-        } else {
-            selectedRowCategories.add(catId);
-            btn.classList.remove(...styles.inactive);
-            btn.classList.add(...styles.active);
+            btn.classList.remove(...inactiveBtnClass);
+            btn.classList.add(...activeBtnClass);
         }
         updateView();
     }
 
     function clearAllFilters() {
         selectedColFilters.clear();
-        selectedRowCategories.clear();
         document.querySelectorAll('.col-filter-btn').forEach(btn => {
-            btn.classList.remove(...activeColBtnClasses);
-            btn.classList.add(...inactiveColBtnClasses);
-        });
-        document.querySelectorAll('.row-filter-btn').forEach(btn => {
-            btn.className = "row-filter-btn px-5 py-2 rounded-full text-sm font-semibold border transition-all duration-300 bg-transparent text-gray-500 border-transparent hover:text-gray-300";
+            btn.classList.remove(...activeBtnClass);
+            btn.classList.add(...inactiveBtnClass);
         });
         updateView();
     }
 
     function updateView() {
-        // --- 1. Reset gomb ---
+        // 1. Reset gomb
         const resetBtn = document.getElementById('reset-btn');
-        if (selectedColFilters.size > 0 || selectedRowCategories.size > 0) resetBtn.classList.remove('hidden');
-        else resetBtn.classList.add('hidden');
+        resetBtn.style.display = selectedColFilters.size > 0 ? 'inline-block' : 'none';
 
-        // --- 2. OSZLOP ÉS DIAGRAM ADATOK ---
+        // 2. Oszlopok kezelése
         const headers = document.querySelectorAll('th.col-cell:not(.sticky)');
-        let visibleKeys = []; // Itt gyűjtjük, mi látható
+        let visibleKeys = [];
 
         headers.forEach(th => {
             const key = th.getAttribute('data-key');
             const tags = th.getAttribute('data-tags').split(',');
-            const matchesAllFilters = Array.from(selectedColFilters).every(filter => tags.includes(filter));
+            // Logika: Ha nincs szűrő, mind látszik. Ha van, akkor CSAK az, ami minden szűrőnek megfelel.
+            const matches = selectedColFilters.size === 0 || Array.from(selectedColFilters).every(filter => tags.includes(filter));
+            
             const cells = document.querySelectorAll(`.col-${key}`);
             
-            if (matchesAllFilters) {
+            if (matches) {
                 th.style.display = '';
                 cells.forEach(cell => cell.style.display = '');
-                visibleKeys.push(key); // Hozzáadjuk a listához
+                visibleKeys.push(key);
             } else {
                 th.style.display = 'none';
                 cells.forEach(cell => cell.style.display = 'none');
             }
         });
 
-        // --- 3. DIAGRAMOK FRISSÍTÉSE ---
-        // Csak a látható oszlopok adatait gyűjtjük ki
+        // 3. Diagramok frissítése
         const filteredData = envData.filter(item => visibleKeys.includes(item.key));
-        
         const labels = filteredData.map(d => d.name);
-        const ramData = filteredData.map(d => d.ram);
-        const cpuData = filteredData.map(d => d.cpu);
-        const diskData = filteredData.map(d => d.disk);
+        
+        updateChart(chartRam, labels, filteredData.map(d => d.ram));
+        updateChart(chartCpu, labels, filteredData.map(d => d.cpu));
+        updateChart(chartDisk, labels, filteredData.map(d => d.disk));
 
-        updateChartData(chartRam, labels, ramData);
-        updateChartData(chartCpu, labels, cpuData);
-        updateChartData(chartDisk, labels, diskData);
-
-        // --- 4. SOR SZŰRÉS ---
-        const rows = document.querySelectorAll('.table-row-item');
-        let visibleRows = 0;
-        rows.forEach(row => {
-            const rowCat = row.getAttribute('data-category');
-            if (selectedRowCategories.size === 0 || selectedRowCategories.has(rowCat)) {
-                row.style.display = '';
-                visibleRows++;
-            } else {
-                row.style.display = 'none';
-            }
-        });
-
-        // --- 5. ÜRES ÁLLAPOT ---
+        // 4. Empty State
         const noResults = document.getElementById('no-results');
         const table = document.querySelector('table');
-        if (visibleRows === 0 || visibleKeys.length === 0) {
+        
+        if (visibleKeys.length === 0) {
             noResults.classList.remove('hidden');
-            table.classList.add('opacity-50');
+            table.classList.add('opacity-10', 'blur-sm');
         } else {
             noResults.classList.add('hidden');
-            table.classList.remove('opacity-50');
+            table.classList.remove('opacity-10', 'blur-sm');
         }
     }
 
-    // Segédfüggvény a chart frissítéshez
-    function updateChartData(chart, labels, data) {
+    function updateChart(chart, labels, data) {
         chart.data.labels = labels;
         chart.data.datasets[0].data = data;
         chart.update();
