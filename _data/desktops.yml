@@ -68,4 +68,4 @@
   description: "i3-compatible tiling window manager for Wayland."
   website: "https://swaywm.org/"
   docs: ""
-  tags: ["Wayland", "Tiling"]
+  tags: ["Wayland", "Tiling", "Lightweight"]
