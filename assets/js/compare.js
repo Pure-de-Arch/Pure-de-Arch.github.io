@@ -1,4 +1,5 @@
 let selected = [];
+let chartInstance = null;
 
 document.addEventListener("click", e => {
   if (e.target.classList.contains("selectBtn")) {
@@ -16,7 +17,13 @@ function updateChart() {
   const ram = items.map(i => i.ram);
   const hdd = items.map(i => i.hdd);
 
-  new Chart(document.getElementById("compareChart"), {
+  const ctx = document.getElementById("compareChart").getContext("2d");
+
+  if (chartInstance) {
+    chartInstance.destroy();
+  }
+
+  chartInstance = new Chart(ctx, {
     type: "bar",
     data: {
       labels,
@@ -28,11 +35,11 @@ function updateChart() {
     },
     options: {
       plugins: {
-        legend: { labels: { color: "#fff" } }
+        legend: { labels: { color: "#ffffff" } }
       },
       scales: {
-        x: { ticks: { color: "#fff" } },
-        y: { ticks: { color: "#fff" } }
+        x: { ticks: { color: "#ffffff" } },
+        y: { ticks: { color: "#ffffff" } }
       }
     }
   });
