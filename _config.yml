@@ -3,9 +3,6 @@ description: Modern desktop environment comparison
 theme: minima
 markdown: kramdown
 
-collections:
-  - desktops
-
 exclude:
   - README.md
   - node_modules
