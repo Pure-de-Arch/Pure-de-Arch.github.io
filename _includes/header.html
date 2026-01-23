@@ -2,7 +2,7 @@
   <h1 class="title">Pure DE Arch</h1>
 
   <a href="https://github.com/Pure-de-Arch" class="github-desktop">
-    <img src="/assets/github.svg" class="icon">
+    <img src="/assets/github.svg" class="icon" alt="GitHub">
   </a>
 
   <button id="menuBtn" class="hamburger">☰</button>
@@ -12,3 +12,12 @@
     <a href="https://github.com/Pure-de-Arch">GitHub</a>
   </nav>
 </header>
+
+<script>
+  const menuBtn = document.getElementById('menuBtn');
+  const mobileMenu = document.getElementById('mobileMenu');
+
+  menuBtn.addEventListener('click', () => {
+    mobileMenu.classList.toggle('hidden');
+  });
+</script>
