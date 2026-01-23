@@ -13,39 +13,31 @@ layout: none
 <body>
   <main class="wrapper">
     <h1>Desktop Environment & Window Manager összehasonlító</h1>
-    <p>
-      Szűrd és hasonlítsd össze a különböző DE-ket és WM-eket
+    <p class="lead">
+      Válassz buborék-szűrőket, és hasonlítsd össze a DE-ket és WM-eket
       CPU, RAM és HDD igény alapján, látványos sávdiagramokkal.
     </p>
 
-    <section class="filters">
-      <div>
-        <label for="filter-type">Típus</label>
-        <select id="filter-type">
-          <option value="all">DE + WM</option>
-          <option value="DE">Csak Desktop Environment</option>
-          <option value="WM">Csak Window Manager</option>
-        </select>
+    <section class="bubble-filters">
+      <div class="filter-group" data-filter="type">
+        <span class="filter-label">Típus</span>
+        <button class="bubble" data-value="DE">DE</button>
+        <button class="bubble" data-value="WM">WM</button>
       </div>
 
-      <div>
-        <label for="filter-toolkit">Toolkit</label>
-        <select id="filter-toolkit">
-          <option value="all">Bármely</option>
-          <option value="GTK">GTK</option>
-          <option value="Qt">Qt</option>
-          <option value="none">Nincs / vegyes</option>
-        </select>
+      <div class="filter-group" data-filter="toolkit">
+        <span class="filter-label">Toolkit</span>
+        <button class="bubble" data-value="GTK">GTK</button>
+        <button class="bubble" data-value="Qt">Qt</button>
+        <button class="bubble" data-value="none">Nincs / vegyes</button>
       </div>
 
-      <div>
-        <label for="filter-max-ram">Max RAM (MB)</label>
-        <input id="filter-max-ram" type="number" min="0" step="100" placeholder="pl. 1000">
-      </div>
-
-      <div>
-        <label for="filter-search">Keresés (név, tag, toolkit)</label>
-        <input id="filter-search" type="text" placeholder="pl. lightweight, tiling, GNOME">
+      <div class="filter-group" data-filter="tags">
+        <span class="filter-label">Címkék</span>
+        <button class="bubble" data-value="lightweight">lightweight</button>
+        <button class="bubble" data-value="tiling">tiling</button>
+        <button class="bubble" data-value="modern">modern</button>
+        <button class="bubble" data-value="customizable">customizable</button>
       </div>
     </section>
 
