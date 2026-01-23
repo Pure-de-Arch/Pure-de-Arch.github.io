@@ -1,128 +1,130 @@
 (function () {
+  const cards = [...document.querySelectorAll(".de-card")];
   const searchInput = document.querySelector('[data-filter="search"]');
-  const cards = Array.from(document.querySelectorAll(".de-card"));
-  const totalCountEl = document.getElementById("total-count");
-  const visibleCountEl = document.getElementById("visible-count");
-  const emptyStateEl = document.getElementById("empty-state");
+  const themeToggleBtn = document.getElementById("theme-toggle");
 
-  let state = {
-    search: "",
-    category: "",
-    layout: "",
-    os: "",
-    compositor: "",
-    performance: "",
-    toolkit: "",
-    config_style: "",
-    target_usage: ""
+  // Multi-select filter state
+  const multiFilters = {
+    category: new Set(),
+    layout: new Set(),
+    os: new Set(),
+    toolkit: new Set(),
+    compositor: new Set(),
+    target_usage: new Set()
   };
 
-  function normalize(str) {
-    return (str || "").toString().toLowerCase();
+  let searchTerm = "";
+
+  function normalize(v) {
+    return (v || "").toLowerCase();
   }
 
   function applyFilters() {
-    let visibleCount = 0;
-    const search = normalize(state.search);
-    const category = normalize(state.category);
-    const layout = normalize(state.layout);
-    const os = normalize(state.os);
-    const compositor = normalize(state.compositor);
-    const performance = normalize(state.performance);
-    const toolkit = normalize(state.toolkit);
-    const configStyle = normalize(state.config_style);
-    const targetUsage = normalize(state.target_usage);
-
     cards.forEach((card) => {
-      const name = card.dataset.name || "";
-      const cat = card.dataset.category || "";
-      const lay = card.dataset.layout || "";
-      const osList = card.dataset.os || "";
-      const tags = card.dataset.tags || "";
-      const compositorField = card.dataset.compositor || "";
-      const performanceField = card.dataset.performance || "";
-      const toolkitField = card.dataset.toolkit || "";
-      const configField = card.dataset.config_style || "";
-      const targetField = card.dataset.target_usage || "";
+      const fields = {
+        name: normalize(card.dataset.name),
+        category: normalize(card.dataset.category),
+        layout: normalize(card.dataset.layout),
+        os: normalize(card.dataset.os),
+        toolkit: normalize(card.dataset.toolkit),
+        compositor: normalize(card.dataset.compositor),
+        target_usage: normalize(card.dataset.target_usage),
+        tags: normalize(card.dataset.tags)
+      };
 
       let visible = true;
 
-      if (search) {
-        const haystack = [
-          name,
-          cat,
-          lay,
-          osList,
-          tags,
-          compositorField,
-          performanceField,
-          toolkitField,
-          configField,
-          targetField
-        ].join(" ");
-        if (!haystack.includes(search)) visible = false;
+      // Search
+      if (searchTerm) {
+        const haystack = Object.values(fields).join(" ");
+        if (!haystack.includes(searchTerm)) visible = false;
       }
 
-      if (category && !cat.includes(category)) visible = false;
-      if (layout && !lay.includes(layout)) visible = false;
-      if (os && !osList.includes(os)) visible = false;
-      if (compositor && !compositorField.includes(compositor)) visible = false;
-
-      if (performance) {
-        if (!performanceField.includes(performance)) visible = false;
+      // Multi-select filters: AND over groups, OR inside group
+      for (const key in multiFilters) {
+        const active = multiFilters[key];
+        if (active.size > 0) {
+          let match = false;
+          active.forEach((val) => {
+            if (fields[key].includes(val)) match = true;
+          });
+          if (!match) visible = false;
+        }
       }
 
-      if (toolkit && !toolkitField.includes(toolkit)) visible = false;
-      if (configStyle && !configField.includes(configStyle)) visible = false;
-      if (targetUsage && !targetField.includes(targetUsage)) visible = false;
-
-      card.style.display = visible ? "" : "none";
-      if (visible) visibleCount++;
+      // Animated show/hide
+      if (visible) {
+        card.style.display = "";
+        requestAnimationFrame(() => {
+          card.classList.remove("hidden");
+        });
+      } else {
+        card.classList.add("hidden");
+        setTimeout(() => {
+          if (card.classList.contains("hidden")) {
+            card.style.display = "none";
+          }
+        }, 200);
+      }
     });
-
-    visibleCountEl.textContent = visibleCount;
-    emptyStateEl.style.display = visibleCount === 0 ? "block" : "none";
   }
 
-  // Search
+  // Search input
   if (searchInput) {
     searchInput.addEventListener("input", (e) => {
-      state.search = e.target.value;
+      searchTerm = normalize(e.target.value);
       applyFilters();
     });
   }
 
-  // Generic chip filter setup
-  function setupChipFilter(containerSelector, stateKey) {
-    const container = document.querySelector(containerSelector);
-    if (!container) return;
+  // Chip filters (multi-select)
+  document.querySelectorAll(".filter-chips").forEach((group) => {
+    const key = group.dataset.filter;
+    if (!multiFilters[key]) return;
 
-    container.addEventListener("click", (e) => {
-      const btn = e.target.closest(".filter-chip");
-      if (!btn) return;
+    group.addEventListener("click", (e) => {
+      const chip = e.target.closest(".filter-chip");
+      if (!chip) return;
+      const value = normalize(chip.dataset.value);
 
-      Array.from(container.querySelectorAll(".filter-chip")).forEach((chip) =>
-        chip.classList.remove("active")
-      );
+      if (chip.classList.contains("active")) {
+        chip.classList.remove("active");
+        multiFilters[key].delete(value);
+      } else {
+        chip.classList.add("active");
+        multiFilters[key].add(value);
+      }
 
-      btn.classList.add("active");
-      state[stateKey] = btn.dataset.value || "";
       applyFilters();
     });
+  });
 
-    const firstChip = container.querySelector('.filter-chip[data-value=""]');
-    if (firstChip) firstChip.classList.add("active");
+  // Card flip
+  cards.forEach((card) => {
+    card.addEventListener("click", () => {
+      card.classList.toggle("flipped");
+    });
+  });
+
+  // Theme toggle + persistence
+  function applyTheme(theme) {
+    if (theme === "light") {
+      document.body.classList.add("theme-light");
+    } else {
+      document.body.classList.remove("theme-light");
+    }
   }
 
-  setupChipFilter('[data-filter="category"]', "category");
-  setupChipFilter('[data-filter="layout"]', "layout");
-  setupChipFilter('[data-filter="os"]', "os");
-  setupChipFilter('[data-filter="compositor"]', "compositor");
-  setupChipFilter('[data-filter="performance"]', "performance");
-  setupChipFilter('[data-filter="toolkit"]', "toolkit");
-  setupChipFilter('[data-filter="config_style"]', "config_style");
-  setupChipFilter('[data-filter="target_usage"]', "target_usage");
+  const savedTheme = localStorage.getItem("de_theme");
+  if (savedTheme) applyTheme(savedTheme);
 
-  if (totalCountEl) totalCountEl.textContent = cards.length;
-  if (visibleCountEl) visibleCountEl.textContent = cards.length;
+  if (themeToggleBtn) {
+    themeToggleBtn.addEventListener("click", () => {
+      const isLight = document.body.classList.toggle("theme-light");
+      localStorage.setItem("de_theme", isLight ? "light" : "dark");
+    });
+  }
+
+  // Initial filter pass
+  applyFilters();
 })();
