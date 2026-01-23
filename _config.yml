@@ -1,12 +1,13 @@
 title: Desktop Environment Comparison
-description: A Jekyll-based DE comparison site
-baseurl: ""
-url: ""
+description: Modern desktop environment comparison
+theme: minima
+markdown: kramdown
 
-theme: null
+collections:
+  - desktops
 
-defaults:
-  - scope:
-      path: ""
-    values:
-      layout: default
+exclude:
+  - README.md
+  - node_modules
+  - package.json
+  - package-lock.json
