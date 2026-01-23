@@ -1,137 +1,151 @@
 ---
-layout: default
-title: Desktop Environment Comparison
+layout: none
 ---
 
-<!-- MOBILE HEADER -->
-<div class="md:hidden flex justify-between items-center mb-4">
-  <h1 class="text-2xl font-bold bg-gradient-to-r from-neonBlue to-neonPurple bg-clip-text text-transparent">
-    DE Comparison
-  </h1>
-  <button id="mobile-menu-btn" class="px-3 py-2 rounded-lg bg-card border border-border text-slate-300">
-    ☰
-  </button>
-</div>
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>{{ site.title }}</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content="{{ site.description }}" />
+    <link rel="stylesheet" href="{{ '/assets/css/style.css' | relative_url }}" />
+  </head>
+  <body>
+    <div class="app-shell">
+      <header class="app-header">
+        <div class="app-title-row">
+          <div>
+            <div class="app-title">
+              <span class="logo-dot"></span>
+              <span>Desktop Environment Comparison</span>
+            </div>
+            <p class="app-subtitle">
+              Filter and compare desktop environments and window managers by layout, platform, performance and more.
+            </p>
+          </div>
+          <div class="app-badge">
+            <span class="app-badge-dot"></span>
+            <span>Live filtering · Static Jekyll site</span>
+          </div>
+        </div>
+      </header>
 
-<div class="flex w-full max-w-[1500px] bg-card backdrop-blur-xl border border-border rounded-2xl shadow-2xl overflow-hidden">
+      <section class="filter-panel">
+        <div class="filter-row">
+          <div class="filter-group">
+            <label class="filter-label" for="search">Search</label>
+            <input
+              id="search"
+              class="filter-input"
+              type="text"
+              placeholder="Search by name, tag, layout..."
+              data-filter="search"
+            />
+          </div>
 
-  <!-- SIDEBAR -->
-  <aside id="sidebar"
-         class="w-80 bg-sidebar border-r border-border p-8 flex flex-col gap-8
-                fixed md:static top-0 left-0 h-full md:h-auto z-50
-                transform -translate-x-full md:translate-x-0 transition-transform duration-300">
+          <div class="filter-group">
+            <label class="filter-label" for="category">Category</label>
+            <select id="category" class="filter-select" data-filter="category">
+              <option value="">All</option>
+              <option value="Full DE">Full DE</option>
+              <option value="Tiling WM">Tiling WM</option>
+              <option value="Stacking WM">Stacking WM</option>
+            </select>
+          </div>
 
-    <h2 class="text-slate-300 text-lg tracking-wide font-semibold">Filters</h2>
+          <div class="filter-group">
+            <label class="filter-label" for="layout">Layout</label>
+            <select id="layout" class="filter-select" data-filter="layout">
+              <option value="">All</option>
+              <option value="Modern">Modern</option>
+              <option value="Traditional">Traditional</option>
+              <option value="Tiling">Tiling</option>
+            </select>
+          </div>
 
-    <div class="flex flex-col gap-2">
-      <label class="text-sm text-slate-400">Search</label>
-      <input id="search"
-             class="px-4 py-3 rounded-xl bg-white/5 border border-border focus:border-neonBlue focus:ring-2 focus:ring-neonBlue/40 outline-none"
-             placeholder="Search...">
-    </div>
+          <div class="filter-group">
+            <label class="filter-label">Platform</label>
+            <div class="filter-chips" data-filter="os">
+              <button class="filter-chip" data-value="">All</button>
+              <button class="filter-chip" data-value="Linux">Linux</button>
+              <button class="filter-chip" data-value="BSD">BSD</button>
+            </div>
+          </div>
+        </div>
+      </section>
 
-    <div class="flex flex-col gap-2">
-      <label class="text-sm text-slate-400">Category</label>
-      <select id="filter-category"
-              class="px-4 py-3 rounded-xl bg-white/5 border border-border focus:border-neonPurple focus:ring-2 focus:ring-neonPurple/40 outline-none">
-        <option value="">All</option>
-        <option>Full Desktop</option>
-        <option>Lightweight</option>
-        <option>Tiling WM</option>
-      </select>
-    </div>
+      <section class="stats-bar">
+        <div class="stats-pill">
+          <span>Total:</span>
+          <strong id="total-count">{{ site.data.desktops | size }}</strong>
+          <span>entries</span>
+        </div>
+        <div class="stats-pill">
+          <span>Visible:</span>
+          <strong id="visible-count">{{ site.data.desktops | size }}</strong>
+        </div>
+      </section>
 
-    <div class="flex flex-col gap-2">
-      <label class="text-sm text-slate-400">Toolkit</label>
-      <select id="filter-toolkit"
-              class="px-4 py-3 rounded-xl bg-white/5 border border-border focus:border-neonCyan focus:ring-2 focus:ring-neonCyan/40 outline-none">
-        <option value="">All</option>
-        <option>Qt</option>
-        <option>GTK</option>
-        <option>None</option>
-      </select>
-    </div>
-
-    <div class="flex flex-col gap-2">
-      <label class="text-sm text-slate-400">Wayland support</label>
-      <select id="filter-wayland"
-              class="px-4 py-3 rounded-xl bg-white/5 border border-border focus:border-neonPink focus:ring-2 focus:ring-neonPink/40 outline-none">
-        <option value="">All</option>
-        <option>Excellent</option>
-        <option>Good</option>
-        <option>Medium</option>
-        <option>Limited</option>
-        <option>Experimental</option>
-      </select>
-    </div>
-
-    <button id="reset"
-            class="px-4 py-3 rounded-xl border border-border text-slate-300 hover:border-neonBlue hover:text-neonBlue transition">
-      Reset filters
-    </button>
-  </aside>
-
-  <!-- MAIN -->
-  <main class="flex-1 p-10">
-
-    <!-- ACTIVE FILTER CHIPS -->
-    <div id="active-chips" class="flex flex-wrap gap-2 mb-6"></div>
-
-    <h1 class="hidden md:block text-3xl font-bold mb-6 bg-gradient-to-r from-neonBlue to-neonPurple bg-clip-text text-transparent">
-      Desktop Environment Comparison
-    </h1>
-
-    <div class="bg-card backdrop-blur-xl border border-border rounded-2xl shadow-xl p-4 overflow-auto">
-
-      <table class="w-full text-sm">
-        <thead class="text-slate-400 uppercase text-xs tracking-wider">
-          <tr>
-            <th data-col="name" class="sortable py-3 px-4 border-b border-border text-left cursor-pointer">Name</th>
-            <th data-col="category" class="sortable py-3 px-4 border-b border-border text-left cursor-pointer">Category</th>
-            <th data-col="toolkit" class="sortable py-3 px-4 border-b border-border text-left cursor-pointer">Toolkit</th>
-            <th data-col="resource" class="sortable py-3 px-4 border-b border-border text-left cursor-pointer">Resource</th>
-            <th data-col="wayland" class="sortable py-3 px-4 border-b border-border text-left cursor-pointer">Wayland</th>
-            <th data-col="customization" class="sortable py-3 px-4 border-b border-border text-left cursor-pointer">Customization</th>
-            <th data-col="notes" class="sortable py-3 px-4 border-b border-border text-left cursor-pointer">Notes</th>
-          </tr>
-        </thead>
-
-        <tbody>
+      <main>
+        <div id="card-grid" class="card-grid">
           {% for de in site.data.desktops %}
-          <tr class="row transition hover:bg-white/10"
-              data-name="{{ de.name | escape }}"
-              data-category="{{ de.category | escape }}"
-              data-toolkit="{{ de.toolkit | escape }}"
-              data-wayland="{{ de.wayland | escape }}"
-              data-notes="{{ de.notes | escape }}"
+          <article
+            class="de-card"
+            data-name="{{ de.name | downcase }}"
+            data-category="{{ de.category | downcase }}"
+            data-layout="{{ de.layout | downcase }}"
+            data-os="{{ de.os | join: ',' | downcase }}"
+            data-tags="{{ de.tags | join: ',' | downcase }}"
           >
-            <td class="py-3 px-4 border-b border-border">{{ de.name }}</td>
-            <td class="py-3 px-4 border-b border-border">{{ de.category }}</td>
-            <td class="py-3 px-4 border-b border-border">{{ de.toolkit }}</td>
-            <td class="py-3 px-4 border-b border-border">{{ de.resource }}</td>
-            <td class="py-3 px-4 border-b border-border">{{ de.wayland }}</td>
-            <td class="py-3 px-4 border-b border-border">{{ de.customization }}</td>
-            <td class="py-3 px-4 border-b border-border">{{ de.notes }}</td>
-          </tr>
+            <div class="de-card-header">
+              <div>
+                <div class="de-name">
+                  <span>{{ de.name }}</span>
+                  <span class="de-tag">{{ de.category }}</span>
+                </div>
+                <div class="de-meta">
+                  <span class="de-meta-pill">{{ de.layout }}</span>
+                  <span class="de-meta-pill">Perf: {{ de.performance }}</span>
+                  <span class="de-meta-pill">Complexity: {{ de.complexity }}</span>
+                  <span class="de-meta-pill">{{ de.compositor }}</span>
+                </div>
+              </div>
+            </div>
+
+            <p class="de-desc">
+              {{ de.description }}
+            </p>
+
+            <div class="de-footer">
+              <div class="de-links">
+                {% if de.website %}
+                <a class="de-link" href="{{ de.website }}" target="_blank" rel="noreferrer">
+                  Website
+                </a>
+                {% endif %}
+                {% if de.docs %}
+                <a class="de-link" href="{{ de.docs }}" target="_blank" rel="noreferrer">
+                  Docs
+                </a>
+                {% endif %}
+              </div>
+              <div class="de-badges">
+                {% for tag in de.tags %}
+                <span class="de-badge">{{ tag }}</span>
+                {% endfor %}
+              </div>
+            </div>
+          </article>
           {% endfor %}
-        </tbody>
-      </table>
+        </div>
 
-      <div id="no-results" class="text-red-400 mt-4 hidden">
-        No results found.
-      </div>
-
+        <div id="empty-state" class="empty-state" style="display: none">
+          No desktop environments match your filters. Try adjusting the search or filters.
+        </div>
+      </main>
     </div>
-  </main>
 
-</div>
-
-<!-- MOBILE SIDEBAR TOGGLE -->
-<script>
-  const btn = document.getElementById("mobile-menu-btn");
-  const sidebar = document.getElementById("sidebar");
-
-  btn.addEventListener("click", () => {
-    sidebar.classList.toggle("-translate-x-full");
-  });
-</script>
+    <script src="{{ '/assets/js/app.js' | relative_url }}"></script>
+  </body>
+</html>
