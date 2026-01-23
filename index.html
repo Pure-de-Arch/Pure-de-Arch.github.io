@@ -1,70 +1,100 @@
 ---
-layout: none
+layout: default
+title: Desktop Environment Comparison
 ---
 
-<!DOCTYPE html>
-<html lang="hu">
-<head>
-  <meta charset="UTF-8">
-  <title>{{ site.title }}</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="stylesheet" href="{{ '/assets/css/style.css' | relative_url }}">
-</head>
-<body>
-  <main class="wrapper">
-    <h1>Desktop Environment & Window Manager összehasonlító</h1>
-    <p class="lead">
-      Válassz buborék-szűrőket, és hasonlítsd össze a DE-ket és WM-eket
-      CPU, RAM és HDD igény alapján, látványos sávdiagramokkal.
-    </p>
+<div class="app-container">
+  <aside class="sidebar">
+    <h2>Filters</h2>
 
-    <section class="bubble-filters">
-      <div class="filter-group" data-filter="type">
-        <span class="filter-label">Típus</span>
-        <button class="bubble" data-value="DE">DE</button>
-        <button class="bubble" data-value="WM">WM</button>
-      </div>
+    <div class="filter-group">
+      <label for="search">Search</label>
+      <input type="text" id="search" placeholder="Search by name or notes..." />
+    </div>
 
-      <div class="filter-group" data-filter="toolkit">
-        <span class="filter-label">Toolkit</span>
-        <button class="bubble" data-value="GTK">GTK</button>
-        <button class="bubble" data-value="Qt">Qt</button>
-        <button class="bubble" data-value="none">Nincs / vegyes</button>
-      </div>
+    <div class="filter-group">
+      <label>Category</label>
+      <select id="filter-category">
+        <option value="">All</option>
+        <option value="Full Desktop">Full Desktop</option>
+        <option value="Lightweight">Lightweight</option>
+        <option value="Tiling WM">Tiling WM</option>
+      </select>
+    </div>
 
-      <div class="filter-group" data-filter="tags">
-        <span class="filter-label">Címkék</span>
-        <button class="bubble" data-value="lightweight">lightweight</button>
-        <button class="bubble" data-value="tiling">tiling</button>
-        <button class="bubble" data-value="modern">modern</button>
-        <button class="bubble" data-value="customizable">customizable</button>
+    <div class="filter-group">
+      <label>Toolkit</label>
+      <select id="filter-toolkit">
+        <option value="">All</option>
+        <option value="Qt">Qt</option>
+        <option value="GTK">GTK</option>
+        <option value="None">None</option>
+      </select>
+    </div>
+
+    <div class="filter-group">
+      <label>Wayland support</label>
+      <select id="filter-wayland">
+        <option value="">All</option>
+        <option value="Excellent">Excellent</option>
+        <option value="Good">Good</option>
+        <option value="Medium">Medium</option>
+        <option value="Limited">Limited</option>
+        <option value="Experimental">Experimental</option>
+      </select>
+    </div>
+
+    <button id="reset-filters" class="reset-button">Reset filters</button>
+  </aside>
+
+  <main class="main-content">
+    <header class="main-header">
+      <h1>Desktop Environment Comparison</h1>
+      <p>Filter and compare desktop environments and window managers.</p>
+    </header>
+
+    <section class="table-wrapper">
+      <table id="desktop-table">
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Category</th>
+            <th>Toolkit</th>
+            <th>Distro integration</th>
+            <th>Resource usage</th>
+            <th>Wayland support</th>
+            <th>Customization</th>
+            <th>Notes</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for de in site.data.desktops %}
+          <tr
+            class="desktop-row"
+            data-name="{{ de.name | escape }}"
+            data-category="{{ de.category | escape }}"
+            data-toolkit="{{ de.toolkit | escape }}"
+            data-wayland="{{ de.wayland_support | escape }}"
+            data-notes="{{ de.notes | escape }}"
+          >
+            <td>{{ de.name }}</td>
+            <td>{{ de.category }}</td>
+            <td>{{ de.toolkit }}</td>
+            <td>{{ de.distro_integration }}</td>
+            <td>{{ de.resource_usage }}</td>
+            <td>{{ de.wayland_support }}</td>
+            <td>{{ de.customization }}</td>
+            <td>{{ de.notes }}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+
+      <div id="no-results" class="no-results" style="display:none;">
+        No desktop environments match your filters.
       </div>
     </section>
-
-    <section id="cards" class="cards"></section>
-
-    <p class="footer-note">
-      Az értékek példák, oktatási célra. Saját méréseidet könnyen beírhatod a
-      <code>_data/environments.yml</code> fájlba.
-    </p>
   </main>
+</div>
 
-  <script>
-    // Jekyll -> JS: YAML adat beégetése
-    window.DEWM_DATA = [
-      {% for item in site.data.environments %}
-      {
-        name: "{{ item.name | escape }}",
-        type: "{{ item.type | escape }}",
-        toolkit: "{{ item.toolkit | escape }}",
-        cpu: {{ item.cpu }},
-        ram: {{ item.ram }},
-        hdd: {{ item.hdd }},
-        tags: [{% for t in item.tags %}"{{ t | escape }}"{% unless forloop.last %}, {% endunless %}{% endfor %}]
-      }{% unless forloop.last %},{% endunless %}
-      {% endfor %}
-    ];
-  </script>
-  <script src="{{ '/assets/js/app.js' | relative_url }}"></script>
-</body>
-</html>
+<script src="{{ '/assets/js/app.js' | relative_url }}"></script>
