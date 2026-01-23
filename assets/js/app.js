@@ -34,7 +34,7 @@ document.addEventListener("DOMContentLoaded", () => {
       if (ok) visible++;
     });
 
-    noResults.style.display = visible === 0 ? "block" : "none";
+    noResults.classList.toggle("hidden", visible !== 0);
   }
 
   search.addEventListener("input", apply);
