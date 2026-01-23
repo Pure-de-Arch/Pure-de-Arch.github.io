@@ -3,86 +3,81 @@ layout: default
 title: Desktop Environment Comparison
 ---
 
-<div class="app-container">
+<div class="container">
+
   <aside class="sidebar">
     <h2>Filters</h2>
 
-    <div class="filter-group">
-      <label for="search">Search</label>
-      <input type="text" id="search" placeholder="Search by name or notes..." />
+    <div class="filter">
+      <label>Search</label>
+      <input id="search" type="text" placeholder="Search...">
     </div>
 
-    <div class="filter-group">
+    <div class="filter">
       <label>Category</label>
       <select id="filter-category">
         <option value="">All</option>
-        <option value="Full Desktop">Full Desktop</option>
-        <option value="Lightweight">Lightweight</option>
-        <option value="Tiling WM">Tiling WM</option>
+        <option>Full Desktop</option>
+        <option>Lightweight</option>
+        <option>Tiling WM</option>
       </select>
     </div>
 
-    <div class="filter-group">
+    <div class="filter">
       <label>Toolkit</label>
       <select id="filter-toolkit">
         <option value="">All</option>
-        <option value="Qt">Qt</option>
-        <option value="GTK">GTK</option>
-        <option value="None">None</option>
+        <option>Qt</option>
+        <option>GTK</option>
+        <option>None</option>
       </select>
     </div>
 
-    <div class="filter-group">
+    <div class="filter">
       <label>Wayland support</label>
       <select id="filter-wayland">
         <option value="">All</option>
-        <option value="Excellent">Excellent</option>
-        <option value="Good">Good</option>
-        <option value="Medium">Medium</option>
-        <option value="Limited">Limited</option>
-        <option value="Experimental">Experimental</option>
+        <option>Excellent</option>
+        <option>Good</option>
+        <option>Medium</option>
+        <option>Limited</option>
+        <option>Experimental</option>
       </select>
     </div>
 
-    <button id="reset-filters" class="reset-button">Reset filters</button>
+    <button id="reset">Reset filters</button>
   </aside>
 
-  <main class="main-content">
-    <header class="main-header">
-      <h1>Desktop Environment Comparison</h1>
-      <p>Filter and compare desktop environments and window managers.</p>
-    </header>
+  <main class="main">
+    <h1>Desktop Environment Comparison</h1>
 
-    <section class="table-wrapper">
-      <table id="desktop-table">
+    <div class="table-wrapper">
+      <table id="de-table">
         <thead>
           <tr>
             <th>Name</th>
             <th>Category</th>
             <th>Toolkit</th>
-            <th>Distro integration</th>
-            <th>Resource usage</th>
-            <th>Wayland support</th>
+            <th>Resource</th>
+            <th>Wayland</th>
             <th>Customization</th>
             <th>Notes</th>
           </tr>
         </thead>
         <tbody>
           {% for de in site.data.desktops %}
-          <tr
-            class="desktop-row"
+          <tr class="row"
             data-name="{{ de.name | escape }}"
             data-category="{{ de.category | escape }}"
             data-toolkit="{{ de.toolkit | escape }}"
-            data-wayland="{{ de.wayland_support | escape }}"
+            data-wayland="{{ de.wayland | escape }}"
             data-notes="{{ de.notes | escape }}"
           >
             <td>{{ de.name }}</td>
             <td>{{ de.category }}</td>
             <td>{{ de.toolkit }}</td>
-            <td>{{ de.distro_integration }}</td>
-            <td>{{ de.resource_usage }}</td>
-            <td>{{ de.wayland_support }}</td>
+            <td>{{ de.resource }}</td>
+            <td>{{ de.wayland }}</td>
             <td>{{ de.customization }}</td>
             <td>{{ de.notes }}</td>
           </tr>
@@ -90,11 +85,8 @@ title: Desktop Environment Comparison
         </tbody>
       </table>
 
-      <div id="no-results" class="no-results" style="display:none;">
-        No desktop environments match your filters.
-      </div>
-    </section>
+      <div id="no-results" class="no-results">No results found.</div>
+    </div>
   </main>
-</div>
 
-<script src="{{ '/assets/js/app.js' | relative_url }}"></script>
+</div>
