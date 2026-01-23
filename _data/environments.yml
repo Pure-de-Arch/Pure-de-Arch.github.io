@@ -1,4 +1,4 @@
-# Szűrő gombok
+# Szűrő gombok (Bővítettem a 'Dynamic' és 'Stacking' címkékkel a teljesség kedvéért)
 feature_filters:
   - id: "wayland"
     name: "Wayland"
@@ -14,9 +14,12 @@ feature_filters:
     name: "Low Spec"
   - id: "beginner"
     name: "Kezdőbarát"
+  - id: "advanced"
+    name: "Haladó"
 
-# A környezetek listája (Kártyák adatai)
+# A környezetek listája
 items:
+  # --- EREDETIEK ---
   - id: "gnome"
     name: "GNOME"
     description: "A legnépszerűbb modern Linux környezet. Egyedi, gesztus-vezérelt workflow."
@@ -94,3 +97,122 @@ items:
       wm: "i3"
       toolkit: "Nincs"
     metrics: { ram: 200, cpu: 10, disk: 150 }
+
+  # --- ÚJ KÖRNYEZETEK (DESKTOP ENVIRONMENTS) ---
+  - id: "budgie"
+    name: "Budgie"
+    description: "Modern, letisztult és elegáns. A Solus projektből származik, GNOME technológiákra épül."
+    image: "https://upload.wikimedia.org/wikipedia/commons/thumb/1/1d/Budgie_Desktop_10.8_on_Solus_4.4.png/640px-Budgie_Desktop_10.8_on_Solus_4.4.png"
+    website: "https://buddiesofbudgie.org"
+    download: "https://archlinux.org/packages/extra/x86_64/budgie-desktop/"
+    color: "#64748b" # Slate
+    tags: ["x11", "gtk", "medium", "beginner"]
+    specs:
+      wm: "Budgie WM"
+      toolkit: "GTK3/4"
+    metrics: { ram: 800, cpu: 45, disk: 1200 }
+
+  - id: "deepin"
+    name: "Deepin (DDE)"
+    description: "Az egyik legszebb gyári Linux felület. Üveghatások, oldalsávok, Qt alapon."
+    image: "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f5/Deepin_20.1_Desktop.png/640px-Deepin_20.1_Desktop.png"
+    website: "https://www.deepin.org"
+    download: "https://archlinux.org/groups/x86_64/deepin/"
+    color: "#8b5cf6" # Violet
+    tags: ["x11", "qt", "heavy", "beginner"]
+    specs:
+      wm: "Deepin WM"
+      toolkit: "Qt/DTK"
+    metrics: { ram: 1100, cpu: 75, disk: 3000 }
+
+  - id: "mate"
+    name: "MATE"
+    description: "A klasszikus GNOME 2 folytatása. Tradicionális, stabil és erőforrás-takarékos."
+    image: "https://upload.wikimedia.org/wikipedia/commons/thumb/1/18/MATE_1.26.0_Desktop_Environment.png/640px-MATE_1.26.0_Desktop_Environment.png"
+    website: "https://mate-desktop.org"
+    download: "https://archlinux.org/groups/x86_64/mate/"
+    color: "#a855f7" # Lila
+    tags: ["x11", "gtk", "light", "beginner", "classic"]
+    specs:
+      wm: "Marco"
+      toolkit: "GTK3"
+    metrics: { ram: 500, cpu: 35, disk: 1100 }
+
+  - id: "lxqt"
+    name: "LXQt"
+    description: "A legkönnyebb modern környezet. Moduláris, gyors, Qt technológiát használ."
+    image: "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e0/LXQt_1.2.0.png/640px-LXQt_1.2.0.png"
+    website: "https://lxqt-project.org"
+    download: "https://archlinux.org/groups/x86_64/lxqt/"
+    color: "#06b6d4" # Cián
+    tags: ["x11", "qt", "light", "classic"]
+    specs:
+      wm: "Openbox"
+      toolkit: "Qt6"
+    metrics: { ram: 350, cpu: 20, disk: 600 }
+
+  - id: "enlightenment"
+    name: "Enlightenment"
+    description: "Egyedi vizuális világ, saját grafikus könyvtárral (EFL). Hihetetlenül könnyű és látványos."
+    image: "https://upload.wikimedia.org/wikipedia/commons/thumb/9/90/Enlightenment_0.25.0.jpg/640px-Enlightenment_0.25.0.jpg"
+    website: "https://www.enlightenment.org"
+    download: "https://archlinux.org/groups/x86_64/enlightenment/"
+    color: "#d97706" # Gold
+    tags: ["x11", "wayland", "light", "advanced"]
+    specs:
+      wm: "Enlightenment"
+      toolkit: "EFL"
+    metrics: { ram: 250, cpu: 25, disk: 500 }
+
+  # --- ÚJ WINDOW MANAGEREK (WM) ---
+  - id: "sway"
+    name: "Sway"
+    description: "Az i3 ablakkezelő Waylandre írt változata. Modern, konfigurálható és villámgyors."
+    image: "https://upload.wikimedia.org/wikipedia/commons/thumb/2/23/Sway_1.0_Arch_Linux.png/640px-Sway_1.0_Arch_Linux.png"
+    website: "https://swaywm.org"
+    download: "https://archlinux.org/packages/extra/x86_64/sway/"
+    color: "#14b8a6" # Teal
+    tags: ["wayland", "tiling", "light", "advanced"]
+    specs:
+      wm: "Sway"
+      toolkit: "Nincs"
+    metrics: { ram: 400, cpu: 20, disk: 250 }
+
+  - id: "awesome"
+    name: "Awesome"
+    description: "Dinamikus ablakkezelő. Lua nyelven programozható, rendkívül flexibilis."
+    image: "https://upload.wikimedia.org/wikipedia/commons/thumb/2/22/Awesome_WM_screenshot.png/640px-Awesome_WM_screenshot.png"
+    website: "https://awesomewm.org"
+    download: "https://archlinux.org/packages/extra/x86_64/awesome/"
+    color: "#6366f1" # Indigo
+    tags: ["x11", "tiling", "light", "advanced"]
+    specs:
+      wm: "Awesome"
+      toolkit: "Lua/XCB"
+    metrics: { ram: 350, cpu: 25, disk: 300 }
+
+  - id: "openbox"
+    name: "Openbox"
+    description: "A standard stacking (lebegő) ablakkezelő. Nincs felesleg, csak az ablakkeret. Gyakran használják alapnak."
+    image: "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c5/Openbox-3.4-default.png/640px-Openbox-3.4-default.png"
+    website: "http://openbox.org"
+    download: "https://archlinux.org/packages/extra/x86_64/openbox/"
+    color: "#94a3b8" # Silver
+    tags: ["x11", "light", "advanced"]
+    specs:
+      wm: "Openbox"
+      toolkit: "Nincs"
+    metrics: { ram: 180, cpu: 5, disk: 100 }
+
+  - id: "bspwm"
+    name: "bspwm"
+    description: "Bináris térosztásos ablakkezelő. Két konfigurációs fájllal (bspwmrc + sxhkd) működik."
+    image: "https://upload.wikimedia.org/wikipedia/commons/thumb/0/03/Bspwm_screenshot.png/640px-Bspwm_screenshot.png"
+    website: "https://github.com/baskerville/bspwm"
+    download: "https://archlinux.org/packages/extra/x86_64/bspwm/"
+    color: "#84cc16" # Lime
+    tags: ["x11", "tiling", "light", "advanced"]
+    specs:
+      wm: "bspwm"
+      toolkit: "Nincs"
+    metrics: { ram: 220, cpu: 10, disk: 150 }
