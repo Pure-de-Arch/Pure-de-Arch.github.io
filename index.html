@@ -1,155 +1,57 @@
 ---
-layout: none
+layout: default
+title: Asztali Környezetek Összehasonlítása
 ---
 
-<!DOCTYPE html>
-<html lang="hu">
-  <head>
-    <meta charset="UTF-8" />
-    <title>{{ site.title }}</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <link rel="stylesheet" href="{{ '/assets/css/style.css' | relative_url }}" />
-  </head>
-  <body>
-    <div class="app-shell">
-      <header class="app-header">
-        <div class="app-title-block">
-          <div class="app-title">
-            <span class="logo-dot"></span>
-            <span>Desktop Environment Comparison</span>
-          </div>
-          <p class="app-subtitle">
-            Filter and compare desktop environments and window managers by layout, platform, performance and features.
-          </p>
-        </div>
-        <button id="theme-toggle" class="theme-toggle-btn">
-          🌗 Theme
-        </button>
-      </header>
+<div class="text-center mb-12">
+    <h2 class="text-3xl sm:text-4xl font-extrabold text-gray-900 mb-4">Melyik környezet való neked?</h2>
+    <p class="text-lg text-gray-600 max-w-2xl mx-auto">
+        Részletes összehasonlítás a sebesség, testreszabhatóság és felhasználói élmény alapján.
+    </p>
+</div>
 
-      <section class="filter-panel">
-        <div class="filter-row">
-          <!-- SEARCH -->
-          <div class="filter-group">
-            <label class="filter-label">Search</label>
-            <input
-              class="filter-input"
-              data-filter="search"
-              placeholder="Search by name, tag, feature..."
-            />
-          </div>
-
-          <!-- CATEGORY -->
-          <div class="filter-group">
-            <label class="filter-label">Category</label>
-            <div class="filter-chips" data-filter="category">
-              <button class="filter-chip" data-value="full de" data-color="blue">Full DE</button>
-              <button class="filter-chip" data-value="tiling wm" data-color="pink">Tiling WM</button>
-              <button class="filter-chip" data-value="stacking wm" data-color="green">Stacking WM</button>
-            </div>
-          </div>
-
-          <!-- LAYOUT -->
-          <div class="filter-group">
-            <label class="filter-label">Layout</label>
-            <div class="filter-chips" data-filter="layout">
-              <button class="filter-chip" data-value="modern" data-color="orange">Modern</button>
-              <button class="filter-chip" data-value="traditional" data-color="purple">Traditional</button>
-              <button class="filter-chip" data-value="tiling" data-color="blue">Tiling</button>
-            </div>
-          </div>
-
-          <!-- OS -->
-          <div class="filter-group">
-            <label class="filter-label">Platform</label>
-            <div class="filter-chips" data-filter="os">
-              <button class="filter-chip" data-value="linux" data-color="green">Linux</button>
-              <button class="filter-chip" data-value="bsd" data-color="pink">BSD</button>
-            </div>
-          </div>
-
-          <!-- TOOLKIT -->
-          <div class="filter-group">
-            <label class="filter-label">Toolkit</label>
-            <div class="filter-chips" data-filter="toolkit">
-              <button class="filter-chip" data-value="gtk" data-color="orange">GTK</button>
-              <button class="filter-chip" data-value="qt" data-color="blue">Qt</button>
-              <button class="filter-chip" data-value="none" data-color="purple">None</button>
-            </div>
-          </div>
-
-          <!-- COMPOSITOR -->
-          <div class="filter-group">
-            <label class="filter-label">Compositor</label>
-            <div class="filter-chips" data-filter="compositor">
-              <button class="filter-chip" data-value="wayland" data-color="green">Wayland</button>
-              <button class="filter-chip" data-value="x11" data-color="pink">X11</button>
-            </div>
-          </div>
-
-          <!-- TARGET USAGE -->
-          <div class="filter-group">
-            <label class="filter-label">Target usage</label>
-            <div class="filter-chips" data-filter="target_usage">
-              <button class="filter-chip" data-value="general" data-color="blue">General</button>
-              <button class="filter-chip" data-value="lightweight" data-color="green">Lightweight</button>
-              <button class="filter-chip" data-value="power user" data-color="orange">Power user</button>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <div id="card-grid" class="card-grid">
-        {% for de in site.data.desktops %}
-        <article
-          class="de-card"
-          data-name="{{ de.name | downcase }}"
-          data-category="{{ de.category | downcase }}"
-          data-layout="{{ de.layout | downcase }}"
-          data-os="{{ de.os | join: ',' | downcase }}"
-          data-compositor="{{ de.compositor | join: ',' | downcase }}"
-          data-performance="{{ de.performance | downcase }}"
-          data-toolkit="{{ de.toolkit | downcase }}"
-          data-config_style="{{ de.config_style | downcase }}"
-          data-target_usage="{{ de.target_usage | downcase }}"
-          data-tags="{{ de.tags | join: ',' | downcase }}"
-        >
-          <div class="de-card-inner">
-            <div class="de-card-front">
-              <div class="de-name">{{ de.name }}</div>
-              <div class="de-meta">
-                {{ de.category }} · {{ de.layout }} · {{ de.toolkit }} · {{ de.performance }}
-              </div>
-              <p>{{ de.description }}</p>
-              <div class="flip-hint">Click card to flip</div>
-            </div>
-            <div class="de-card-back">
-              <div class="de-name">{{ de.name }} – details</div>
-              <div class="de-meta">
-                Compositor: {{ de.compositor | join: ', ' }}<br />
-                Config: {{ de.config_style }} · Target: {{ de.target_usage }}
-              </div>
-              <div class="de-tags">
-                {% for tag in de.tags %}
-                <span class="de-tag-pill">{{ tag }}</span>
+<div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
+    <div class="overflow-x-auto">
+        <table class="w-full text-left border-collapse">
+            <thead>
+                <tr class="bg-gray-50/50 border-b border-gray-200 text-xs uppercase tracking-wider text-gray-500 font-semibold">
+                    {% for header in site.data.environments.headers %}
+                    <th class="p-4 min-w-[150px] {% if forloop.first %}sticky left-0 bg-gray-50 z-10 border-r border-gray-200{% endif %}">
+                        {{ header.name }}
+                    </th>
+                    {% endfor %}
+                </tr>
+            </thead>
+            <tbody class="divide-y divide-gray-100">
+                {% for row in site.data.environments.rows %}
+                <tr class="hover:bg-gray-50 transition-colors group">
+                    <td class="p-4 font-medium text-gray-900 sticky left-0 bg-white group-hover:bg-gray-50 border-r border-gray-200 shadow-[2px_0_5px_-2px_rgba(0,0,0,0.05)]">
+                        {{ row.feature }}
+                    </td>
+                    
+                    <td class="p-4 text-gray-600">{{ row.gnome }}</td>
+                    <td class="p-4 text-gray-600">{{ row.kde }}</td>
+                    <td class="p-4 text-gray-600">{{ row.xfce }}</td>
+                    <td class="p-4 text-gray-600">
+                        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
+                            {{ row.tiling }}
+                        </span>
+                    </td>
+                </tr>
                 {% endfor %}
-              </div>
-              <div class="de-links">
-                {% if de.website %}
-                <a class="de-link" href="{{ de.website }}" target="_blank" rel="noreferrer">Website</a>
-                {% endif %}
-                {% if de.docs %}
-                <a class="de-link" href="{{ de.docs }}" target="_blank" rel="noreferrer">Docs</a>
-                {% endif %}
-              </div>
-              <div class="flip-hint">Click again to flip back</div>
-            </div>
-          </div>
-        </article>
-        {% endfor %}
-      </div>
+            </tbody>
+        </table>
     </div>
+</div>
 
-    <script src="{{ '/assets/js/app.js' | relative_url }}"></script>
-  </body>
-</html>
+<div class="mt-8 p-4 bg-blue-50 border border-blue-100 rounded-lg flex items-start gap-3">
+    <div class="text-blue-500 text-xl">💡</div>
+    <div>
+        <h4 class="font-semibold text-blue-900">Hogyan válassz?</h4>
+        <p class="text-sm text-blue-800 mt-1">
+            Ha erős géped van és szereted a modern designt, válassz <strong>GNOME</strong>-ot. 
+            Ha mindent testre akarsz szabni, a <strong>KDE</strong> a nyerő. 
+            Régi laptopra az <strong>XFCE</strong> a legjobb választás.
+        </p>
+    </div>
+</div>
