@@ -6,32 +6,17 @@ layout: default
   <h1>Fedezd fel a Linux Desktop világát</h1>
   <p>Keresd meg a számodra ideális Desktop Environment-et vagy Window Manager-t.</p>
   <p>Szűrj jellemzők alapján és hasonlítsd össze az erőforrás-használatot.</p>
+  <p>A rendszer Arch Linux alapra épül és minimális módosítással igyekszik visszaadni a DE vagy WM eredeti megjelenését.</p>
 </div>
 
-<div id="filters" class="panel">
-  <h2>Szűrők</h2>
-
-  <label>Fő kategória:</label>
-  <select id="categoryFilter">
-    <option value="">Mind</option>
-    <option value="wayland">Wayland</option>
-    <option value="xorg">Xorg</option>
-  </select>
-
-  <label>Altípus:</label>
-  <select id="typeFilter">
-    <option value="">Mind</option>
-    <option value="tiling">Tiling</option>
-    <option value="dynamic">Dynamic</option>
-    <option value="stacking">Stacking</option>
-  </select>
-
-  <button id="applyFilters" class="btn">Szűrés</button>
+<div class="panel">
+  <h2>Feature szűrők</h2>
+  <div id="featureFilters" class="bubble-container"></div>
 </div>
 
 <div id="cards" class="cards"></div>
 
 <div id="comparison" class="panel mt-10">
-  <h2>Összehasonlítás</h2>
+  <h2>Összehasonlítás (CPU / RAM / HDD)</h2>
   <canvas id="compareChart"></canvas>
 </div>
