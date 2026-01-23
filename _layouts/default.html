@@ -1,63 +1,43 @@
-<script>
-  tailwind.config = {
-    darkMode: "class",
-    theme: {
-      extend: {
-        colors: {
-          /* --- Háttér és glassmorphism rétegek --- */
-          bg: "#080b12",
-          card: "rgba(255,255,255,0.05)",
-          sidebar: "rgba(255,255,255,0.04)",
-          border: "rgba(255,255,255,0.10)",
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ page.title | default: site.title }}</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap');
+        body { font-family: 'Inter', sans-serif; }
+    </style>
+</head>
+<body class="bg-gray-50 text-gray-900 antialiased selection:bg-black selection:text-white">
 
-          /* --- Finomhangolt neon paletta --- */
-          neonBlue:   "#5ab0ff",   /* fő akcentus */
-          neonPurple: "#b388ff",   /* kreatív, futurisztikus */
-          neonCyan:   "#3de4d3",   /* friss, energikus */
-          neonPink:   "#ff7ab8",   /* figyelemfelkeltő */
-          neonYellow: "#ffe66d",   /* opcionális highlight */
-        },
+    <div class="min-h-screen flex flex-col">
+        <header class="border-b border-gray-200 bg-white/80 backdrop-blur-md sticky top-0 z-10">
+            <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+                <h1 class="text-xl font-bold tracking-tight text-gray-900">
+                    🖥️ {{ site.title }}
+                </h1>
+                <nav>
+                    <a href="https://github.com/{{ site.github.owner_name }}/{{ site.github.repository_name }}" class="text-sm font-medium hover:text-blue-600 transition-colors">
+                        GitHub
+                    </a>
+                </nav>
+            </div>
+        </header>
 
-        /* --- Neon glow árnyékok --- */
-        boxShadow: {
-          neonBlue:   "0 0 12px rgba(90,176,255,0.45)",
-          neonPurple: "0 0 12px rgba(179,136,255,0.45)",
-          neonCyan:   "0 0 12px rgba(61,228,211,0.45)",
-          neonPink:   "0 0 12px rgba(255,122,184,0.45)",
-        },
+        <main class="flex-grow py-12 px-4 sm:px-6 lg:px-8">
+            <div class="max-w-6xl mx-auto">
+                {{ content }}
+            </div>
+        </main>
 
-        /* --- Extra blur értékek glassmorphismhez --- */
-        backdropBlur: {
-          xs: "2px",
-          sm: "4px",
-          md: "8px",
-          lg: "12px",
-        },
+        <footer class="border-t border-gray-200 bg-white py-8">
+            <div class="max-w-6xl mx-auto px-4 text-center text-gray-500 text-sm">
+                <p>&copy; {{ site.time | date: '%Y' }} {{ site.title }}. Jekyll & Tailwind alapokon.</p>
+            </div>
+        </footer>
+    </div>
 
-        /* --- Kerekítések a modern UI-hoz --- */
-        borderRadius: {
-          xl: "1rem",
-          "2xl": "1.25rem",
-          "3xl": "1.75rem",
-        },
-
-        /* --- Animációk (chip-ekhez, sidebarhoz, hoverhez) --- */
-        transitionDuration: {
-          250: "250ms",
-          350: "350ms",
-        },
-
-        /* --- Modern spacing skála --- */
-        spacing: {
-          18: "4.5rem",
-          22: "5.5rem",
-        },
-
-        /* --- Modern font (Inter) --- */
-        fontFamily: {
-          sans: ["Inter", "system-ui", "sans-serif"],
-        },
-      }
-    }
-  }
-</script>
+</body>
+</html>
