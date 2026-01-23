@@ -7,148 +7,149 @@ title: Finder
 
     <div class="text-center space-y-4">
         <h1 class="text-4xl md:text-6xl font-extrabold text-white tracking-tight">
-            Melyik <span class="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-fuchsia-500">környezet</span> való neked?
+            Arch <span class="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-fuchsia-500">Environment</span> Finder
         </h1>
         <p class="text-lg text-gray-400 max-w-2xl mx-auto">
-            Valós idejű összehasonlítás Arch Linux alapokon.
-            <br>Válassz szűrőket a diagramok és a táblázat frissítéséhez!
+            Válassz szűrőket a neked való felület megtalálásához.
         </p>
     </div>
 
     <div class="grid gap-6 md:grid-cols-3">
-        <div class="bg-darkbg-800 border border-darkbg-700 rounded-2xl p-6 shadow-xl relative overflow-hidden group hover:border-fuchsia-500/30 transition-colors">
-            <h3 class="text-sm font-bold text-gray-400 uppercase tracking-widest mb-4 flex items-center gap-2">
-                <span class="w-2 h-2 rounded-full bg-fuchsia-500"></span> RAM (Idle MB)
+        <div class="bg-darkbg-800 border border-darkbg-700 rounded-2xl p-5 shadow-lg relative overflow-hidden">
+            <h3 class="text-xs font-bold text-gray-400 uppercase tracking-widest mb-2 flex items-center gap-2">
+                <span class="w-2 h-2 rounded-full bg-fuchsia-500"></span> RAM (MB)
             </h3>
-            <div class="h-48 w-full">
-                <canvas id="chartRam"></canvas>
-            </div>
+            <div class="h-40 w-full"><canvas id="chartRam"></canvas></div>
         </div>
-        <div class="bg-darkbg-800 border border-darkbg-700 rounded-2xl p-6 shadow-xl relative overflow-hidden group hover:border-cyan-500/30 transition-colors">
-            <h3 class="text-sm font-bold text-gray-400 uppercase tracking-widest mb-4 flex items-center gap-2">
+        <div class="bg-darkbg-800 border border-darkbg-700 rounded-2xl p-5 shadow-lg relative overflow-hidden">
+            <h3 class="text-xs font-bold text-gray-400 uppercase tracking-widest mb-2 flex items-center gap-2">
                 <span class="w-2 h-2 rounded-full bg-cyan-500"></span> CPU Index
             </h3>
-            <div class="h-48 w-full">
-                <canvas id="chartCpu"></canvas>
-            </div>
+            <div class="h-40 w-full"><canvas id="chartCpu"></canvas></div>
         </div>
-        <div class="bg-darkbg-800 border border-darkbg-700 rounded-2xl p-6 shadow-xl relative overflow-hidden group hover:border-lime-500/30 transition-colors">
-            <h3 class="text-sm font-bold text-gray-400 uppercase tracking-widest mb-4 flex items-center gap-2">
+        <div class="bg-darkbg-800 border border-darkbg-700 rounded-2xl p-5 shadow-lg relative overflow-hidden">
+            <h3 class="text-xs font-bold text-gray-400 uppercase tracking-widest mb-2 flex items-center gap-2">
                 <span class="w-2 h-2 rounded-full bg-lime-500"></span> Méret (MB)
             </h3>
-            <div class="h-48 w-full">
-                <canvas id="chartDisk"></canvas>
-            </div>
+            <div class="h-40 w-full"><canvas id="chartDisk"></canvas></div>
         </div>
     </div>
 
-    <div class="flex flex-col items-center gap-4">
-        <h3 class="text-sm font-medium text-gray-500 uppercase tracking-widest">Szűrés tulajdonságok szerint</h3>
-        
-        <div class="flex flex-wrap justify-center gap-3">
+    <div class="flex flex-col items-center gap-4 sticky top-16 z-30 py-4 bg-darkbg-900/95 backdrop-blur-xl border-b border-white/5 w-full">
+        <div class="flex flex-wrap justify-center gap-2">
             {% for filter in site.data.environments.feature_filters %}
             <button 
-                onclick="toggleColFilter('{{ filter.id }}')" 
-                id="col-btn-{{ filter.id }}"
-                class="col-filter-btn px-5 py-2 rounded-full text-sm font-bold border border-darkbg-700 bg-darkbg-800 text-gray-400 transition-all duration-300 hover:border-cyan-500/50 hover:text-white hover:shadow-[0_0_15px_rgba(6,182,212,0.3)] shadow-sm"
+                onclick="toggleFilter('{{ filter.id }}')" 
+                id="filter-btn-{{ filter.id }}"
+                class="filter-btn px-4 py-1.5 rounded-full text-xs font-bold border border-darkbg-700 bg-darkbg-800 text-gray-400 transition-all duration-300 hover:border-gray-500 hover:text-white"
                 data-filter-id="{{ filter.id }}">
                 {{ filter.name }}
             </button>
             {% endfor %}
-            
-            <button onclick="clearAllFilters()" id="reset-btn" class="hidden px-5 py-2 rounded-full text-sm font-bold border border-red-900/50 bg-red-900/10 text-red-400 hover:bg-red-900/30 transition-all">
-                ✕ Törlés
+            <button onclick="clearAllFilters()" id="reset-btn" class="hidden px-4 py-1.5 rounded-full text-xs font-bold border border-red-900/50 bg-red-900/10 text-red-400 hover:bg-red-900/30">
+                ✕ Reset
             </button>
         </div>
     </div>
 
-    <div class="bg-darkbg-800 rounded-2xl shadow-2xl border border-darkbg-700 overflow-hidden relative">
-        <div class="overflow-x-auto">
-            <table class="w-full text-left border-collapse">
-                <thead class="bg-darkbg-900/50">
-                    <tr class="border-b border-darkbg-700">
-                        {% for header in site.data.environments.headers %}
-                            <th class="p-5 whitespace-nowrap text-xs font-bold text-gray-400 uppercase tracking-wider col-cell col-{{ header.key }} 
-                                {% if header.key == 'feature' %}sticky left-0 bg-darkbg-800 z-20 border-r border-darkbg-700{% endif %}"
-                                data-key="{{ header.key }}"
-                                data-tags="{{ header.tags | join: ',' }}">
-                                {{ header.name }}
-                            </th>
-                        {% endfor %}
-                    </tr>
-                </thead>
-                <tbody class="divide-y divide-darkbg-700/50">
-                    {% for row in site.data.environments.rows %}
-                    <tr class="hover:bg-white/5 transition-colors table-row-item">
-                        {% for header in site.data.environments.headers %}
-                            {% if header.key == 'feature' %}
-                                <td class="p-5 font-semibold text-white sticky left-0 bg-darkbg-800 z-10 border-r border-darkbg-700 shadow-[2px_0_5px_rgba(0,0,0,0.2)]">
-                                    {{ row.feature }}
-                                </td>
-                            {% else %}
-                                <td class="p-5 text-gray-400 col-cell col-{{ header.key }}">
-                                    {{ row[header.key] }}
-                                </td>
-                            {% endif %}
-                        {% endfor %}
-                    </tr>
+    <div id="cards-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        {% for item in site.data.environments.items %}
+        <div class="env-card group flex flex-col bg-darkbg-800 rounded-2xl overflow-hidden border border-darkbg-700 hover:border-opacity-50 transition-all duration-500 hover:-translate-y-1 hover:shadow-2xl"
+             style="--theme-color: {{ item.color }}"
+             data-id="{{ item.id }}"
+             data-tags="{{ item.tags | join: ',' }}">
+            
+            <div class="relative h-48 overflow-hidden">
+                <div class="absolute inset-0 bg-gradient-to-t from-darkbg-800 via-transparent to-transparent z-10"></div>
+                <img src="{{ item.image }}" alt="{{ item.name }}" class="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-700">
+                
+                <div class="absolute top-3 right-3 z-20 flex gap-1">
+                    {% for tag in item.tags limit:2 %}
+                    <span class="px-2 py-1 rounded bg-black/60 text-[10px] font-bold text-white backdrop-blur-md border border-white/10 uppercase tracking-wide">
+                        {{ tag }}
+                    </span>
                     {% endfor %}
-                </tbody>
-            </table>
+                </div>
+            </div>
+
+            <div class="p-6 flex-1 flex flex-col">
+                <div class="flex justify-between items-start mb-2">
+                    <h2 class="text-2xl font-bold text-white group-hover:text-[var(--theme-color)] transition-colors">
+                        {{ item.name }}
+                    </h2>
+                </div>
+                
+                <p class="text-gray-400 text-sm mb-6 leading-relaxed flex-grow">
+                    {{ item.description }}
+                </p>
+
+                <div class="grid grid-cols-2 gap-4 mb-6 text-xs border-t border-b border-darkbg-700 py-3">
+                    <div>
+                        <span class="text-gray-500 block">Ablakkezelő</span>
+                        <span class="text-gray-200 font-medium">{{ item.specs.wm }}</span>
+                    </div>
+                    <div>
+                        <span class="text-gray-500 block">Toolkit</span>
+                        <span class="text-gray-200 font-medium">{{ item.specs.toolkit }}</span>
+                    </div>
+                </div>
+
+                <div class="flex gap-3 mt-auto">
+                    <a href="{{ item.website }}" target="_blank" class="flex-1 text-center px-4 py-2 rounded-lg text-sm font-bold border border-darkbg-700 text-gray-300 hover:bg-darkbg-700 hover:text-white transition-all">
+                        Weboldal
+                    </a>
+                    <a href="{{ item.download }}" target="_blank" class="flex-1 text-center px-4 py-2 rounded-lg text-sm font-bold text-black transition-all shadow-lg hover:shadow-[var(--theme-color)]/50" 
+                       style="background-color: var(--theme-color);">
+                        Letöltés
+                    </a>
+                </div>
+            </div>
+            
+            <div class="h-1 w-full" style="background-color: var(--theme-color);"></div>
         </div>
-        
-        <div id="no-results" class="hidden p-12 text-center text-gray-500">
-            Nincs találat a kiválasztott feltételekre.
-        </div>
+        {% endfor %}
+    </div>
+
+    <div id="no-results" class="hidden py-20 text-center">
+        <p class="text-xl text-gray-500">Nincs találat a kiválasztott szűrőkre.</p>
+        <button onclick="clearAllFilters()" class="mt-4 text-cyan-400 hover:underline">Szűrők törlése</button>
     </div>
 
 </div>
 
 <script>
-    // --- 1. ADATOK + SZÍNEK BETÖLTÉSE ---
+    // --- 1. ADATOK BETÖLTÉSE ---
     const envData = [
-        {% for header in site.data.environments.headers %}
-        {% if header.key != 'feature' %}
+        {% for item in site.data.environments.items %}
         {
-            key: "{{ header.key }}",
-            name: "{{ header.name }}",
-            color: "{{ header.color }}", // Kinyerjük a hex kódot (pl. #3b82f6)
-            ram: {{ header.metrics.ram }},
-            cpu: {{ header.metrics.cpu }},
-            disk: {{ header.metrics.disk }}
+            id: "{{ item.id }}",
+            name: "{{ item.name }}",
+            color: "{{ item.color }}",
+            ram: {{ item.metrics.ram }},
+            cpu: {{ item.metrics.cpu }},
+            disk: {{ item.metrics.disk }}
         },
-        {% endif %}
         {% endfor %}
     ];
 
     // --- 2. CHART.JS CONFIG ---
     Chart.defaults.font.family = 'Inter';
-    Chart.defaults.color = '#9ca3af';
-    Chart.defaults.borderColor = '#374151';
-    
+    Chart.defaults.color = '#64748b';
     let chartRam, chartCpu, chartDisk;
 
     function initCharts() {
         const commonOptions = {
             responsive: true, maintainAspectRatio: false,
             plugins: { legend: { display: false } },
-            scales: {
-                y: { beginAtZero: true, grid: { color: '#334155' } },
-                x: { grid: { display: false }, ticks: { display: false } }
-            },
-            animation: { duration: 500 }
+            scales: { y: { display: false }, x: { display: false } },
+            animation: { duration: 600 }
         };
 
         const createChart = (id) => new Chart(document.getElementById(id), {
             type: 'bar',
             data: { 
                 labels: [], 
-                datasets: [{ 
-                    data: [], 
-                    backgroundColor: [], // Dinamikus színek
-                    borderRadius: 6,
-                    borderSkipped: false 
-                }] 
+                datasets: [{ data: [], backgroundColor: [], borderRadius: 4 }] 
             }, 
             options: commonOptions
         });
@@ -158,41 +159,37 @@ title: Finder
         chartDisk = createChart('chartDisk');
     }
 
-    // --- 3. SZŰRÉS LOGIKA + BUBORÉK STÍLUS ---
-    // A "Neon" stílus osztályai az aktív gombokhoz
-    const activeBtnClasses = ['bg-cyan-500', 'text-black', 'border-cyan-400', 'shadow-[0_0_15px_rgba(6,182,212,0.6)]'];
-    const inactiveBtnClasses = ['bg-darkbg-800', 'text-gray-400', 'border-darkbg-700'];
+    // --- 3. SZŰRÉS LOGIKA (KÁRTYÁKRA) ---
+    // "Neon" stílus a gombokhoz
+    const activeBtnClass = ['bg-cyan-500', 'text-black', 'border-cyan-400', 'shadow-[0_0_10px_rgba(6,182,212,0.4)]'];
+    const inactiveBtnClass = ['bg-darkbg-800', 'text-gray-400', 'border-darkbg-700'];
 
-    let selectedColFilters = new Set(); 
+    let selectedFilters = new Set(); 
 
     document.addEventListener("DOMContentLoaded", () => {
         initCharts();
         updateView();
     });
 
-    function toggleColFilter(filterId) {
-        const btn = document.getElementById(`col-btn-${filterId}`);
-        
-        if (selectedColFilters.has(filterId)) {
-            // Deaktiválás
-            selectedColFilters.delete(filterId);
-            btn.classList.remove(...activeBtnClasses);
-            btn.classList.add(...inactiveBtnClasses);
+    function toggleFilter(filterId) {
+        const btn = document.getElementById(`filter-btn-${filterId}`);
+        if (selectedFilters.has(filterId)) {
+            selectedFilters.delete(filterId);
+            btn.classList.remove(...activeBtnClass);
+            btn.classList.add(...inactiveBtnClass);
         } else {
-            // Aktiválás (Színes Buborék!)
-            selectedColFilters.add(filterId);
-            btn.classList.remove(...inactiveBtnClasses);
-            btn.classList.add(...activeBtnClasses);
+            selectedFilters.add(filterId);
+            btn.classList.remove(...inactiveBtnClass);
+            btn.classList.add(...activeBtnClass);
         }
         updateView();
     }
 
     function clearAllFilters() {
-        selectedColFilters.clear();
-        // Minden gomb visszaállítása inaktívra
-        document.querySelectorAll('.col-filter-btn').forEach(btn => {
-            btn.classList.remove(...activeBtnClasses);
-            btn.classList.add(...inactiveBtnClasses);
+        selectedFilters.clear();
+        document.querySelectorAll('.filter-btn').forEach(btn => {
+            btn.classList.remove(...activeBtnClass);
+            btn.classList.add(...inactiveBtnClass);
         });
         updateView();
     }
@@ -200,34 +197,29 @@ title: Finder
     function updateView() {
         // Reset gomb
         const resetBtn = document.getElementById('reset-btn');
-        resetBtn.style.display = selectedColFilters.size > 0 ? 'block' : 'none';
+        resetBtn.style.display = selectedFilters.size > 0 ? 'block' : 'none';
 
-        // Oszlopok szűrése
-        const headers = document.querySelectorAll('th.col-cell:not(.sticky)');
-        let visibleKeys = [];
+        // Kártyák szűrése
+        const cards = document.querySelectorAll('.env-card');
+        let visibleIds = [];
 
-        headers.forEach(th => {
-            const key = th.getAttribute('data-key');
-            const tags = th.getAttribute('data-tags').split(',');
-            const matches = selectedColFilters.size === 0 || Array.from(selectedColFilters).every(filter => tags.includes(filter));
-            
-            const cells = document.querySelectorAll(`.col-${key}`);
+        cards.forEach(card => {
+            const tags = card.getAttribute('data-tags').split(',');
+            // AND logika: Csak akkor jelenik meg, ha MINDEN szűrőnek megfelel
+            const matches = selectedFilters.size === 0 || Array.from(selectedFilters).every(f => tags.includes(f));
             
             if (matches) {
-                th.style.display = '';
-                cells.forEach(cell => cell.style.display = '');
-                visibleKeys.push(key);
+                card.style.display = 'flex'; // Flex, mert a kártya layout flexbox
+                visibleIds.push(card.getAttribute('data-id'));
             } else {
-                th.style.display = 'none';
-                cells.forEach(cell => cell.style.display = 'none');
+                card.style.display = 'none';
             }
         });
 
-        // Diagram frissítés (Színekkel együtt!)
-        const filteredData = envData.filter(item => visibleKeys.includes(item.key));
-        
+        // Diagramok frissítése a látható kártyák alapján
+        const filteredData = envData.filter(item => visibleIds.includes(item.id));
         const labels = filteredData.map(d => d.name);
-        const colors = filteredData.map(d => d.color); // Itt kapják meg a színt!
+        const colors = filteredData.map(d => d.color);
 
         updateChart(chartRam, labels, filteredData.map(d => d.ram), colors);
         updateChart(chartCpu, labels, filteredData.map(d => d.cpu), colors);
@@ -235,21 +227,13 @@ title: Finder
 
         // Empty state
         const noResults = document.getElementById('no-results');
-        const tableWrapper = document.querySelector('.overflow-x-auto');
-        
-        if (visibleKeys.length === 0) {
-            noResults.classList.remove('hidden');
-            tableWrapper.classList.add('hidden');
-        } else {
-            noResults.classList.add('hidden');
-            tableWrapper.classList.remove('hidden');
-        }
+        noResults.style.display = visibleIds.length === 0 ? 'block' : 'none';
     }
 
     function updateChart(chart, labels, data, colors) {
         chart.data.labels = labels;
         chart.data.datasets[0].data = data;
-        chart.data.datasets[0].backgroundColor = colors; // Szín átadása a Chart.js-nek
+        chart.data.datasets[0].backgroundColor = colors;
         chart.update();
     }
 </script>
