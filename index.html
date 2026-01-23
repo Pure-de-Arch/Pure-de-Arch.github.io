@@ -3,14 +3,30 @@ layout: default
 title: Asztali Környezetek Összehasonlítása
 ---
 
-<div class="text-center mb-12">
+<div class="text-center mb-10">
     <h2 class="text-3xl sm:text-4xl font-extrabold text-gray-900 mb-4">Melyik környezet való neked?</h2>
     <p class="text-lg text-gray-600 max-w-2xl mx-auto">
-        Részletes összehasonlítás a sebesség, testreszabhatóság és felhasználói élmény alapján.
+        Jelöld ki a kategóriákat a szűréshez! Többet is kiválaszthatsz.
     </p>
 </div>
 
-<div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
+<div class="max-w-6xl mx-auto mb-8 flex flex-wrap justify-center gap-3">
+    <button onclick="clearFilters()" id="clear-btn" class="px-4 py-2 rounded-full text-sm font-semibold border transition-all duration-200 bg-gray-100 text-gray-500 border-gray-200 hover:bg-gray-200 hidden">
+        ✕ Szűrés törlése
+    </button>
+
+    {% for cat in site.data.environments.categories %}
+    <button 
+        onclick="toggleFilter('{{ cat.id }}')" 
+        id="btn-{{ cat.id }}"
+        class="filter-btn px-4 py-2 rounded-full text-sm font-semibold border transition-all duration-200 bg-white text-gray-700 border-gray-300 hover:border-gray-400 shadow-sm hover:shadow-md select-none"
+        data-category="{{ cat.id }}">
+        {{ cat.name }}
+    </button>
+    {% endfor %}
+</div>
+
+<div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden transition-all duration-500">
     <div class="overflow-x-auto">
         <table class="w-full text-left border-collapse">
             <thead>
@@ -22,18 +38,17 @@ title: Asztali Környezetek Összehasonlítása
                     {% endfor %}
                 </tr>
             </thead>
-            <tbody class="divide-y divide-gray-100">
+            <tbody class="divide-y divide-gray-100" id="comparison-table">
                 {% for row in site.data.environments.rows %}
-                <tr class="hover:bg-gray-50 transition-colors group">
+                <tr class="table-row-item hover:bg-gray-50 transition-colors group" data-category="{{ row.category }}">
                     <td class="p-4 font-medium text-gray-900 sticky left-0 bg-white group-hover:bg-gray-50 border-r border-gray-200 shadow-[2px_0_5px_-2px_rgba(0,0,0,0.05)]">
                         {{ row.feature }}
                     </td>
-                    
                     <td class="p-4 text-gray-600">{{ row.gnome }}</td>
                     <td class="p-4 text-gray-600">{{ row.kde }}</td>
                     <td class="p-4 text-gray-600">{{ row.xfce }}</td>
                     <td class="p-4 text-gray-600">
-                        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
+                        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-50 text-blue-700 border border-blue-100">
                             {{ row.tiling }}
                         </span>
                     </td>
@@ -42,16 +57,78 @@ title: Asztali Környezetek Összehasonlítása
             </tbody>
         </table>
     </div>
-</div>
-
-<div class="mt-8 p-4 bg-blue-50 border border-blue-100 rounded-lg flex items-start gap-3">
-    <div class="text-blue-500 text-xl">💡</div>
-    <div>
-        <h4 class="font-semibold text-blue-900">Hogyan válassz?</h4>
-        <p class="text-sm text-blue-800 mt-1">
-            Ha erős géped van és szereted a modern designt, válassz <strong>GNOME</strong>-ot. 
-            Ha mindent testre akarsz szabni, a <strong>KDE</strong> a nyerő. 
-            Régi laptopra az <strong>XFCE</strong> a legjobb választás.
-        </p>
+    
+    <div id="no-results" class="hidden p-8 text-center text-gray-500">
+        Nincs a kiválasztott szűrőknek megfelelő sor.
     </div>
 </div>
+
+<script>
+    // Állapot tárolása: mely kategóriák vannak kiválasztva
+    let selectedCategories = new Set();
+
+    function toggleFilter(categoryId) {
+        const btn = document.getElementById(`btn-${categoryId}`);
+        
+        // Ha már benne van, kivesszük (deaktiválás)
+        if (selectedCategories.has(categoryId)) {
+            selectedCategories.delete(categoryId);
+            // Stílus visszaállítása inaktívra
+            btn.classList.remove('bg-black', 'text-white', 'border-black');
+            btn.classList.add('bg-white', 'text-gray-700', 'border-gray-300');
+        } else {
+            // Ha nincs benne, hozzáadjuk (aktiválás)
+            selectedCategories.add(categoryId);
+            // Stílus állítása aktívra (fekete háttér, fehér szöveg - modern v0 stílus)
+            btn.classList.remove('bg-white', 'text-gray-700', 'border-gray-300');
+            btn.classList.add('bg-black', 'text-white', 'border-black');
+        }
+
+        updateTable();
+    }
+
+    function clearFilters() {
+        selectedCategories.clear();
+        // Minden gomb visszaállítása
+        document.querySelectorAll('.filter-btn').forEach(btn => {
+            btn.classList.remove('bg-black', 'text-white', 'border-black');
+            btn.classList.add('bg-white', 'text-gray-700', 'border-gray-300');
+        });
+        updateTable();
+    }
+
+    function updateTable() {
+        const rows = document.querySelectorAll('.table-row-item');
+        const clearBtn = document.getElementById('clear-btn');
+        let visibleCount = 0;
+
+        // Szűrés törlése gomb mutatása/rejtése
+        if (selectedCategories.size > 0) {
+            clearBtn.classList.remove('hidden');
+        } else {
+            clearBtn.classList.add('hidden');
+        }
+
+        rows.forEach(row => {
+            const rowCat = row.getAttribute('data-category');
+            
+            // Logika: 
+            // 1. Ha nincs semmi kiválasztva, mutass mindent.
+            // 2. Ha van kiválasztva, akkor mutasd, ha a sor kategóriája benne van a Set-ben.
+            if (selectedCategories.size === 0 || selectedCategories.has(rowCat)) {
+                row.style.display = '';
+                visibleCount++;
+            } else {
+                row.style.display = 'none';
+            }
+        });
+
+        // Üres állapot kezelése
+        const noResults = document.getElementById('no-results');
+        if (visibleCount === 0) {
+            noResults.classList.remove('hidden');
+        } else {
+            noResults.classList.add('hidden');
+        }
+    }
+</script>
