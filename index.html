@@ -145,30 +145,52 @@ title: Finder
     
     let chartRam, chartCpu, chartDisk;
 
+// --- CHART.JS CONFIG ---
+    Chart.defaults.font.family = 'Inter';
+    Chart.defaults.color = '#71717a';
+    
+    let chartRam, chartCpu, chartDisk;
+
     function initCharts() {
+        // 1. Definiálunk egy színpalettát, ami sorrendben megegyezik a környezetekkel.
+        // Sorrend: GNOME, KDE, XFCE, Cinnamon, MATE, LXQt, Hyprland, i3-wm
+        const colorPalette = [
+            '#3b82f6', // GNOME (Kék)
+            '#f97316', // KDE (Narancs)
+            '#22c55e', // XFCE (Zöld)
+            '#ef4444', // Cinnamon (Piros)
+            '#a855f7', // MATE (Lila)
+            '#06b6d4', // LXQt (Cián)
+            '#eab308', // Hyprland (Sárga)
+            '#ec4899'  // i3-wm (Rózsaszín)
+        ];
+
         const commonOptions = {
             responsive: true, maintainAspectRatio: false,
             plugins: { legend: { display: false } },
             scales: {
                 y: { display: false },
-                x: { grid: { display: false }, ticks: { display: false } } // Még minimalistább chartok
+                x: { grid: { display: false }, ticks: { display: false } }
             },
             animation: { duration: 500 }
         };
 
+        // 2. A backgroundColor tulajdonságnak átadjuk a teljes palettát.
+        // A Chart.js automatikusan hozzárendeli az egyes oszlopokhoz a megfelelő színt.
+
         chartRam = new Chart(document.getElementById('chartRam'), {
             type: 'bar',
-            data: { labels: [], datasets: [{ data: [], backgroundColor: '#fff', borderRadius: 4, barThickness: 40 }] }, // Fehér oszlopok (Shadcn stílus)
+            data: { labels: [], datasets: [{ data: [], backgroundColor: colorPalette, borderRadius: 4, barThickness: 40 }] },
             options: commonOptions
         });
         chartCpu = new Chart(document.getElementById('chartCpu'), {
             type: 'bar',
-            data: { labels: [], datasets: [{ data: [], backgroundColor: '#a1a1aa', borderRadius: 4, barThickness: 40 }] }, // Szürke oszlopok
+            data: { labels: [], datasets: [{ data: [], backgroundColor: colorPalette, borderRadius: 4, barThickness: 40 }] },
             options: commonOptions
         });
         chartDisk = new Chart(document.getElementById('chartDisk'), {
             type: 'bar',
-            data: { labels: [], datasets: [{ data: [], backgroundColor: '#52525b', borderRadius: 4, barThickness: 40 }] }, // Sötétebb szürke
+            data: { labels: [], datasets: [{ data: [], backgroundColor: colorPalette, borderRadius: 4, barThickness: 40 }] },
             options: commonOptions
         });
     }
