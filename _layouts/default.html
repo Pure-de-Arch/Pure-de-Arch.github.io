@@ -1,6 +1,5 @@
 <!DOCTYPE html>
-<html lang="hu">
-<head>
+<html lang="hu" class="dark"> <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{ page.title | default: site.title }}</title>
@@ -8,18 +7,42 @@
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap');
         body { font-family: 'Inter', sans-serif; }
+        /* Egy kis extra, hogy a görgetősáv is sötét legyen */
+        ::-webkit-scrollbar { width: 10px; height: 10px; }
+        ::-webkit-scrollbar-track { background: #111827; }
+        ::-webkit-scrollbar-thumb { background: #374151; border-radius: 5px; }
+        ::-webkit-scrollbar-thumb:hover { background: #4B5563; }
     </style>
+    <script>
+      tailwind.config = {
+        darkMode: 'class',
+        theme: {
+          extend: {
+            colors: {
+              // Egyedi sötét háttérszínek definiálása
+              darkbg: {
+                  900: '#111827', // Nagyon sötét szürke alapnak
+                  800: '#1F2937', // Kicsit világosabb kártyáknak
+                  700: '#374151'  // Határoknak, hovereknek
+              }
+            }
+          }
+        }
+      }
+    </script>
 </head>
-<body class="bg-gray-50 text-gray-900 antialiased selection:bg-black selection:text-white">
+<body class="bg-darkbg-900 text-gray-200 antialiased selection:bg-fuchsia-500 selection:text-white">
 
     <div class="min-h-screen flex flex-col">
-        <header class="border-b border-gray-200 bg-white/80 backdrop-blur-md sticky top-0 z-10">
+        <header class="border-b border-darkbg-700 bg-darkbg-900/80 backdrop-blur-md sticky top-0 z-20">
             <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
-                <h1 class="text-xl font-bold tracking-tight text-gray-900">
-                    🖥️ {{ site.title }}
+                <h1 class="text-xl font-bold tracking-tight text-white">
+                    <span class="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-fuchsia-500">
+                        🖥️ {{ site.title }}
+                    </span>
                 </h1>
                 <nav>
-                    <a href="https://github.com/{{ site.github.owner_name }}/{{ site.github.repository_name }}" class="text-sm font-medium hover:text-blue-600 transition-colors">
+                    <a href="https://github.com/{{ site.github.owner_name }}/{{ site.github.repository_name }}" class="text-sm font-medium text-gray-400 hover:text-white transition-colors">
                         GitHub
                     </a>
                 </nav>
@@ -32,9 +55,9 @@
             </div>
         </main>
 
-        <footer class="border-t border-gray-200 bg-white py-8">
+        <footer class="border-t border-darkbg-700 bg-darkbg-900 py-8">
             <div class="max-w-6xl mx-auto px-4 text-center text-gray-500 text-sm">
-                <p>&copy; {{ site.time | date: '%Y' }} {{ site.title }}. Jekyll & Tailwind alapokon.</p>
+                <p>&copy; {{ site.time | date: '%Y' }} {{ site.title }}. Modern Dark Theme.</p>
             </div>
         </footer>
     </div>
