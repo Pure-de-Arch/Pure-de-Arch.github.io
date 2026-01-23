@@ -1,151 +1,124 @@
+// Normalizáló maximumok (igény szerint állítható)
+const MAX_CPU = 25;    // %
+const MAX_RAM = 3000;  // MB
+const MAX_HDD = 3500;  // MB
+
+function normalize(value, max) {
+  const ratio = Math.min(value / max, 1);
+  return (ratio * 100).toFixed(0) + "%";
+}
+
+function matchesFilters(item, filters) {
+  if (filters.type && filters.type !== "all" && item.type !== filters.type) {
+    return false;
+  }
+  if (filters.toolkit && filters.toolkit !== "all" && item.toolkit !== filters.toolkit) {
+    return false;
+  }
+  if (filters.maxRam && Number(item.ram) > Number(filters.maxRam)) {
+    return false;
+  }
+  if (filters.search) {
+    const q = filters.search.toLowerCase();
+    const haystack = [
+      item.name,
+      item.type,
+      item.toolkit,
+      ...(item.tags || [])
+    ].join(" ").toLowerCase();
+    if (!haystack.includes(q)) return false;
+  }
+  return true;
+}
+
+function renderCards(data, filters) {
+  const container = document.getElementById("cards");
+  container.innerHTML = "";
+
+  const filtered = data.filter(item => matchesFilters(item, filters));
+
+  if (!filtered.length) {
+    container.innerHTML = "<p>Nincs találat a megadott szűrőkkel.</p>";
+    return;
+  }
+
+  filtered.forEach(item => {
+    const card = document.createElement("article");
+    card.className = "card";
+
+    const cpuWidth = normalize(item.cpu, MAX_CPU);
+    const ramWidth = normalize(item.ram, MAX_RAM);
+    const hddWidth = normalize(item.hdd, MAX_HDD);
+
+    card.innerHTML = `
+      <div class="card-header">
+        <div class="card-title">${item.name}</div>
+        <div class="card-pill">${item.type}</div>
+      </div>
+      <div class="card-meta">
+        Toolkit: <strong>${item.toolkit}</strong> &nbsp;•&nbsp;
+        CPU: ${item.cpu}% &nbsp;•&nbsp;
+        RAM: ${item.ram} MB &nbsp;•&nbsp;
+        HDD: ${item.hdd} MB
+      </div>
+      <div class="tags">
+        ${(item.tags || []).map(t => `<span class="tag">${t}</span>`).join("")}
+      </div>
+      <div class="metrics">
+        <div>
+          <div class="metric-row">
+            <span class="metric-label">CPU</span>
+            <span class="metric-value">${item.cpu}%</span>
+          </div>
+          <div class="bar-track">
+            <div class="bar-fill" style="width:${cpuWidth}"></div>
+          </div>
+        </div>
+        <div>
+          <div class="metric-row">
+            <span class="metric-label">RAM</span>
+            <span class="metric-value">${item.ram} MB</span>
+          </div>
+          <div class="bar-track">
+            <div class="bar-fill" style="width:${ramWidth}"></div>
+          </div>
+        </div>
+        <div>
+          <div class="metric-row">
+            <span class="metric-label">HDD</span>
+            <span class="metric-value">${item.hdd} MB</span>
+          </div>
+          <div class="bar-track">
+            <div class="bar-fill" style="width:${hddWidth}"></div>
+          </div>
+        </div>
+      </div>
+    `;
+
+    container.appendChild(card);
+  });
+}
+
 document.addEventListener("DOMContentLoaded", () => {
+  const data = window.DEWM_DATA || [];
 
-  const cards = [...document.querySelectorAll(".de-card")];
-  const search = document.getElementById("search");
-  const reset = document.getElementById("reset");
-  const chips = document.getElementById("active-chips");
-  const noResults = document.getElementById("no-results");
+  const typeSelect = document.getElementById("filter-type");
+  const toolkitSelect = document.getElementById("filter-toolkit");
+  const maxRamInput = document.getElementById("filter-max-ram");
+  const searchInput = document.getElementById("filter-search");
 
-  let selectedCategories = [];
-  let selectedToolkits = [];
-  let selectedWayland = [];
-
-  function norm(s) {
-    return (s || "").toLowerCase();
+  function currentFilters() {
+    return {
+      type: typeSelect.value,
+      toolkit: toolkitSelect.value,
+      maxRam: maxRamInput.value,
+      search: searchInput.value.trim()
+    };
   }
 
-  function apply() {
-    const s = norm(search.value);
-    let visible = 0;
+  [typeSelect, toolkitSelect, maxRamInput, searchInput].forEach(el => {
+    el.addEventListener("input", () => renderCards(data, currentFilters()));
+  });
 
-    cards.forEach(card => {
-      const name = norm(card.dataset.name);
-      const notes = norm(card.dataset.notes);
-      const cat = card.dataset.category;
-      const tk = card.dataset.toolkit;
-      const wl = card.dataset.wayland;
-
-      let ok = true;
-
-      if (s && !`${name} ${notes}`.includes(s)) ok = false;
-      if (selectedCategories.length > 0 && !selectedCategories.includes(cat)) ok = false;
-      if (selectedToolkits.length > 0 && !selectedToolkits.includes(tk)) ok = false;
-      if (selectedWayland.length > 0 && !selectedWayland.includes(wl)) ok = false;
-
-      card.style.display = ok ? "" : "none";
-      if (ok) visible++;
-    });
-
-    noResults.classList.toggle("hidden", visible !== 0);
-    updateChips();
-  }
-
-  function updateChips() {
-    chips.innerHTML = "";
-
-    const active = [];
-
-    if (search.value.trim() !== "") {
-      active.push({ type: "search", label: `Keresés: ${search.value}`, color: "neonBlue" });
-    }
-
-    selectedCategories.forEach(v =>
-      active.push({ type: "category", label: v, value: v, color: "neonPurple" })
-    );
-
-    selectedToolkits.forEach(v =>
-      active.push({ type: "toolkit", label: v, value: v, color: "neonCyan" })
-    );
-
-    selectedWayland.forEach(v =>
-      active.push({ type: "wayland", label: v, value: v, color: "neonPink" })
-    );
-
-    active.forEach(f => {
-      const chip = document.createElement("span");
-
-      chip.className = `
-        inline-flex items-center gap-2 px-4 py-1.5 rounded-full
-        border border-${f.color} text-${f.color}
-        bg-${f.color}/10 shadow-soft
-        backdrop-blur-md text-sm font-medium
-        hover:bg-${f.color}/20 hover:shadow-neon
-        transition cursor-pointer
-      `;
-
-      chip.innerHTML = `
-        ${f.label}
-        <span class="text-${f.color} hover:text-white">✕</span>
-      `;
-
-      chip.addEventListener("click", () => {
-        if (f.type === "search") {
-          search.value = "";
-        } else if (f.type === "category") {
-          selectedCategories = selectedCategories.filter(x => x !== f.value);
-        } else if (f.type === "toolkit") {
-          selectedToolkits = selectedToolkits.filter(x => x !== f.value);
-        } else if (f.type === "wayland") {
-          selectedWayland = selectedWayland.filter(x => x !== f.value);
-        }
-        apply();
-      });
-
-      chips.appendChild(chip);
-    });
-  }
-
-  function setupMultiSelect(id, targetArray) {
-    const container = document.getElementById(id);
-    const buttons = container.querySelectorAll(".option-btn");
-
-    buttons.forEach(btn => {
-      btn.classList.add(
-        "px-3", "py-1.5", "rounded-lg",
-        "bg-white/10", "border", "border-border",
-        "text-slate-300",
-        "hover:border-neonBlue", "hover:text-neonBlue",
-        "transition"
-      );
-
-      btn.addEventListener("click", () => {
-        const value = btn.dataset.value;
-
-        if (targetArray.includes(value)) {
-          targetArray.splice(targetArray.indexOf(value), 1);
-        } else {
-          targetArray.push(value);
-        }
-
-        buttons.forEach(b => {
-          if (targetArray.includes(b.dataset.value)) {
-            b.classList.add("border-neonBlue", "text-neonBlue");
-          } else {
-            b.classList.remove("border-neonBlue", "text-neonBlue");
-          }
-        });
-
-        apply();
-      });
-    });
-  }
-
-  setupMultiSelect("category-options", selectedCategories);
-  setupMultiSelect("toolkit-options", selectedToolkits);
-  setupMultiSelect("wayland-options", selectedWayland);
-
-  // Telepítési útmutató panel
-  const toggleBtn = document.getElementById("toggle-info");
-  const infoPanel = document.getElementById("info-panel");
-
-  if (toggleBtn && infoPanel) {
-    toggleBtn.addEventListener("click", () => {
-      infoPanel.classList.toggle("hidden");
-      toggleBtn.textContent = infoPanel.classList.contains("hidden")
-        ? "Telepítési útmutató megnyitása"
-        : "Telepítési útmutató bezárása";
-    });
-  }
-
-  apply();
+  renderCards(data, currentFilters());
 });
