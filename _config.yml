@@ -1,10 +1,6 @@
 title: Desktop Environment Comparison
-description: Modern desktop environment comparison
-theme: minima
-markdown: kramdown
-
-exclude:
-  - README.md
-  - node_modules
-  - package.json
-  - package-lock.json
+description: Összehasonlító táblázat a népszerű Linux asztali környezetekről.
+baseurl: "" 
+url: "" 
+theme: null
+plugins: []
