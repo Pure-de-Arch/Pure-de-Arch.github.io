@@ -1,9 +1,9 @@
 - name: GNOME
   type: DE
   toolkit: GTK
-  cpu: 20      # % átlagos terhelés
-  ram: 2000    # MB
-  hdd: 2500    # MB
+  cpu: 20
+  ram: 2000
+  hdd: 2500
   tags: [modern, wayland]
 
 - name: KDE Plasma
@@ -36,7 +36,7 @@
   cpu: 3
   ram: 300
   hdd: 150
-  tags: [tiling, keyboard]
+  tags: [tiling, keyboard, lightweight]
 
 - name: bspwm
   type: WM
@@ -44,7 +44,7 @@
   cpu: 3
   ram: 280
   hdd: 140
-  tags: [tiling]
+  tags: [tiling, lightweight]
 
 - name: Openbox
   type: WM
@@ -53,3 +53,11 @@
   ram: 350
   hdd: 200
   tags: [stacking, lightweight]
+
+- name: AwesomeWM
+  type: WM
+  toolkit: none
+  cpu: 4
+  ram: 320
+  hdd: 180
+  tags: [tiling, lua, keyboard]
