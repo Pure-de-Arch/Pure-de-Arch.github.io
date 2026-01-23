@@ -21,10 +21,19 @@ function updateChart() {
     data: {
       labels,
       datasets: [
-        { label: "CPU", data: cpu, backgroundColor: "red" },
-        { label: "RAM", data: ram, backgroundColor: "blue" },
-        { label: "HDD", data: hdd, backgroundColor: "green" }
+        { label: "CPU", data: cpu, backgroundColor: "#00eaff" },
+        { label: "RAM", data: ram, backgroundColor: "#ff4dff" },
+        { label: "HDD", data: hdd, backgroundColor: "#7dff4d" }
       ]
+    },
+    options: {
+      plugins: {
+        legend: { labels: { color: "#fff" } }
+      },
+      scales: {
+        x: { ticks: { color: "#fff" } },
+        y: { ticks: { color: "#fff" } }
+      }
     }
   });
 }
