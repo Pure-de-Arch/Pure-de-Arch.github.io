@@ -1,0 +1,55 @@
+- name: GNOME
+  type: DE
+  toolkit: GTK
+  cpu: 20      # % átlagos terhelés
+  ram: 2000    # MB
+  hdd: 2500    # MB
+  tags: [modern, wayland]
+
+- name: KDE Plasma
+  type: DE
+  toolkit: Qt
+  cpu: 18
+  ram: 1800
+  hdd: 3000
+  tags: [customizable]
+
+- name: Xfce
+  type: DE
+  toolkit: GTK
+  cpu: 8
+  ram: 800
+  hdd: 1200
+  tags: [lightweight]
+
+- name: LXQt
+  type: DE
+  toolkit: Qt
+  cpu: 6
+  ram: 600
+  hdd: 900
+  tags: [lightweight]
+
+- name: i3
+  type: WM
+  toolkit: none
+  cpu: 3
+  ram: 300
+  hdd: 150
+  tags: [tiling, keyboard]
+
+- name: bspwm
+  type: WM
+  toolkit: none
+  cpu: 3
+  ram: 280
+  hdd: 140
+  tags: [tiling]
+
+- name: Openbox
+  type: WM
+  toolkit: GTK
+  cpu: 4
+  ram: 350
+  hdd: 200
+  tags: [stacking, lightweight]
