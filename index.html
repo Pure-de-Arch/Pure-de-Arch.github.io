@@ -1,0 +1,78 @@
+---
+layout: none
+---
+
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+  <meta charset="UTF-8">
+  <title>{{ site.title }}</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="{{ '/assets/css/style.css' | relative_url }}">
+</head>
+<body>
+  <main class="wrapper">
+    <h1>Desktop Environment & Window Manager összehasonlító</h1>
+    <p>
+      Szűrd és hasonlítsd össze a különböző DE-ket és WM-eket
+      CPU, RAM és HDD igény alapján, látványos sávdiagramokkal.
+    </p>
+
+    <section class="filters">
+      <div>
+        <label for="filter-type">Típus</label>
+        <select id="filter-type">
+          <option value="all">DE + WM</option>
+          <option value="DE">Csak Desktop Environment</option>
+          <option value="WM">Csak Window Manager</option>
+        </select>
+      </div>
+
+      <div>
+        <label for="filter-toolkit">Toolkit</label>
+        <select id="filter-toolkit">
+          <option value="all">Bármely</option>
+          <option value="GTK">GTK</option>
+          <option value="Qt">Qt</option>
+          <option value="none">Nincs / vegyes</option>
+        </select>
+      </div>
+
+      <div>
+        <label for="filter-max-ram">Max RAM (MB)</label>
+        <input id="filter-max-ram" type="number" min="0" step="100" placeholder="pl. 1000">
+      </div>
+
+      <div>
+        <label for="filter-search">Keresés (név, tag, toolkit)</label>
+        <input id="filter-search" type="text" placeholder="pl. lightweight, tiling, GNOME">
+      </div>
+    </section>
+
+    <section id="cards" class="cards"></section>
+
+    <p class="footer-note">
+      Az értékek példák, oktatási célra. Saját méréseidet könnyen beírhatod a
+      <code>_data/environments.yml</code> fájlba.
+    </p>
+  </main>
+
+  <script>
+    // Jekyll -> JS: YAML adat beégetése
+    window.DEWM_DATA = [
+      {% for item in site.data.environments %}
+      {
+        name: "{{ item.name | escape }}",
+        type: "{{ item.type | escape }}",
+        toolkit: "{{ item.toolkit | escape }}",
+        cpu: {{ item.cpu }},
+        ram: {{ item.ram }},
+        hdd: {{ item.hdd }},
+        tags: [{% for t in item.tags %}"{{ t | escape }}"{% unless forloop.last %}, {% endunless %}{% endfor %}]
+      }{% unless forloop.last %},{% endunless %}
+      {% endfor %}
+    ];
+  </script>
+  <script src="{{ '/assets/js/app.js' | relative_url }}"></script>
+</body>
+</html>
