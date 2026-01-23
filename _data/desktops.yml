@@ -2,7 +2,7 @@
   category: "Full DE"
   os: ["Linux"]
   layout: "Modern"
-  compositor: "Wayland, X11"
+  compositor: ["Wayland", "X11"]
   performance: "Medium"
   complexity: "Medium"
   toolkit: "GTK"
@@ -17,7 +17,7 @@
   category: "Full DE"
   os: ["Linux", "BSD"]
   layout: "Traditional"
-  compositor: "Wayland, X11"
+  compositor: ["Wayland", "X11"]
   performance: "Medium"
   complexity: "High"
   toolkit: "Qt"
@@ -32,7 +32,7 @@
   category: "Full DE"
   os: ["Linux", "BSD"]
   layout: "Traditional"
-  compositor: "X11"
+  compositor: ["X11"]
   performance: "High"
   complexity: "Low"
   toolkit: "GTK"
@@ -47,7 +47,7 @@
   category: "Full DE"
   os: ["Linux", "BSD"]
   layout: "Traditional"
-  compositor: "X11"
+  compositor: ["X11"]
   performance: "High"
   complexity: "Low"
   toolkit: "Qt"
@@ -62,7 +62,7 @@
   category: "Tiling WM"
   os: ["Linux", "BSD"]
   layout: "Tiling"
-  compositor: "X11"
+  compositor: ["X11"]
   performance: "Very high"
   complexity: "Medium"
   toolkit: "None"
@@ -77,7 +77,7 @@
   category: "Tiling WM"
   os: ["Linux"]
   layout: "Tiling"
-  compositor: "Wayland"
+  compositor: ["Wayland"]
   performance: "Very high"
   complexity: "Medium"
   toolkit: "None"
