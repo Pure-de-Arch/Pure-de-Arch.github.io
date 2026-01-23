@@ -1,14 +1,37 @@
-document.getElementById("applyFilters").onclick = () => {
-  const cat = categoryFilter.value;
-  const type = typeFilter.value;
+// Buborékos feature szűrők generálása
+
+const allFeatures = [...new Set(
+  environments.flatMap(env => env.features)
+)];
+
+const featureContainer = document.getElementById("featureFilters");
+
+allFeatures.forEach(feature => {
+  const bubble = document.createElement("div");
+  bubble.className = "bubble";
+  bubble.innerText = feature;
+  bubble.dataset.feature = feature;
+
+  bubble.onclick = () => {
+    bubble.classList.toggle("active");
+    applyFilters();
+  };
+
+  featureContainer.appendChild(bubble);
+});
+
+function applyFilters() {
+  const activeFeatures = [...document.querySelectorAll(".bubble.active")]
+    .map(b => b.dataset.feature);
 
   const filtered = environments.filter(env =>
-    (cat === "" || env.category === cat) &&
-    (type === "" || env.subtype === type)
+    activeFeatures.every(f => env.features.includes(f))
   );
 
   renderCards(filtered);
-};
+}
+
+// Kártyák renderelése
 
 function renderCards(list) {
   const container = document.getElementById("cards");
@@ -17,18 +40,21 @@ function renderCards(list) {
   list.forEach(env => {
     container.innerHTML += `
       <div class="card">
-        <img src="${env.image}" class="rounded mb-4">
-        <h3 class="text-xl font-bold mb-2">${env.name}</h3>
-        <p class="text-gray-300 mb-4">${env.description}</p>
+        <img src="${env.image}" alt="${env.name}">
+        <h3>${env.name}</h3>
+        <p>${env.description}</p>
 
-        <button class="selectBtn btn w-full" data-id="${env.id}">
+        <button class="selectBtn btn" data-id="${env.id}">
           Hozzáadás az összehasonlításhoz
         </button>
 
-        <a href="${env.homepage}" class="block mt-4 text-blue-300 hover:text-pink-400">
+        <a href="${env.homepage}" target="_blank" style="display:block;margin-top:10px;color:#00eaff;text-decoration:none;">
           Hivatalos oldal →
         </a>
       </div>
     `;
   });
 }
+
+// induláskor minden megjelenik
+renderCards(environments);
