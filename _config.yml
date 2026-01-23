@@ -1,12 +1,9 @@
 title: Desktop Environment Comparison
-description: A Jekyll-based desktop environment comparison site
+description: A Jekyll-based DE comparison site
 baseurl: ""
-url: "https://example.com"
+url: ""
 
 theme: null
-
-collections:
-  # nem feltétlen kell, most csak data + indexet használunk
 
 defaults:
   - scope:
