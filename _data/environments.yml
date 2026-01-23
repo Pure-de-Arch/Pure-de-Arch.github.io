@@ -1,31 +1,63 @@
 headers:
   - name: "Tulajdonság"
     key: "feature"
-    # A feature oszlopnak nincsenek szűrő tagjei
+    # Nincs metrika
   - name: "GNOME"
     key: "gnome"
     tags: ["wayland", "gtk", "heavy", "beginner"]
+    metrics:
+      ram: 950       # MB
+      cpu: 85        # Relatív terhelés index (0-100)
+      disk: 2500     # MB telepített méret
   - name: "KDE Plasma"
     key: "kde"
     tags: ["wayland", "x11", "qt", "medium", "custom"]
+    metrics:
+      ram: 650
+      cpu: 60
+      disk: 1800
   - name: "XFCE"
     key: "xfce"
     tags: ["x11", "gtk", "light", "beginner", "classic"]
+    metrics:
+      ram: 450
+      cpu: 30
+      disk: 900
   - name: "Cinnamon"
     key: "cinnamon"
     tags: ["x11", "gtk", "medium", "beginner", "classic"]
+    metrics:
+      ram: 700
+      cpu: 50
+      disk: 1500
   - name: "MATE"
     key: "mate"
     tags: ["x11", "gtk", "light", "beginner", "classic"]
+    metrics:
+      ram: 500
+      cpu: 35
+      disk: 1100
   - name: "LXQt"
     key: "lxqt"
     tags: ["x11", "qt", "light", "classic"]
+    metrics:
+      ram: 350
+      cpu: 20
+      disk: 600
   - name: "Hyprland"
     key: "hyprland"
     tags: ["wayland", "tiling", "light", "advanced"]
+    metrics:
+      ram: 250
+      cpu: 15
+      disk: 200
   - name: "i3-wm"
     key: "i3"
     tags: ["x11", "tiling", "light", "advanced"]
+    metrics:
+      ram: 200
+      cpu: 10
+      disk: 150
 
 # Ezek lesznek a kattintható szűrő gombok az új sorban
 feature_filters:
