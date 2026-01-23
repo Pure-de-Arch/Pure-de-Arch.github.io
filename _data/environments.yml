@@ -1,72 +1,4 @@
-headers:
-  - name: "Tulajdonság"
-    key: "feature"
-  - name: "GNOME"
-    key: "gnome"
-    tags: ["wayland", "gtk", "heavy", "beginner"]
-    color: "#3b82f6" # Kék
-    metrics:
-      ram: 950
-      cpu: 85
-      disk: 2500
-  - name: "KDE Plasma"
-    key: "kde"
-    tags: ["wayland", "x11", "qt", "medium", "custom"]
-    color: "#f97316" # Narancs
-    metrics:
-      ram: 650
-      cpu: 60
-      disk: 1800
-  - name: "XFCE"
-    key: "xfce"
-    tags: ["x11", "gtk", "light", "beginner", "classic"]
-    color: "#22c55e" # Zöld
-    metrics:
-      ram: 450
-      cpu: 30
-      disk: 900
-  - name: "Cinnamon"
-    key: "cinnamon"
-    tags: ["x11", "gtk", "medium", "beginner", "classic"]
-    color: "#ef4444" # Piros
-    metrics:
-      ram: 700
-      cpu: 50
-      disk: 1500
-  - name: "MATE"
-    key: "mate"
-    tags: ["x11", "gtk", "light", "beginner", "classic"]
-    color: "#a855f7" # Lila
-    metrics:
-      ram: 500
-      cpu: 35
-      disk: 1100
-  - name: "LXQt"
-    key: "lxqt"
-    tags: ["x11", "qt", "light", "classic"]
-    color: "#06b6d4" # Cián
-    metrics:
-      ram: 350
-      cpu: 20
-      disk: 600
-  - name: "Hyprland"
-    key: "hyprland"
-    tags: ["wayland", "tiling", "light", "advanced"]
-    color: "#eab308" # Sárga
-    metrics:
-      ram: 250
-      cpu: 15
-      disk: 200
-  - name: "i3-wm"
-    key: "i3"
-    tags: ["x11", "tiling", "light", "advanced"]
-    color: "#ec4899" # Pink
-    metrics:
-      ram: 200
-      cpu: 10
-      disk: 150
-
-# Szűrő gombok (Buborékok)
+# Szűrő gombok
 feature_filters:
   - id: "wayland"
     name: "Wayland"
@@ -79,95 +11,86 @@ feature_filters:
   - id: "qt"
     name: "Qt Alapú"
   - id: "light"
-    name: "Alacsony gépigény"
+    name: "Low Spec"
   - id: "beginner"
     name: "Kezdőbarát"
 
-categories:
-  - name: "Teljesítmény"
-    id: "performance"
-  - name: "Felhasználói élmény"
-    id: "ux"
-  - name: "Technikai"
-    id: "tech"
+# A környezetek listája (Kártyák adatai)
+items:
+  - id: "gnome"
+    name: "GNOME"
+    description: "A legnépszerűbb modern Linux környezet. Egyedi, gesztus-vezérelt workflow."
+    image: "https://upload.wikimedia.org/wikipedia/commons/thumb/6/67/Gnome_46_Ubuntu_24.04.png/640px-Gnome_46_Ubuntu_24.04.png"
+    website: "https://www.gnome.org"
+    download: "https://archlinux.org/groups/x86_64/gnome/"
+    color: "#3b82f6" # Kék
+    tags: ["wayland", "gtk", "heavy", "beginner"]
+    specs:
+      wm: "Mutter"
+      toolkit: "GTK4"
+    metrics: { ram: 950, cpu: 85, disk: 2500 }
 
-rows:
-  # --- TELJESÍTMÉNY ---
-  - feature: "RAM Igény (Idle)"
-    category: "performance"
-    gnome: "~950MB"
-    kde: "~650MB"
-    xfce: "~450MB"
-    cinnamon: "~700MB"
-    mate: "~500MB"
-    lxqt: "~350MB"
-    hyprland: "~250MB"
-    i3: "~200MB"
+  - id: "kde"
+    name: "KDE Plasma"
+    description: "Végtelenül testreszabható, Windows-szerű elrendezés, modern technológiákkal."
+    image: "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f3/KDE_Plasma_6.png/640px-KDE_Plasma_6.png"
+    website: "https://kde.org/plasma-desktop/"
+    download: "https://archlinux.org/groups/x86_64/plasma-meta/"
+    color: "#f97316" # Narancs
+    tags: ["wayland", "x11", "qt", "medium", "custom"]
+    specs:
+      wm: "KWin"
+      toolkit: "Qt6"
+    metrics: { ram: 650, cpu: 60, disk: 1800 }
 
-  - feature: "Sebességérzet"
-    category: "performance"
-    gnome: "Sima, animált"
-    kde: "Gyors, reszponzív"
-    xfce: "Nagyon gyors"
-    cinnamon: "Közepes"
-    mate: "Gyors"
-    lxqt: "Villámgyors"
-    hyprland: "Azonnali (GPU)"
-    i3: "Azonnali (CPU)"
+  - id: "xfce"
+    name: "XFCE"
+    description: "Sziklaszilárd stabilitás, klasszikus kinézet és alacsony erőforrásigény."
+    image: "https://upload.wikimedia.org/wikipedia/commons/thumb/1/15/Xfce_4.18_Desktop_Environment.png/640px-Xfce_4.18_Desktop_Environment.png"
+    website: "https://xfce.org"
+    download: "https://archlinux.org/groups/x86_64/xfce4/"
+    color: "#22c55e" # Zöld
+    tags: ["x11", "gtk", "light", "beginner", "classic"]
+    specs:
+      wm: "Xfwm4"
+      toolkit: "GTK3"
+    metrics: { ram: 450, cpu: 30, disk: 900 }
 
-  # --- FELHASZNÁLÓI ÉLMÉNY ---
-  - feature: "Alapértelmezett UI"
-    category: "ux"
-    gnome: "Egyedi (Overview)"
-    kde: "Windows-szerű"
-    xfce: "Klasszikus panel"
-    cinnamon: "Windows 7-szerű"
-    mate: "GNOME 2 (Retro)"
-    lxqt: "Klasszikus moduláris"
-    hyprland: "Üres (Tiling)"
-    i3: "Üres (Tiling)"
+  - id: "cinnamon"
+    name: "Cinnamon"
+    description: "Hagyományos asztali elrendezés, ideális Windowsról áttérőknek."
+    image: "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d6/Cinnamon_5.8.4_on_Linux_Mint_21.2.png/640px-Cinnamon_5.8.4_on_Linux_Mint_21.2.png"
+    website: "https://projects.linuxmint.com/cinnamon/"
+    download: "https://archlinux.org/packages/extra/x86_64/cinnamon/"
+    color: "#ef4444" # Piros
+    tags: ["x11", "gtk", "medium", "beginner", "classic"]
+    specs:
+      wm: "Muffin"
+      toolkit: "GTK3"
+    metrics: { ram: 700, cpu: 50, disk: 1500 }
 
-  - feature: "Testreszabhatóság"
-    category: "ux"
-    gnome: "Extensions szükséges"
-    kde: "Végtelen (GUI-ból)"
-    xfce: "Magas (Panelek)"
-    cinnamon: "Közepes (Desklets)"
-    mate: "Magas (Appletek)"
-    lxqt: "Magas"
-    hyprland: "Config fájl (Hard)"
-    i3: "Config fájl (Medium)"
+  - id: "hyprland"
+    name: "Hyprland"
+    description: "Modern, dinamikus tiling ablakkezelő Waylandre, lenyűgöző animációkkal."
+    image: "https://upload.wikimedia.org/wikipedia/commons/thumb/2/2c/Hyprland_v0.23.0beta.png/640px-Hyprland_v0.23.0beta.png"
+    website: "https://hyprland.org"
+    download: "https://archlinux.org/packages/extra/x86_64/hyprland/"
+    color: "#eab308" # Sárga
+    tags: ["wayland", "tiling", "light", "advanced"]
+    specs:
+      wm: "Hyprland"
+      toolkit: "Nincs"
+    metrics: { ram: 250, cpu: 15, disk: 200 }
 
-  # --- TECHNIKAI ADATOK ---
-  - feature: "Display Server"
-    category: "tech"
-    gnome: "Wayland"
-    kde: "Wayland / X11"
-    xfce: "X11 (Wayland WIP)"
-    cinnamon: "X11 (Wayland béta)"
-    mate: "X11 (Wayland WIP)"
-    lxqt: "X11 / Wayland"
-    hyprland: "Csak Wayland"
-    i3: "Csak X11"
-
-  - feature: "Kompozitor"
-    category: "tech"
-    gnome: "Mutter"
-    kde: "KWin"
-    xfce: "Xfwm4"
-    cinnamon: "Muffin"
-    mate: "Marco"
-    lxqt: "Nincs (KWin ajánlott)"
-    hyprland: "Beépített"
-    i3: "Picom (Külön kell)"
-
-  - feature: "Arch Csomag"
-    category: "tech"
-    gnome: "gnome"
-    kde: "plasma-meta"
-    xfce: "xfce4"
-    cinnamon: "cinnamon"
-    mate: "mate"
-    lxqt: "lxqt"
-    hyprland: "hyprland"
-    i3: "i3-wm"
+  - id: "i3"
+    name: "i3-wm"
+    description: "A legendás, minimalista tiling ablakkezelő. Hatékony és egyszerű."
+    image: "https://upload.wikimedia.org/wikipedia/commons/thumb/3/36/I3-window-manager-gaps.png/640px-I3-window-manager-gaps.png"
+    website: "https://i3wm.org"
+    download: "https://archlinux.org/groups/x86_64/i3-wm/"
+    color: "#ec4899" # Pink
+    tags: ["x11", "tiling", "light", "advanced"]
+    specs:
+      wm: "i3"
+      toolkit: "Nincs"
+    metrics: { ram: 200, cpu: 10, disk: 150 }
