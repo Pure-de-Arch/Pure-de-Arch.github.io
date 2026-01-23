@@ -26,17 +26,17 @@
         theme: {
           extend: {
             colors: {
-              border: "hsl(var(--border))",
-              background: "#09090b", // Zinc 950
+              border: "#27272a", // Zinc 800
+              background: "#09090b", // Zinc 950 (majdnem fekete)
               foreground: "#fafafa", // Zinc 50
               muted: {
-                DEFAULT: "#27272a", // Zinc 800
+                DEFAULT: "#27272a", 
                 foreground: "#a1a1aa", // Zinc 400
               },
-              accent: {
-                DEFAULT: "#27272a", // Zinc 800 hoverhez
-                foreground: "#fafafa",
-              },
+              card: {
+                DEFAULT: "#09090b",
+                foreground: "#fafafa"
+              }
             }
           }
         }
@@ -45,7 +45,7 @@
 </head>
 <body class="bg-background text-foreground antialiased min-h-screen flex flex-col selection:bg-white selection:text-black">
 
-    <header class="sticky top-0 z-50 w-full border-b border-[#27272a] bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+    <header class="sticky top-0 z-50 w-full border-b border-border bg-background/80 backdrop-blur-md supports-[backdrop-filter]:bg-background/60">
         <div class="max-w-7xl mx-auto flex h-14 items-center justify-between px-6">
             <div class="flex items-center gap-2 font-bold text-lg tracking-tight">
                 <div class="flex h-6 w-6 items-center justify-center rounded-md bg-white text-black">
@@ -68,10 +68,10 @@
         {{ content }}
     </main>
 
-    <footer class="border-t border-[#27272a] py-6 md:py-0">
-        <div class="max-w-7xl mx-auto flex h-14 items-center justify-between px-6 text-sm text-muted-foreground">
-            <p>Built with Jekyll & Tailwind.</p>
-            <p class="text-xs">Adatok: Arch Wiki</p>
+    <footer class="border-t border-border py-6 mt-12">
+        <div class="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between px-6 text-sm text-muted-foreground gap-4">
+            <p>&copy; {{ site.time | date: '%Y' }} Pure de Arch. Built with Jekyll.</p>
+            <p class="text-xs">Adatok forrása: Arch Wiki & Official Docs</p>
         </div>
     </footer>
 
