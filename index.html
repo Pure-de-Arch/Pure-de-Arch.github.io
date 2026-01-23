@@ -3,210 +3,108 @@ layout: none
 ---
 
 <!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <title>{{ site.title }}</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="description" content="{{ site.description }}" />
-    <link rel="stylesheet" href="{{ '/assets/css/style.css' | relative_url }}" />
-  </head>
-  <body>
-    <div class="app-shell">
-      <header class="app-header">
-        <div class="app-title-row">
-          <div>
-            <div class="app-title">
-              <span class="logo-dot"></span>
-              <span>Desktop Environment Comparison</span>
-            </div>
-            <p class="app-subtitle">
-              Filter and compare desktop environments and window managers by layout, platform, performance and more.
-            </p>
-          </div>
-          <div class="app-badge">
-            <span class="app-badge-dot"></span>
-            <span>Live filtering · Static Jekyll site</span>
-          </div>
+<html lang="hu">
+<head>
+  <meta charset="UTF-8" />
+  <title>{{ site.title }}</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="stylesheet" href="{{ '/assets/css/style.css' | relative_url }}" />
+</head>
+<body>
+<div class="app-shell">
+
+  <section class="filter-panel">
+    <div class="filter-row">
+
+      <!-- SEARCH -->
+      <div class="filter-group">
+        <label class="filter-label">Search</label>
+        <input class="filter-input" data-filter="search" placeholder="Search..." />
+      </div>
+
+      <!-- CATEGORY -->
+      <div class="filter-group">
+        <label class="filter-label">Category</label>
+        <div class="filter-chips" data-filter="category">
+          <button class="filter-chip" data-value="full de" data-color="blue">Full DE</button>
+          <button class="filter-chip" data-value="tiling wm" data-color="pink">Tiling WM</button>
+          <button class="filter-chip" data-value="stacking wm" data-color="green">Stacking WM</button>
         </div>
-      </header>
+      </div>
 
-      <section class="filter-panel">
-        <div class="filter-row">
-          <!-- Search (buborékos input) -->
-          <div class="filter-group">
-            <label class="filter-label" for="search">Search</label>
-            <input
-              id="search"
-              class="filter-input"
-              type="text"
-              placeholder="Search by name, tag, layout..."
-              data-filter="search"
-            />
-          </div>
-
-          <!-- Category – buborékos chips -->
-          <div class="filter-group">
-            <label class="filter-label">Category</label>
-            <div class="filter-chips" data-filter="category">
-              <button class="filter-chip" data-value="">All</button>
-              <button class="filter-chip" data-value="full de">Full DE</button>
-              <button class="filter-chip" data-value="tiling wm">Tiling WM</button>
-              <button class="filter-chip" data-value="stacking wm">Stacking WM</button>
-            </div>
-          </div>
-
-          <!-- Layout – buborékos chips -->
-          <div class="filter-group">
-            <label class="filter-label">Layout</label>
-            <div class="filter-chips" data-filter="layout">
-              <button class="filter-chip" data-value="">All</button>
-              <button class="filter-chip" data-value="modern">Modern</button>
-              <button class="filter-chip" data-value="traditional">Traditional</button>
-              <button class="filter-chip" data-value="tiling">Tiling</button>
-            </div>
-          </div>
-
-          <!-- Platform -->
-          <div class="filter-group">
-            <label class="filter-label">Platform</label>
-            <div class="filter-chips" data-filter="os">
-              <button class="filter-chip" data-value="">All</button>
-              <button class="filter-chip" data-value="linux">Linux</button>
-              <button class="filter-chip" data-value="bsd">BSD</button>
-            </div>
-          </div>
-
-          <!-- Compositor -->
-          <div class="filter-group">
-            <label class="filter-label">Compositor</label>
-            <div class="filter-chips" data-filter="compositor">
-              <button class="filter-chip" data-value="">All</button>
-              <button class="filter-chip" data-value="wayland">Wayland only</button>
-            </div>
-          </div>
-
-          <!-- Performance -->
-          <div class="filter-group">
-            <label class="filter-label">Performance</label>
-            <div class="filter-chips" data-filter="performance">
-              <button class="filter-chip" data-value="">All</button>
-              <button class="filter-chip" data-value="high">Lightweight only</button>
-            </div>
-          </div>
-
-          <!-- Toolkit -->
-          <div class="filter-group">
-            <label class="filter-label">Toolkit</label>
-            <div class="filter-chips" data-filter="toolkit">
-              <button class="filter-chip" data-value="">All</button>
-              <button class="filter-chip" data-value="gtk">GTK</button>
-              <button class="filter-chip" data-value="qt">Qt</button>
-              <button class="filter-chip" data-value="none">None</button>
-            </div>
-          </div>
-
-          <!-- Config style -->
-          <div class="filter-group">
-            <label class="filter-label">Config style</label>
-            <div class="filter-chips" data-filter="config_style">
-              <button class="filter-chip" data-value="">All</button>
-              <button class="filter-chip" data-value="gui">GUI</button>
-              <button class="filter-chip" data-value="text">Text</button>
-              <button class="filter-chip" data-value="hybrid">Hybrid</button>
-            </div>
-          </div>
-
-          <!-- Target usage -->
-          <div class="filter-group">
-            <label class="filter-label">Target usage</label>
-            <div class="filter-chips" data-filter="target_usage">
-              <button class="filter-chip" data-value="">All</button>
-              <button class="filter-chip" data-value="general">General</button>
-              <button class="filter-chip" data-value="lightweight">Lightweight</button>
-              <button class="filter-chip" data-value="power user">Power user</button>
-            </div>
-          </div>
+      <!-- LAYOUT -->
+      <div class="filter-group">
+        <label class="filter-label">Layout</label>
+        <div class="filter-chips" data-filter="layout">
+          <button class="filter-chip" data-value="modern" data-color="orange">Modern</button>
+          <button class="filter-chip" data-value="traditional" data-color="purple">Traditional</button>
+          <button class="filter-chip" data-value="tiling" data-color="blue">Tiling</button>
         </div>
-      </section>
+      </div>
 
-      <section class="stats-bar">
-        <div class="stats-pill">
-          <span>Total:</span>
-          <strong id="total-count">{{ site.data.desktops | size }}</strong>
-          <span>entries</span>
+      <!-- OS -->
+      <div class="filter-group">
+        <label class="filter-label">Platform</label>
+        <div class="filter-chips" data-filter="os">
+          <button class="filter-chip" data-value="linux" data-color="green">Linux</button>
+          <button class="filter-chip" data-value="bsd" data-color="pink">BSD</button>
         </div>
-        <div class="stats-pill">
-          <span>Visible:</span>
-          <strong id="visible-count">{{ site.data.desktops | size }}</strong>
+      </div>
+
+      <!-- TOOLKIT -->
+      <div class="filter-group">
+        <label class="filter-label">Toolkit</label>
+        <div class="filter-chips" data-filter="toolkit">
+          <button class="filter-chip" data-value="gtk" data-color="orange">GTK</button>
+          <button class="filter-chip" data-value="qt" data-color="blue">Qt</button>
+          <button class="filter-chip" data-value="none" data-color="purple">None</button>
         </div>
-      </section>
+      </div>
 
-      <main>
-        <div id="card-grid" class="card-grid">
-          {% for de in site.data.desktops %}
-          <article
-            class="de-card"
-            data-name="{{ de.name | downcase }}"
-            data-category="{{ de.category | downcase }}"
-            data-layout="{{ de.layout | downcase }}"
-            data-os="{{ de.os | join: ',' | downcase }}"
-            data-tags="{{ de.tags | join: ',' | downcase }}"
-            data-compositor="{{ de.compositor | downcase }}"
-            data-performance="{{ de.performance | downcase }}"
-            data-toolkit="{{ de.toolkit | downcase }}"
-            data-config_style="{{ de.config_style | downcase }}"
-            data-target_usage="{{ de.target_usage | downcase }}"
-          >
-            <div class="de-card-header">
-              <div>
-                <div class="de-name">
-                  <span>{{ de.name }}</span>
-                  <span class="de-tag">{{ de.category }}</span>
-                </div>
-                <div class="de-meta">
-                  <span class="de-meta-pill">{{ de.layout }}</span>
-                  <span class="de-meta-pill">Perf: {{ de.performance }}</span>
-                  <span class="de-meta-pill">Complexity: {{ de.complexity }}</span>
-                  <span class="de-meta-pill">{{ de.compositor }}</span>
-                  <span class="de-meta-pill">{{ de.toolkit }}</span>
-                </div>
-              </div>
-            </div>
-
-            <p class="de-desc">
-              {{ de.description }}
-            </p>
-
-            <div class="de-footer">
-              <div class="de-links">
-                {% if de.website %}
-                <a class="de-link" href="{{ de.website }}" target="_blank" rel="noreferrer">
-                  Website
-                </a>
-                {% endif %}
-                {% if de.docs %}
-                <a class="de-link" href="{{ de.docs }}" target="_blank" rel="noreferrer">
-                  Docs
-                </a>
-                {% endif %}
-              </div>
-              <div class="de-badges">
-                {% for tag in de.tags %}
-                <span class="de-badge">{{ tag }}</span>
-                {% endfor %}
-              </div>
-            </div>
-          </article>
-          {% endfor %}
+      <!-- COMPOSITOR -->
+      <div class="filter-group">
+        <label class="filter-label">Compositor</label>
+        <div class="filter-chips" data-filter="compositor">
+          <button class="filter-chip" data-value="wayland" data-color="green">Wayland</button>
+          <button class="filter-chip" data-value="x11" data-color="pink">X11</button>
         </div>
+      </div>
 
-        <div id="empty-state" class="empty-state" style="display: none">
-          No desktop environments match your filters. Try adjusting the search or filters.
+      <!-- TARGET USAGE -->
+      <div class="filter-group">
+        <label class="filter-label">Target usage</label>
+        <div class="filter-chips" data-filter="target_usage">
+          <button class="filter-chip" data-value="general" data-color="blue">General</button>
+          <button class="filter-chip" data-value="lightweight" data-color="green">Lightweight</button>
+          <button class="filter-chip" data-value="power user" data-color="orange">Power user</button>
         </div>
-      </main>
+      </div>
+
     </div>
+  </section>
 
-    <script src="{{ '/assets/js/app.js' | relative_url }}"></script>
-  </body>
+  <div id="card-grid" class="card-grid">
+    {% for de in site.data.desktops %}
+    <article class="de-card"
+      data-name="{{ de.name | downcase }}"
+      data-category="{{ de.category | downcase }}"
+      data-layout="{{ de.layout | downcase }}"
+      data-os="{{ de.os | join: ',' | downcase }}"
+      data-compositor="{{ de.compositor | join: ',' | downcase }}"
+      data-performance="{{ de.performance | downcase }}"
+      data-toolkit="{{ de.toolkit | downcase }}"
+      data-config_style="{{ de.config_style | downcase }}"
+      data-target_usage="{{ de.target_usage | downcase }}"
+      data-tags="{{ de.tags | join: ',' | downcase }}"
+    >
+      <h3>{{ de.name }}</h3>
+      <p>{{ de.description }}</p>
+    </article>
+    {% endfor %}
+  </div>
+
+</div>
+
+<script src="{{ '/assets/js/app.js' | relative_url }}"></script>
+</body>
 </html>
