@@ -16,8 +16,10 @@ feature_filters:
     name: "Low Spec"
   - id: "beginner"
     name: "Kezdőbarát"
-  - id: "advanced"
-    name: "Haladó"
+  - id: "mobile"
+    name: "Mobil / Touch"
+  - id: "retro"
+    name: "Retro"
 
 # A környezetek listája
 items:
@@ -77,28 +79,6 @@ items:
     specs: { wm: "Marco", toolkit: "GTK3" }
     metrics: { ram: 500, cpu: 35, disk: 1100 }
 
-  - id: "lxqt"
-    name: "LXQt"
-    description: "A legkönnyebb modern környezet. Moduláris és gyors."
-    image: "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e0/LXQt_1.2.0.png/640px-LXQt_1.2.0.png"
-    website: "https://lxqt-project.org"
-    download: "https://nycampus-my.sharepoint.com/:u:/g/personal/kakuk_sandor_nye_hu/IQBIJ19HuCCiTZIQ-tNdxcd-AcZ8PlyxlvATsQ3DsUiO6zY?e=mIIlaK"
-    color: "#06b6d4"
-    tags: ["x11", "qt", "light", "classic"]
-    specs: { wm: "Openbox", toolkit: "Qt6" }
-    metrics: { ram: 350, cpu: 20, disk: 600 }
-
-  - id: "deepin"
-    name: "Deepin"
-    description: "Gyönyörű, üveghatású felület, de erőforrásigényes."
-    image: "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f5/Deepin_20.1_Desktop.png/640px-Deepin_20.1_Desktop.png"
-    website: "https://www.deepin.org"
-    download: "https://nycampus-my.sharepoint.com/:u:/g/personal/kakuk_sandor_nye_hu/IQBcpigAw8UFQaLjpqUF1lMzAQmqxpOI4ijSRrm8GgYHVxM?e=XfEhRD"
-    color: "#8b5cf6"
-    tags: ["x11", "qt", "heavy", "beginner"]
-    specs: { wm: "Deepin WM", toolkit: "Qt" }
-    metrics: { ram: 1100, cpu: 75, disk: 3000 }
-
   - id: "budgie"
     name: "Budgie"
     description: "Elegáns és modern, GNOME alapokra építve."
@@ -110,7 +90,183 @@ items:
     specs: { wm: "Budgie WM", toolkit: "GTK" }
     metrics: { ram: 800, cpu: 45, disk: 1200 }
 
-  # --- FŐBB ABLAKKEZELŐK (POPULAR WMS) ---
+  - id: "cosmic"
+    name: "COSMIC"
+    description: "A System76 modern, Rust nyelven írt asztali környezete."
+    image: "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b3/Pop_OS_21.04_COSMIC_Desktop.png/640px-Pop_OS_21.04_COSMIC_Desktop.png"
+    website: "https://system76.com/cosmic"
+    download: "https://nycampus-my.sharepoint.com/:u:/g/personal/kakuk_sandor_nye_hu/IQCYzZt3-oEPRq0uXogLwQcAAdNL8GItmCJR2fcprPwyNR4?e=0eEJtY"
+    color: "#a78bfa"
+    tags: ["wayland", "tiling", "medium", "advanced"]
+    specs: { wm: "cosmic-comp", toolkit: "Rust/Iced" }
+    metrics: { ram: 800, cpu: 50, disk: 1000 }
+
+  - id: "deepin"
+    name: "Deepin"
+    description: "Gyönyörű, üveghatású felület, Qt alapokon."
+    image: "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f5/Deepin_20.1_Desktop.png/640px-Deepin_20.1_Desktop.png"
+    website: "https://www.deepin.org"
+    download: "https://nycampus-my.sharepoint.com/:u:/g/personal/kakuk_sandor_nye_hu/IQBcpigAw8UFQaLjpqUF1lMzAQmqxpOI4ijSRrm8GgYHVxM?e=XfEhRD"
+    color: "#8b5cf6"
+    tags: ["x11", "qt", "heavy", "beginner"]
+    specs: { wm: "Deepin WM", toolkit: "Qt" }
+    metrics: { ram: 1100, cpu: 75, disk: 3000 }
+
+  - id: "cutefish"
+    name: "Cutefish"
+    description: "Letisztult, macOS-szerű élmény, Qt alapokon."
+    image: "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3e/CutefishOS_0.4_Desktop.png/640px-CutefishOS_0.4_Desktop.png"
+    website: "https://cutefish-ubuntu.github.io/"
+    download: "https://nycampus-my.sharepoint.com/:u:/g/personal/kakuk_sandor_nye_hu/IQCOQ8K3lFDFS48Tv-VcHLMeAfMceyLJNWTKbQZPQGMH_XU?e=Pff5pT"
+    color: "#f472b6"
+    tags: ["x11", "qt", "medium", "beginner"]
+    specs: { wm: "KWin", toolkit: "Qt" }
+    metrics: { ram: 700, cpu: 40, disk: 1500 }
+
+  - id: "pantheon"
+    name: "Pantheon"
+    description: "Az Elementary OS felülete. Minimalista és elegáns."
+    image: "https://upload.wikimedia.org/wikipedia/commons/thumb/8/8d/Elementary_OS_6_Odin_Desktop.png/640px-Elementary_OS_6_Odin_Desktop.png"
+    website: "https://elementary.io"
+    download: "https://nycampus-my.sharepoint.com/:u:/g/personal/kakuk_sandor_nye_hu/IQBOSfGvbnzUTaRVHrhOCMqjAQDLKCup3EBzUWotrfePt8k?e=UKQSJF"
+    color: "#3b82f6"
+    tags: ["x11", "gtk", "medium", "beginner"]
+    specs: { wm: "Gala", toolkit: "GTK3" }
+    metrics: { ram: 800, cpu: 50, disk: 1600 }
+
+  - id: "ukui"
+    name: "UKUI"
+    description: "A Windows 7 stílusát idéző felület, Kínából."
+    image: "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a2/Ubuntu_Kylin_20.04_LTS.png/640px-Ubuntu_Kylin_20.04_LTS.png"
+    website: "https://www.ukui.org"
+    download: "https://nycampus-my.sharepoint.com/:u:/g/personal/kakuk_sandor_nye_hu/IQCfnSMmc2u2TpIvzLdhTBpbAdtJaVi0NQ1UUdiHl3NajIk?e=G2asPp"
+    color: "#f43f5e"
+    tags: ["x11", "qt", "medium", "beginner"]
+    specs: { wm: "UKUI WM", toolkit: "Qt" }
+    metrics: { ram: 600, cpu: 35, disk: 1300 }
+
+  - id: "lumina"
+    name: "Lumina"
+    description: "Pehelysúlyú, BSD-ről származó környezet."
+    image: "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d1/Lumina_Desktop_1.0.0.png/640px-Lumina_Desktop_1.0.0.png"
+    website: "https://lumina-desktop.org"
+    download: "https://nycampus-my.sharepoint.com/:u:/g/personal/kakuk_sandor_nye_hu/IQDxPaWu6wbERoKEvsS53lJDAU1yeXozf3RqBSnxLdLnza8?e=QuqCUh"
+    color: "#0ea5e9"
+    tags: ["x11", "qt", "light", "advanced"]
+    specs: { wm: "Fluxbox", toolkit: "Qt" }
+    metrics: { ram: 400, cpu: 20, disk: 500 }
+
+  - id: "lxde"
+    name: "LXDE"
+    description: "Klasszikus, rendkívül alacsony erőforrásigényű."
+    image: "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d3/LXDE_screenshot.png/640px-LXDE_screenshot.png"
+    website: "https://lxde.org"
+    download: "https://nycampus-my.sharepoint.com/:u:/g/personal/kakuk_sandor_nye_hu/IQB3WF5kC0fMTrM9OAAgEFhTAYftBYGzzoV-OVRJEtZ6RbQ?e=KUi5Ut"
+    color: "#9ca3af"
+    tags: ["x11", "gtk", "light", "classic"]
+    specs: { wm: "Openbox", toolkit: "GTK2" }
+    metrics: { ram: 250, cpu: 15, disk: 400 }
+
+  - id: "lxqt"
+    name: "LXQt"
+    description: "Az LXDE utódja Qt alapokon. Gyors és moduláris."
+    image: "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e0/LXQt_1.2.0.png/640px-LXQt_1.2.0.png"
+    website: "https://lxqt-project.org"
+    download: "https://nycampus-my.sharepoint.com/:u:/g/personal/kakuk_sandor_nye_hu/IQBIJ19HuCCiTZIQ-tNdxcd-AcZ8PlyxlvATsQ3DsUiO6zY?e=mIIlaK"
+    color: "#06b6d4"
+    tags: ["x11", "qt", "light", "classic"]
+    specs: { wm: "Openbox", toolkit: "Qt6" }
+    metrics: { ram: 350, cpu: 20, disk: 600 }
+
+  - id: "gnome-flashback"
+    name: "GNOME Flashback"
+    description: "A klasszikus GNOME 2 élmény modern alapokon."
+    image: "https://upload.wikimedia.org/wikipedia/commons/thumb/6/64/Gnome-flashback.png/640px-Gnome-flashback.png"
+    website: "https://wiki.gnome.org/Projects/GnomeFlashback"
+    download: "https://nycampus-my.sharepoint.com/:u:/g/personal/kakuk_sandor_nye_hu/IQDHsVex-Iu5QLPqBfz0KwYsAUGpyb6qwxrnx98FvCElnTM?e=l6OIGO"
+    color: "#eab308"
+    tags: ["x11", "gtk", "light", "classic"]
+    specs: { wm: "Metacity", toolkit: "GTK3" }
+    metrics: { ram: 600, cpu: 30, disk: 900 }
+
+  - id: "phosh"
+    name: "Phosh"
+    description: "Mobilbarát touch felület (pl. PinePhone-hoz)."
+    image: "https://upload.wikimedia.org/wikipedia/commons/thumb/6/66/Phosh_screenshot.png/640px-Phosh_screenshot.png"
+    website: "https://gitlab.gnome.org/World/Phosh/phosh"
+    download: "https://nycampus-my.sharepoint.com/:u:/g/personal/kakuk_sandor_nye_hu/IQA1589K33joTIFQzeHV6xslAYUKaex3quD14OTlcCW6rro?e=gVWthX"
+    color: "#14b8a6"
+    tags: ["wayland", "mobile", "light"]
+    specs: { wm: "Phoc", toolkit: "GTK" }
+    metrics: { ram: 600, cpu: 40, disk: 800 }
+
+  - id: "plasma-mobile"
+    name: "Plasma Mobile"
+    description: "A KDE Plasma verziója érintőképernyős eszközökre."
+    image: "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a8/Plasma_Mobile.png/640px-Plasma_Mobile.png"
+    website: "https://plasma-mobile.org"
+    download: "https://nycampus-my.sharepoint.com/:u:/g/personal/kakuk_sandor_nye_hu/IQC2AmjLSMRsQIpBydD_AqvEAQfWwcmhuyV2uexf9gIKGYk?e=3kL9cX"
+    color: "#3b82f6"
+    tags: ["wayland", "mobile", "qt"]
+    specs: { wm: "KWin", toolkit: "Qt/Kirigami" }
+    metrics: { ram: 650, cpu: 45, disk: 1000 }
+
+  - id: "trinity"
+    name: "Trinity (TDE)"
+    description: "A KDE 3.5 forkja. Igazi retro érzés."
+    image: "https://upload.wikimedia.org/wikipedia/commons/thumb/4/4b/Trinity_Desktop_Environment.png/640px-Trinity_Desktop_Environment.png"
+    website: "https://www.trinitydesktop.org"
+    download: "https://nycampus-my.sharepoint.com/:u:/g/personal/kakuk_sandor_nye_hu/IQC2AmjLSMRsQIpBydD_AqvEAQfWwcmhuyV2uexf9gIKGYk?e=3kL9cX"
+    color: "#06b6d4"
+    tags: ["x11", "qt", "retro", "light"]
+    specs: { wm: "Twin", toolkit: "TQt" }
+    metrics: { ram: 300, cpu: 15, disk: 600 }
+
+  - id: "sugar"
+    name: "Sugar"
+    description: "Oktatási célú felület (OLPC XO laptopokról)."
+    image: "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3a/Sugar_Home_View.png/640px-Sugar_Home_View.png"
+    website: "https://sugarlabs.org"
+    download: "https://nycampus-my.sharepoint.com/:u:/g/personal/kakuk_sandor_nye_hu/IQD4H-gML2F5QK9Ch6cDbe86AcsQdAoZkC6BTESNsvw777Y?e=akxgW0"
+    color: "#facc15"
+    tags: ["x11", "gtk", "mobile", "retro"]
+    specs: { wm: "Metacity", toolkit: "Python/GTK" }
+    metrics: { ram: 512, cpu: 20, disk: 700 }
+
+  - id: "enlightenment"
+    name: "Enlightenment"
+    description: "Egyedi vizuális világ, saját grafikus könyvtárral (EFL)."
+    image: "https://upload.wikimedia.org/wikipedia/commons/thumb/9/90/Enlightenment_0.25.0.jpg/640px-Enlightenment_0.25.0.jpg"
+    website: "https://www.enlightenment.org"
+    download: "https://nycampus-my.sharepoint.com/:u:/g/personal/kakuk_sandor_nye_hu/IQAT5BAvA1INQ7HEY2krYfKIAd9BIp-UuR13g1cQd3EMjJw?e=3Ist8r"
+    color: "#d97706"
+    tags: ["x11", "wayland", "light", "advanced"]
+    specs: { wm: "Enlightenment", toolkit: "EFL" }
+    metrics: { ram: 250, cpu: 25, disk: 500 }
+
+  - id: "cde"
+    name: "CDE"
+    description: "Common Desktop Environment. A klasszikus UNIX felület."
+    image: "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b3/CDE_2.3.1.png/640px-CDE_2.3.1.png"
+    website: "https://sourceforge.net/projects/cdesktopenv/"
+    download: "https://nycampus-my.sharepoint.com/:u:/g/personal/kakuk_sandor_nye_hu/IQC2AmjLSMRsQIpBydD_AqvEAQfWwcmhuyV2uexf9gIKGYk?e=3kL9cX"
+    color: "#0d9488"
+    tags: ["x11", "retro", "light", "advanced"]
+    specs: { wm: "dtwm", toolkit: "Motif" }
+    metrics: { ram: 50, cpu: 5, disk: 300 }
+
+  - id: "maui"
+    name: "Maui Shell"
+    description: "Konvergens felület, asztali és mobil használatra is."
+    image: "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e0/Maui_Shell_1.0.0.png/640px-Maui_Shell_1.0.0.png"
+    website: "https://mauikit.org"
+    download: "https://nycampus-my.sharepoint.com/:u:/g/personal/kakuk_sandor_nye_hu/IQC2AmjLSMRsQIpBydD_AqvEAQfWwcmhuyV2uexf9gIKGYk?e=3kL9cX"
+    color: "#6366f1"
+    tags: ["wayland", "mobile", "qt", "advanced"]
+    specs: { wm: "Zpace", toolkit: "MauiKit" }
+    metrics: { ram: 600, cpu: 50, disk: 900 }
+
+  # --- ABLAKKEZELŐK (WINDOW MANAGERS) ---
   - id: "i3"
     name: "i3-wm"
     description: "A legnépszerűbb tiling WM. Egyszerű config, hatalmas közösség."
@@ -124,7 +280,7 @@ items:
 
   - id: "sway"
     name: "Sway"
-    description: "Az i3 Wayland-es utódja. Drop-in kompatibilitás az i3 configgal."
+    description: "Az i3 ablakkezelő Waylandre írt változata."
     image: "https://upload.wikimedia.org/wikipedia/commons/thumb/2/23/Sway_1.0_Arch_Linux.png/640px-Sway_1.0_Arch_Linux.png"
     website: "https://swaywm.org"
     download: "https://nycampus-my.sharepoint.com/:u:/g/personal/kakuk_sandor_nye_hu/IQCWvOEy_kbDRIjwCx-t4coTAdO4iSkohS1Z9wZh647WZPg?e=DVs7LS"
@@ -133,20 +289,10 @@ items:
     specs: { wm: "Sway", toolkit: "Nincs" }
     metrics: { ram: 400, cpu: 20, disk: 250 }
 
-  - id: "openbox"
-    name: "Openbox"
-    description: "A standard stacking WM. Minimalista, XML configgal."
-    image: "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c5/Openbox-3.4-default.png/640px-Openbox-3.4-default.png"
-    website: "http://openbox.org"
-    download: "https://nycampus-my.sharepoint.com/:u:/g/personal/kakuk_sandor_nye_hu/IQC2AmjLSMRsQIpBydD_AqvEAQfWwcmhuyV2uexf9gIKGYk?e=3kL9cX"
-    color: "#94a3b8"
-    tags: ["x11", "stacking", "light", "advanced"]
-    specs: { wm: "Openbox", toolkit: "Nincs" }
-    metrics: { ram: 180, cpu: 5, disk: 100 }
-
+  # --- TOVÁBBI WINDOW MANAGEREK (Gyűjtő letöltő linkkel) ---
   - id: "awesome"
     name: "Awesome"
-    description: "Lua nyelven programozható, rendkívül erős tiling WM."
+    description: "Lua nyelven programozható, rendkívül flexibilis."
     image: "https://upload.wikimedia.org/wikipedia/commons/thumb/2/22/Awesome_WM_screenshot.png/640px-Awesome_WM_screenshot.png"
     website: "https://awesomewm.org"
     download: "https://nycampus-my.sharepoint.com/:u:/g/personal/kakuk_sandor_nye_hu/IQC2AmjLSMRsQIpBydD_AqvEAQfWwcmhuyV2uexf9gIKGYk?e=3kL9cX"
@@ -155,9 +301,20 @@ items:
     specs: { wm: "Awesome", toolkit: "Lua" }
     metrics: { ram: 350, cpu: 25, disk: 300 }
 
+  - id: "openbox"
+    name: "Openbox"
+    description: "A standard stacking (lebegő) ablakkezelő."
+    image: "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c5/Openbox-3.4-default.png/640px-Openbox-3.4-default.png"
+    website: "http://openbox.org"
+    download: "https://nycampus-my.sharepoint.com/:u:/g/personal/kakuk_sandor_nye_hu/IQC2AmjLSMRsQIpBydD_AqvEAQfWwcmhuyV2uexf9gIKGYk?e=3kL9cX"
+    color: "#94a3b8"
+    tags: ["x11", "stacking", "light", "advanced"]
+    specs: { wm: "Openbox", toolkit: "Nincs" }
+    metrics: { ram: 180, cpu: 5, disk: 100 }
+
   - id: "bspwm"
     name: "bspwm"
-    description: "Bináris térosztás. Két config fájl (bspwmrc + sxhkd), nagyon unix-os."
+    description: "Bináris térosztásos ablakkezelő."
     image: "https://upload.wikimedia.org/wikipedia/commons/thumb/0/03/Bspwm_screenshot.png/640px-Bspwm_screenshot.png"
     website: "https://github.com/baskerville/bspwm"
     download: "https://nycampus-my.sharepoint.com/:u:/g/personal/kakuk_sandor_nye_hu/IQC2AmjLSMRsQIpBydD_AqvEAQfWwcmhuyV2uexf9gIKGYk?e=3kL9cX"
@@ -166,9 +323,20 @@ items:
     specs: { wm: "bspwm", toolkit: "Nincs" }
     metrics: { ram: 220, cpu: 10, disk: 150 }
 
+  - id: "hyprland"
+    name: "Hyprland"
+    description: "Modern, dinamikus tiling ablakkezelő Waylandre."
+    image: "https://upload.wikimedia.org/wikipedia/commons/thumb/2/2c/Hyprland_v0.23.0beta.png/640px-Hyprland_v0.23.0beta.png"
+    website: "https://hyprland.org"
+    download: "https://nycampus-my.sharepoint.com/:u:/g/personal/kakuk_sandor_nye_hu/IQC2AmjLSMRsQIpBydD_AqvEAQfWwcmhuyV2uexf9gIKGYk?e=3kL9cX"
+    color: "#eab308"
+    tags: ["wayland", "tiling", "light", "advanced"]
+    specs: { wm: "Hyprland", toolkit: "Nincs" }
+    metrics: { ram: 250, cpu: 15, disk: 200 }
+
   - id: "xmonad"
     name: "xmonad"
-    description: "Haskell-ben írt, dinamikus tiling WM. Stabil és gyors."
+    description: "Haskell-ben írt, dinamikus tiling WM."
     image: "https://upload.wikimedia.org/wikipedia/commons/thumb/1/1c/Xmonad_screenshot.png/640px-Xmonad_screenshot.png"
     website: "https://xmonad.org"
     download: "https://nycampus-my.sharepoint.com/:u:/g/personal/kakuk_sandor_nye_hu/IQC2AmjLSMRsQIpBydD_AqvEAQfWwcmhuyV2uexf9gIKGYk?e=3kL9cX"
@@ -179,7 +347,7 @@ items:
 
   - id: "qtile"
     name: "Qtile"
-    description: "Python-ban írt és konfigurálható tiling WM. Hackelhető."
+    description: "Python-ban írt és konfigurálható tiling WM."
     image: "https://upload.wikimedia.org/wikipedia/commons/thumb/3/30/Qtile_screenshot.png/640px-Qtile_screenshot.png"
     website: "http://www.qtile.org"
     download: "https://nycampus-my.sharepoint.com/:u:/g/personal/kakuk_sandor_nye_hu/IQC2AmjLSMRsQIpBydD_AqvEAQfWwcmhuyV2uexf9gIKGYk?e=3kL9cX"
@@ -188,10 +356,9 @@ items:
     specs: { wm: "Qtile", toolkit: "Python" }
     metrics: { ram: 350, cpu: 20, disk: 250 }
 
-  # --- TOVÁBBI WINDOW MANAGEREK (STACKING & TILING) ---
   - id: "dwm"
     name: "dwm"
-    description: "A suckless filozófia csúcsa. C forráskódban konfigurálod."
+    description: "C forráskódban konfigurálható minimalista WM."
     image: "https://upload.wikimedia.org/wikipedia/commons/thumb/5/52/Dwm-6.0.png/640px-Dwm-6.0.png"
     website: "https://dwm.suckless.org"
     download: "https://nycampus-my.sharepoint.com/:u:/g/personal/kakuk_sandor_nye_hu/IQC2AmjLSMRsQIpBydD_AqvEAQfWwcmhuyV2uexf9gIKGYk?e=3kL9cX"
@@ -224,7 +391,7 @@ items:
 
   - id: "windowmaker"
     name: "WindowMaker"
-    description: "NeXTSTEP kinézet és érzés. Ikonikus dock és menü."
+    description: "NeXTSTEP kinézet. Ikonikus dock és menü."
     image: "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c8/WindowMaker0.95.5.png/640px-WindowMaker0.95.5.png"
     website: "https://www.windowmaker.org"
     download: "https://nycampus-my.sharepoint.com/:u:/g/personal/kakuk_sandor_nye_hu/IQC2AmjLSMRsQIpBydD_AqvEAQfWwcmhuyV2uexf9gIKGYk?e=3kL9cX"
@@ -235,7 +402,7 @@ items:
 
   - id: "fvwm"
     name: "FVWM"
-    description: "Rendkívül erős virtuális ablakkezelő. Bármit megtehetsz vele."
+    description: "Rendkívül erős virtuális ablakkezelő."
     image: "https://upload.wikimedia.org/wikipedia/commons/thumb/1/12/Fvwm_screenshot.png/640px-Fvwm_screenshot.png"
     website: "https://www.fvwm.org"
     download: "https://nycampus-my.sharepoint.com/:u:/g/personal/kakuk_sandor_nye_hu/IQC2AmjLSMRsQIpBydD_AqvEAQfWwcmhuyV2uexf9gIKGYk?e=3kL9cX"
@@ -246,7 +413,7 @@ items:
 
   - id: "jwm"
     name: "JWM"
-    description: "Joe's Window Manager. Régi gépekre, Puppy Linux alapja."
+    description: "Joe's Window Manager. Régi gépekre kiváló."
     image: "https://upload.wikimedia.org/wikipedia/commons/thumb/1/1a/JWM_screenshot.png/640px-JWM_screenshot.png"
     website: "https://joewing.net/projects/jwm/"
     download: "https://nycampus-my.sharepoint.com/:u:/g/personal/kakuk_sandor_nye_hu/IQC2AmjLSMRsQIpBydD_AqvEAQfWwcmhuyV2uexf9gIKGYk?e=3kL9cX"
@@ -257,7 +424,7 @@ items:
 
   - id: "herbstluftwm"
     name: "herbstluftwm"
-    description: "Manuális tiling WM. A layoutokat parancssorból állítod."
+    description: "Manuális tiling WM parancssori layouttal."
     image: "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f0/Herbstluftwm_screenshot.png/640px-Herbstluftwm_screenshot.png"
     website: "https://herbstluftwm.org"
     download: "https://nycampus-my.sharepoint.com/:u:/g/personal/kakuk_sandor_nye_hu/IQC2AmjLSMRsQIpBydD_AqvEAQfWwcmhuyV2uexf9gIKGYk?e=3kL9cX"
@@ -268,7 +435,7 @@ items:
 
   - id: "leftwm"
     name: "LeftWM"
-    description: "Rust-ban írt tiling WM. A témázhatóságra fókuszál."
+    description: "Rust-ban írt tiling WM, témázhatóságra fókuszálva."
     image: "https://upload.wikimedia.org/wikipedia/commons/thumb/7/77/LeftWM_screenshot.png/640px-LeftWM_screenshot.png"
     website: "https://leftwm.org"
     download: "https://nycampus-my.sharepoint.com/:u:/g/personal/kakuk_sandor_nye_hu/IQC2AmjLSMRsQIpBydD_AqvEAQfWwcmhuyV2uexf9gIKGYk?e=3kL9cX"
@@ -279,7 +446,7 @@ items:
 
   - id: "spectrwm"
     name: "spectrwm"
-    description: "Kicsi, dinamikus tiling WM, amit hackereknek terveztek."
+    description: "Kicsi, dinamikus tiling WM hackereknek."
     image: "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d4/Spectrwm.png/640px-Spectrwm.png"
     website: "https://github.com/conformal/spectrwm"
     download: "https://nycampus-my.sharepoint.com/:u:/g/personal/kakuk_sandor_nye_hu/IQC2AmjLSMRsQIpBydD_AqvEAQfWwcmhuyV2uexf9gIKGYk?e=3kL9cX"
@@ -287,3 +454,190 @@ items:
     tags: ["x11", "tiling", "light"]
     specs: { wm: "spectrwm", toolkit: "C" }
     metrics: { ram: 180, cpu: 10, disk: 100 }
+
+  - id: "blackbox"
+    name: "Blackbox"
+    description: "A minimalizmus úttörője. Sok más WM alapja."
+    image: "https://upload.wikimedia.org/wikipedia/commons/thumb/3/30/Blackbox_0.70_default.png/640px-Blackbox_0.70_default.png"
+    website: "https://github.com/bbidulock/blackboxwm"
+    download: "https://nycampus-my.sharepoint.com/:u:/g/personal/kakuk_sandor_nye_hu/IQC2AmjLSMRsQIpBydD_AqvEAQfWwcmhuyV2uexf9gIKGYk?e=3kL9cX"
+    color: "#94a3b8"
+    tags: ["x11", "stacking", "light"]
+    specs: { wm: "blackbox", toolkit: "C++" }
+    metrics: { ram: 150, cpu: 5, disk: 100 }
+
+  - id: "pekwm"
+    name: "pekwm"
+    description: "A Blackbox-on alapul, de több funkcióval (tabok)."
+    image: "https://upload.wikimedia.org/wikipedia/commons/thumb/8/87/Pekwm.png/640px-Pekwm.png"
+    website: "https://www.pekwm.org"
+    download: "https://nycampus-my.sharepoint.com/:u:/g/personal/kakuk_sandor_nye_hu/IQC2AmjLSMRsQIpBydD_AqvEAQfWwcmhuyV2uexf9gIKGYk?e=3kL9cX"
+    color: "#2dd4bf"
+    tags: ["x11", "stacking", "light"]
+    specs: { wm: "pekwm", toolkit: "C++" }
+    metrics: { ram: 170, cpu: 8, disk: 110 }
+
+  - id: "metacity"
+    name: "Metacity"
+    description: "A régi GNOME 2 ablakkezelője. Egyszerű és stabil."
+    image: "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3d/Metacity.png/640px-Metacity.png"
+    website: "https://gitlab.gnome.org/GNOME/metacity"
+    download: "https://nycampus-my.sharepoint.com/:u:/g/personal/kakuk_sandor_nye_hu/IQC2AmjLSMRsQIpBydD_AqvEAQfWwcmhuyV2uexf9gIKGYk?e=3kL9cX"
+    color: "#a3a3a3"
+    tags: ["x11", "stacking", "light"]
+    specs: { wm: "metacity", toolkit: "GTK" }
+    metrics: { ram: 250, cpu: 15, disk: 200 }
+
+  - id: "twm"
+    name: "TWM (Tab WM)"
+    description: "Az X Window System alapértelmezett ablakkezelője 1989 óta."
+    image: "https://upload.wikimedia.org/wikipedia/commons/thumb/9/98/Twm_screenshot.png/640px-Twm_screenshot.png"
+    website: "https://gitlab.freedesktop.org/xorg/app/twm"
+    download: "https://nycampus-my.sharepoint.com/:u:/g/personal/kakuk_sandor_nye_hu/IQC2AmjLSMRsQIpBydD_AqvEAQfWwcmhuyV2uexf9gIKGYk?e=3kL9cX"
+    color: "#525252"
+    tags: ["x11", "stacking", "light", "advanced"]
+    specs: { wm: "twm", toolkit: "C" }
+    metrics: { ram: 50, cpu: 2, disk: 20 }
+
+  - id: "ctwm"
+    name: "CTWM"
+    description: "Claude's TWM. A TWM továbbfejlesztése virtuális asztalokkal."
+    image: "https://upload.wikimedia.org/wikipedia/commons/thumb/9/98/Twm_screenshot.png/640px-Twm_screenshot.png"
+    website: "https://www.ctwm.org"
+    download: "https://nycampus-my.sharepoint.com/:u:/g/personal/kakuk_sandor_nye_hu/IQC2AmjLSMRsQIpBydD_AqvEAQfWwcmhuyV2uexf9gIKGYk?e=3kL9cX"
+    color: "#737373"
+    tags: ["x11", "stacking", "light"]
+    specs: { wm: "ctwm", toolkit: "C" }
+    metrics: { ram: 60, cpu: 3, disk: 30 }
+
+  - id: "vtwm"
+    name: "VTWM"
+    description: "Virtual TWM. Még egy TWM leszármazott."
+    image: "https://upload.wikimedia.org/wikipedia/commons/thumb/9/98/Twm_screenshot.png/640px-Twm_screenshot.png"
+    website: "http://vtwm.sourceforge.net"
+    download: "https://nycampus-my.sharepoint.com/:u:/g/personal/kakuk_sandor_nye_hu/IQC2AmjLSMRsQIpBydD_AqvEAQfWwcmhuyV2uexf9gIKGYk?e=3kL9cX"
+    color: "#737373"
+    tags: ["x11", "stacking", "light"]
+    specs: { wm: "vtwm", toolkit: "C" }
+    metrics: { ram: 60, cpu: 3, disk: 30 }
+
+  - id: "evilwm"
+    name: "evilwm"
+    description: "Minimalista WM, nincs dekoráció, billentyűzet fókusz."
+    image: "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d0/Evilwm.png/640px-Evilwm.png"
+    website: "http://www.6809.org.uk/evilwm/"
+    download: "https://nycampus-my.sharepoint.com/:u:/g/personal/kakuk_sandor_nye_hu/IQC2AmjLSMRsQIpBydD_AqvEAQfWwcmhuyV2uexf9gIKGYk?e=3kL9cX"
+    color: "#ef4444"
+    tags: ["x11", "stacking", "light", "advanced"]
+    specs: { wm: "evilwm", toolkit: "C" }
+    metrics: { ram: 80, cpu: 4, disk: 50 }
+
+  - id: "ratpoison"
+    name: "Ratpoison"
+    description: "Egérmentes ablakkezelő. Say goodbye to the rodent."
+    image: "https://upload.wikimedia.org/wikipedia/commons/thumb/6/67/Ratpoison_debian.png/640px-Ratpoison_debian.png"
+    website: "https://www.nongnu.org/ratpoison/"
+    download: "https://nycampus-my.sharepoint.com/:u:/g/personal/kakuk_sandor_nye_hu/IQC2AmjLSMRsQIpBydD_AqvEAQfWwcmhuyV2uexf9gIKGYk?e=3kL9cX"
+    color: "#10b981"
+    tags: ["x11", "tiling", "light", "advanced"]
+    specs: { wm: "ratpoison", toolkit: "C" }
+    metrics: { ram: 100, cpu: 5, disk: 60 }
+
+  - id: "stumpwm"
+    name: "StumpWM"
+    description: "A Ratpoison utódja, Common Lisp-ben írva."
+    image: "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e4/StumpWM.png/640px-StumpWM.png"
+    website: "https://stumpwm.github.io"
+    download: "https://nycampus-my.sharepoint.com/:u:/g/personal/kakuk_sandor_nye_hu/IQC2AmjLSMRsQIpBydD_AqvEAQfWwcmhuyV2uexf9gIKGYk?e=3kL9cX"
+    color: "#f59e0b"
+    tags: ["x11", "tiling", "light", "advanced"]
+    specs: { wm: "stumpwm", toolkit: "Lisp" }
+    metrics: { ram: 250, cpu: 15, disk: 100 }
+
+  - id: "notion"
+    name: "Notion"
+    description: "Tiling WM tabokkal. A Ion3 utódja."
+    image: "https://upload.wikimedia.org/wikipedia/commons/thumb/c/ce/Notion-3-2012042400-src.png/640px-Notion-3-2012042400-src.png"
+    website: "https://notionwm.net"
+    download: "https://nycampus-my.sharepoint.com/:u:/g/personal/kakuk_sandor_nye_hu/IQC2AmjLSMRsQIpBydD_AqvEAQfWwcmhuyV2uexf9gIKGYk?e=3kL9cX"
+    color: "#6366f1"
+    tags: ["x11", "tiling", "light"]
+    specs: { wm: "notion", toolkit: "C" }
+    metrics: { ram: 200, cpu: 10, disk: 150 }
+
+  - id: "wingo"
+    name: "Wingo"
+    description: "Hibrid WM, támogatja a tiling és stacking módot is."
+    image: "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c5/Openbox-3.4-default.png/640px-Openbox-3.4-default.png"
+    website: "https://github.com/burjui/wingo"
+    download: "https://nycampus-my.sharepoint.com/:u:/g/personal/kakuk_sandor_nye_hu/IQC2AmjLSMRsQIpBydD_AqvEAQfWwcmhuyV2uexf9gIKGYk?e=3kL9cX"
+    color: "#8b5cf6"
+    tags: ["x11", "tiling", "light"]
+    specs: { wm: "wingo", toolkit: "Go" }
+    metrics: { ram: 220, cpu: 12, disk: 180 }
+
+  - id: "2bwm"
+    name: "2bwm"
+    description: "Gyors, lebegő ablakkezelő, 2 szegéllyel."
+    image: "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c5/Openbox-3.4-default.png/640px-Openbox-3.4-default.png"
+    website: "https://github.com/venam/2bwm"
+    download: "https://nycampus-my.sharepoint.com/:u:/g/personal/kakuk_sandor_nye_hu/IQC2AmjLSMRsQIpBydD_AqvEAQfWwcmhuyV2uexf9gIKGYk?e=3kL9cX"
+    color: "#ec4899"
+    tags: ["x11", "stacking", "light"]
+    specs: { wm: "2bwm", toolkit: "XCB" }
+    metrics: { ram: 140, cpu: 5, disk: 80 }
+
+  - id: "9wm"
+    name: "9wm"
+    description: "A Plan 9 8½ ablakkezelőjének emulációja."
+    image: "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c5/Openbox-3.4-default.png/640px-Openbox-3.4-default.png"
+    website: "https://github.com/9wm/9wm"
+    download: "https://nycampus-my.sharepoint.com/:u:/g/personal/kakuk_sandor_nye_hu/IQC2AmjLSMRsQIpBydD_AqvEAQfWwcmhuyV2uexf9gIKGYk?e=3kL9cX"
+    color: "#64748b"
+    tags: ["x11", "stacking", "light"]
+    specs: { wm: "9wm", toolkit: "C" }
+    metrics: { ram: 50, cpu: 2, disk: 30 }
+
+  - id: "aewm"
+    name: "aewm"
+    description: "Ascetic WM. Minimalista, C-ben írva."
+    image: "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c5/Openbox-3.4-default.png/640px-Openbox-3.4-default.png"
+    website: "http://www.red-bean.com/decklin/aewm/"
+    download: "https://nycampus-my.sharepoint.com/:u:/g/personal/kakuk_sandor_nye_hu/IQC2AmjLSMRsQIpBydD_AqvEAQfWwcmhuyV2uexf9gIKGYk?e=3kL9cX"
+    color: "#99f6e4"
+    tags: ["x11", "stacking", "light"]
+    specs: { wm: "aewm", toolkit: "C" }
+    metrics: { ram: 60, cpu: 3, disk: 40 }
+
+  - id: "berry"
+    name: "berry"
+    description: "Egészséges, byte-méretű ablakkezelő."
+    image: "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c5/Openbox-3.4-default.png/640px-Openbox-3.4-default.png"
+    website: "https://berrywm.org"
+    download: "https://nycampus-my.sharepoint.com/:u:/g/personal/kakuk_sandor_nye_hu/IQC2AmjLSMRsQIpBydD_AqvEAQfWwcmhuyV2uexf9gIKGYk?e=3kL9cX"
+    color: "#f43f5e"
+    tags: ["x11", "stacking", "light"]
+    specs: { wm: "berry", toolkit: "C" }
+    metrics: { ram: 160, cpu: 8, disk: 100 }
+
+  - id: "dk"
+    name: "dk"
+    description: "Dinamikus ablakkezelő szkriptelhető layoutokkal."
+    image: "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c5/Openbox-3.4-default.png/640px-Openbox-3.4-default.png"
+    website: "https://github.com/natevw/dk"
+    download: "https://nycampus-my.sharepoint.com/:u:/g/personal/kakuk_sandor_nye_hu/IQC2AmjLSMRsQIpBydD_AqvEAQfWwcmhuyV2uexf9gIKGYk?e=3kL9cX"
+    color: "#d946ef"
+    tags: ["x11", "tiling", "light"]
+    specs: { wm: "dk", toolkit: "XCB" }
+    metrics: { ram: 180, cpu: 10, disk: 120 }
+
+  - id: "worm"
+    name: "Worm"
+    description: "Lebegő és tiling módokat is támogató WM, Nim-ben írva."
+    image: "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c5/Openbox-3.4-default.png/640px-Openbox-3.4-default.png"
+    website: "https://github.com/codic12/worm"
+    download: "https://nycampus-my.sharepoint.com/:u:/g/personal/kakuk_sandor_nye_hu/IQC2AmjLSMRsQIpBydD_AqvEAQfWwcmhuyV2uexf9gIKGYk?e=3kL9cX"
+    color: "#84cc16"
+    tags: ["x11", "tiling", "light"]
+    specs: { wm: "worm", toolkit: "Nim" }
+    metrics: { ram: 200, cpu: 15, disk: 150 }
