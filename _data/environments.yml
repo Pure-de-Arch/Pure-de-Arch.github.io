@@ -42,7 +42,7 @@ items:
   - id: "kde"
     name: "KDE Plasma"
     description: "A teljesítmény királya. Meglepően kevés RAM-ot használ."
-    image: "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f3/KDE_Plasma_6.png/640px-KDE_Plasma_6.png"
+    image: "https://nycampus-my.sharepoint.com/:i:/g/personal/kakuk_sandor_nye_hu/IQCTVGst5cgUTKBXqWD5F93xARuoWkKYastzQPv4WksJdgg?e=lIHdBR"
     website: "https://kde.org/plasma-desktop/"
     download: "https://nycampus-my.sharepoint.com/:u:/g/personal/kakuk_sandor_nye_hu/IQDZuEitJB-_T6K4M00JWS_hAW7Z6r_PsCXAaUQERrDSpc8?e=zWJHs4"
     color: "#f97316"
