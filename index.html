@@ -1,6 +1,6 @@
 ---
 layout: default
-title: Finder
+title: Arch Environment Finder
 ---
 
 <div class="max-w-7xl mx-auto px-6 py-10 space-y-12">
@@ -10,24 +10,25 @@ title: Finder
             Arch <span class="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-fuchsia-500">Environment</span> Finder
         </h1>
         <p class="text-lg text-gray-400 max-w-2xl mx-auto">
-            Válassz szűrőket a neked való felület megtalálásához.
+            Találd meg a tökéletes egyensúlyt teljesítmény és design között.
+            <br>Válassz szűrőket a statisztikák és a lista frissítéséhez.
         </p>
     </div>
 
     <div class="grid gap-6 md:grid-cols-3">
-        <div class="bg-darkbg-800 border border-darkbg-700 rounded-2xl p-5 shadow-lg relative overflow-hidden">
+        <div class="bg-darkbg-800 border border-darkbg-700 rounded-2xl p-5 shadow-lg relative overflow-hidden group hover:border-fuchsia-500/30 transition-colors">
             <h3 class="text-xs font-bold text-gray-400 uppercase tracking-widest mb-2 flex items-center gap-2">
-                <span class="w-2 h-2 rounded-full bg-fuchsia-500"></span> RAM (MB)
+                <span class="w-2 h-2 rounded-full bg-fuchsia-500"></span> RAM (Idle MB)
             </h3>
             <div class="h-40 w-full"><canvas id="chartRam"></canvas></div>
         </div>
-        <div class="bg-darkbg-800 border border-darkbg-700 rounded-2xl p-5 shadow-lg relative overflow-hidden">
+        <div class="bg-darkbg-800 border border-darkbg-700 rounded-2xl p-5 shadow-lg relative overflow-hidden group hover:border-cyan-500/30 transition-colors">
             <h3 class="text-xs font-bold text-gray-400 uppercase tracking-widest mb-2 flex items-center gap-2">
                 <span class="w-2 h-2 rounded-full bg-cyan-500"></span> CPU Index
             </h3>
             <div class="h-40 w-full"><canvas id="chartCpu"></canvas></div>
         </div>
-        <div class="bg-darkbg-800 border border-darkbg-700 rounded-2xl p-5 shadow-lg relative overflow-hidden">
+        <div class="bg-darkbg-800 border border-darkbg-700 rounded-2xl p-5 shadow-lg relative overflow-hidden group hover:border-lime-500/30 transition-colors">
             <h3 class="text-xs font-bold text-gray-400 uppercase tracking-widest mb-2 flex items-center gap-2">
                 <span class="w-2 h-2 rounded-full bg-lime-500"></span> Méret (MB)
             </h3>
@@ -36,17 +37,25 @@ title: Finder
     </div>
 
     <div class="flex flex-col items-center gap-4 sticky top-16 z-30 py-4 bg-darkbg-900/95 backdrop-blur-xl border-b border-white/5 w-full">
-        <div class="flex flex-wrap justify-center gap-2">
+        <div class="flex flex-wrap justify-center gap-3 items-center">
             {% for filter in site.data.environments.feature_filters %}
+            
             <button 
                 onclick="toggleFilter('{{ filter.id }}')" 
                 id="filter-btn-{{ filter.id }}"
-                class="filter-btn px-4 py-1.5 rounded-full text-xs font-bold border border-darkbg-700 bg-darkbg-800 text-gray-400 transition-all duration-300 hover:border-gray-500 hover:text-white"
+                class="filter-btn rounded-full font-bold border border-darkbg-700 bg-darkbg-800 text-gray-400 transition-all duration-300 hover:border-gray-500 hover:text-white
+                {% if filter.id == 'wayland' or filter.id == 'x11' %}
+                    px-6 py-2.5 text-sm border-white/20 shadow-lg tracking-wide
+                {% else %}
+                    px-4 py-1.5 text-xs opacity-90
+                {% endif %}"
                 data-filter-id="{{ filter.id }}">
                 {{ filter.name }}
             </button>
+
             {% endfor %}
-            <button onclick="clearAllFilters()" id="reset-btn" class="hidden px-4 py-1.5 rounded-full text-xs font-bold border border-red-900/50 bg-red-900/10 text-red-400 hover:bg-red-900/30">
+            
+            <button onclick="clearAllFilters()" id="reset-btn" class="hidden px-4 py-1.5 rounded-full text-xs font-bold border border-red-900/50 bg-red-900/10 text-red-400 hover:bg-red-900/30 transition-all">
                 ✕ Reset
             </button>
         </div>
@@ -59,12 +68,12 @@ title: Finder
              data-id="{{ item.id }}"
              data-tags="{{ item.tags | join: ',' }}">
             
-            <div class="relative h-48 overflow-hidden">
+            <div class="relative h-48 overflow-hidden bg-black">
                 <div class="absolute inset-0 bg-gradient-to-t from-darkbg-800 via-transparent to-transparent z-10"></div>
-                <img src="{{ item.image }}" alt="{{ item.name }}" class="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-700">
+                <img src="{{ item.image }}" loading="lazy" alt="{{ item.name }}" class="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-700 opacity-90 group-hover:opacity-100">
                 
-                <div class="absolute top-3 right-3 z-20 flex gap-1">
-                    {% for tag in item.tags limit:2 %}
+                <div class="absolute top-3 right-3 z-20 flex gap-1 flex-wrap justify-end max-w-[80%]">
+                    {% for tag in item.tags limit:3 %}
                     <span class="px-2 py-1 rounded bg-black/60 text-[10px] font-bold text-white backdrop-blur-md border border-white/10 uppercase tracking-wide">
                         {{ tag }}
                     </span>
@@ -85,7 +94,7 @@ title: Finder
 
                 <div class="grid grid-cols-2 gap-4 mb-6 text-xs border-t border-b border-darkbg-700 py-3">
                     <div>
-                        <span class="text-gray-500 block">Ablakkezelő</span>
+                        <span class="text-gray-500 block">WM / Compositor</span>
                         <span class="text-gray-200 font-medium">{{ item.specs.wm }}</span>
                     </div>
                     <div>
@@ -98,7 +107,7 @@ title: Finder
                     <a href="{{ item.website }}" target="_blank" class="flex-1 text-center px-4 py-2 rounded-lg text-sm font-bold border border-darkbg-700 text-gray-300 hover:bg-darkbg-700 hover:text-white transition-all">
                         Weboldal
                     </a>
-                    <a href="{{ item.download }}" target="_blank" class="flex-1 text-center px-4 py-2 rounded-lg text-sm font-bold text-black transition-all shadow-lg hover:shadow-[var(--theme-color)]/50" 
+                    <a href="{{ item.download }}" target="_blank" class="flex-1 text-center px-4 py-2 rounded-lg text-sm font-bold text-black transition-all shadow-lg hover:shadow-[var(--theme-color)]/50 hover:brightness-110" 
                        style="background-color: var(--theme-color);">
                         Letöltés
                     </a>
@@ -111,11 +120,75 @@ title: Finder
     </div>
 
     <div id="no-results" class="hidden py-20 text-center">
-        <p class="text-xl text-gray-500">Nincs találat a kiválasztott szűrőkre.</p>
-        <button onclick="clearAllFilters()" class="mt-4 text-cyan-400 hover:underline">Szűrők törlése</button>
+        <div class="inline-flex items-center justify-center w-16 h-16 rounded-full bg-darkbg-800 mb-4 text-gray-600">
+            <svg class="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" /></svg>
+        </div>
+        <p class="text-xl text-gray-400 font-medium">Nincs találat a kiválasztott szűrőkre.</p>
+        <button onclick="clearAllFilters()" class="mt-4 text-cyan-400 hover:text-white transition-colors underline decoration-dotted">Szűrők törlése</button>
+    </div>
+
+    <div class="max-w-4xl mx-auto mt-20 space-y-4">
+        <h2 class="text-2xl font-bold text-center text-white mb-8">Telepítési Segédlet</h2>
+
+        <div class="bg-darkbg-800 border border-darkbg-700 rounded-2xl overflow-hidden transition-all duration-300 hover:border-cyan-500/30">
+            <button onclick="toggleAccordion('guide-etcher')" class="w-full flex items-center justify-between p-6 text-left focus:outline-none group">
+                <div class="flex items-center gap-4">
+                    <div class="w-10 h-10 rounded-full bg-cyan-500/10 flex items-center justify-center text-cyan-400 group-hover:bg-cyan-500 group-hover:text-black transition-colors">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" /></svg>
+                    </div>
+                    <div>
+                        <h3 class="text-lg font-bold text-white">1. Lépés: USB Telepítő készítése</h3>
+                        <p class="text-sm text-gray-400">Balena Etcher használata</p>
+                    </div>
+                </div>
+                <svg id="icon-guide-etcher" xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-gray-500 transform transition-transform duration-300" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" /></svg>
+            </button>
+            <div id="guide-etcher" class="hidden px-6 pb-8 border-t border-darkbg-700/50">
+                <div class="pt-6 space-y-4 text-gray-300 text-sm leading-relaxed">
+                    <p>1. Töltsd le az <strong>Arch Linux ISO-t</strong> és a <a href="https://etcher.balena.io/" target="_blank" class="text-cyan-400 underline">Balena Etchert</a>.</p>
+                    <p>2. Csatlakoztass egy pendrive-ot.</p>
+                    <p>3. Az Etcherben válaszd ki az ISO-t, majd a pendrive-ot, és kattints a <strong>Flash</strong> gombra.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="bg-darkbg-800 border border-darkbg-700 rounded-2xl overflow-hidden transition-all duration-300 hover:border-fuchsia-500/30">
+            <button onclick="toggleAccordion('guide-calamares')" class="w-full flex items-center justify-between p-6 text-left focus:outline-none group">
+                <div class="flex items-center gap-4">
+                    <div class="w-10 h-10 rounded-full bg-fuchsia-500/10 flex items-center justify-center text-fuchsia-400 group-hover:bg-fuchsia-500 group-hover:text-black transition-colors">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 12h14M5 12a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v4a2 2 0 01-2 2M5 12a2 2 0 00-2 2v4a2 2 0 002 2h14a2 2 0 002-2v-4a2 2 0 00-2-2m-2-4h.01M17 16h.01" /></svg>
+                    </div>
+                    <div>
+                        <h3 class="text-lg font-bold text-white">2. Lépés: Telepítés (Calamares)</h3>
+                        <p class="text-sm text-gray-400">Rendszer feltelepítése</p>
+                    </div>
+                </div>
+                <svg id="icon-guide-calamares" xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-gray-500 transform transition-transform duration-300" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" /></svg>
+            </button>
+            <div id="guide-calamares" class="hidden px-6 pb-8 border-t border-darkbg-700/50">
+                <div class="pt-6 space-y-4 text-gray-300 text-sm leading-relaxed">
+                    <p>A grafikus telepítő (Calamares) végigvezet a folyamaton:</p>
+                    <ul class="list-disc list-inside space-y-2 marker:text-fuchsia-500">
+                        <li><strong>Particionálás:</strong> Válaszd az "Erase Disk" opciót a tiszta telepítéshez.</li>
+                        <li><strong>Felhasználó:</strong> Add meg a neved és jelszavad.</li>
+                        <li><strong>Összegzés:</strong> Ellenőrizd az adatokat, majd indítsd el a telepítést.</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
     </div>
 
 </div>
+
+<button 
+    id="back-to-top" 
+    onclick="scrollToTop()" 
+    class="fixed bottom-6 right-6 z-50 p-3 rounded-full bg-cyan-500 text-black shadow-[0_0_20px_rgba(6,182,212,0.6)] hover:bg-white hover:scale-110 transition-all duration-300 opacity-0 pointer-events-none translate-y-4"
+    aria-label="Vissza a tetejére">
+    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M5 10l7-7m0 0l7 7m-7-7v18" />
+    </svg>
+</button>
 
 <script>
     // --- 1. ADATOK BETÖLTÉSE ---
@@ -135,21 +208,31 @@ title: Finder
     // --- 2. CHART.JS CONFIG ---
     Chart.defaults.font.family = 'Inter';
     Chart.defaults.color = '#64748b';
+    Chart.defaults.borderColor = 'rgba(255,255,255,0.05)';
+    
     let chartRam, chartCpu, chartDisk;
 
     function initCharts() {
         const commonOptions = {
             responsive: true, maintainAspectRatio: false,
             plugins: { legend: { display: false } },
-            scales: { y: { display: false }, x: { display: false } },
-            animation: { duration: 600 }
+            scales: { 
+                y: { beginAtZero: true, grid: { color: '#1e293b' } }, 
+                x: { display: false } 
+            },
+            animation: { duration: 600, easing: 'easeOutQuart' }
         };
 
         const createChart = (id) => new Chart(document.getElementById(id), {
             type: 'bar',
             data: { 
                 labels: [], 
-                datasets: [{ data: [], backgroundColor: [], borderRadius: 4 }] 
+                datasets: [{ 
+                    data: [], 
+                    backgroundColor: [], 
+                    borderRadius: 4,
+                    borderSkipped: false
+                }] 
             }, 
             options: commonOptions
         });
@@ -159,9 +242,9 @@ title: Finder
         chartDisk = createChart('chartDisk');
     }
 
-    // --- 3. SZŰRÉS LOGIKA (KÁRTYÁKRA) ---
-    // "Neon" stílus a gombokhoz
-    const activeBtnClass = ['bg-cyan-500', 'text-black', 'border-cyan-400', 'shadow-[0_0_10px_rgba(6,182,212,0.4)]'];
+    // --- 3. SZŰRÉS LOGIKA (KÁRTYÁK + DIAGRAMOK) ---
+    // Stílusok a gombokhoz
+    const activeBtnClass = ['bg-cyan-500', 'text-black', 'border-cyan-400', 'shadow-[0_0_15px_rgba(6,182,212,0.5)]', 'opacity-100'];
     const inactiveBtnClass = ['bg-darkbg-800', 'text-gray-400', 'border-darkbg-700'];
 
     let selectedFilters = new Set(); 
@@ -177,6 +260,7 @@ title: Finder
             selectedFilters.delete(filterId);
             btn.classList.remove(...activeBtnClass);
             btn.classList.add(...inactiveBtnClass);
+            // Ha speciális gomb volt (Wayland/X11), az eredeti padding marad a HTML-ben
         } else {
             selectedFilters.add(filterId);
             btn.classList.remove(...inactiveBtnClass);
@@ -205,18 +289,17 @@ title: Finder
 
         cards.forEach(card => {
             const tags = card.getAttribute('data-tags').split(',');
-            // AND logika: Csak akkor jelenik meg, ha MINDEN szűrőnek megfelel
             const matches = selectedFilters.size === 0 || Array.from(selectedFilters).every(f => tags.includes(f));
             
             if (matches) {
-                card.style.display = 'flex'; // Flex, mert a kártya layout flexbox
+                card.style.display = 'flex';
                 visibleIds.push(card.getAttribute('data-id'));
             } else {
                 card.style.display = 'none';
             }
         });
 
-        // Diagramok frissítése a látható kártyák alapján
+        // Diagramok frissítése
         const filteredData = envData.filter(item => visibleIds.includes(item.id));
         const labels = filteredData.map(d => d.name);
         const colors = filteredData.map(d => d.color);
@@ -226,8 +309,7 @@ title: Finder
         updateChart(chartDisk, labels, filteredData.map(d => d.disk), colors);
 
         // Empty state
-        const noResults = document.getElementById('no-results');
-        noResults.style.display = visibleIds.length === 0 ? 'block' : 'none';
+        document.getElementById('no-results').style.display = visibleIds.length === 0 ? 'block' : 'none';
     }
 
     function updateChart(chart, labels, data, colors) {
@@ -235,5 +317,33 @@ title: Finder
         chart.data.datasets[0].data = data;
         chart.data.datasets[0].backgroundColor = colors;
         chart.update();
+    }
+
+    // --- 4. ACCORDION LOGIKA ---
+    function toggleAccordion(id) {
+        const content = document.getElementById(id);
+        const icon = document.getElementById('icon-' + id);
+        
+        if (content.classList.contains('hidden')) {
+            content.classList.remove('hidden');
+            icon.classList.add('rotate-180');
+        } else {
+            content.classList.add('hidden');
+            icon.classList.remove('rotate-180');
+        }
+    }
+
+    // --- 5. BACK TO TOP LOGIKA ---
+    const backToTopBtn = document.getElementById('back-to-top');
+    window.addEventListener('scroll', () => {
+        if (window.scrollY > 300) {
+            backToTopBtn.classList.remove('opacity-0', 'pointer-events-none', 'translate-y-4');
+        } else {
+            backToTopBtn.classList.add('opacity-0', 'pointer-events-none', 'translate-y-4');
+        }
+    });
+
+    function scrollToTop() {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 </script>
