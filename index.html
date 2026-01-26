@@ -44,7 +44,7 @@ title: Arch Environment Finder
                 onclick="toggleFilter('{{ filter.id }}')" 
                 id="filter-btn-{{ filter.id }}"
                 class="filter-btn rounded-full font-bold border border-darkbg-700 bg-darkbg-800 text-gray-400 transition-all duration-300 hover:border-gray-500 hover:text-white
-                {% if filter.id == 'wayland' or filter.id == 'x11' %}
+                {% if filter.id == 'de' or filter.id == 'wm' or filter.id == 'wayland' or filter.id == 'x11' %}
                     px-6 py-2.5 text-sm border-white/20 shadow-lg tracking-wide
                 {% else %}
                     px-4 py-1.5 text-xs opacity-90
@@ -260,7 +260,7 @@ title: Arch Environment Finder
             selectedFilters.delete(filterId);
             btn.classList.remove(...activeBtnClass);
             btn.classList.add(...inactiveBtnClass);
-            // Ha speciális gomb volt (Wayland/X11), az eredeti padding marad a HTML-ben
+            // Ha speciális gomb volt (DE/WM/Wayland/X11), az eredeti padding marad a HTML-ben
         } else {
             selectedFilters.add(filterId);
             btn.classList.remove(...inactiveBtnClass);
