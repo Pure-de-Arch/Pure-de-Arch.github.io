@@ -3,6 +3,8 @@ layout: default
 title: Arch Environment Finder
 ---
 
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
 <div class="max-w-7xl mx-auto px-6 py-10 space-y-12">
 
     <div class="text-center space-y-4">
@@ -11,7 +13,7 @@ title: Arch Environment Finder
         </h1>
         <p class="text-lg text-gray-400 max-w-2xl mx-auto">
             Találd meg a tökéletes egyensúlyt teljesítmény és design között.
-            <br>Válassz szűrőket a statisztikák és a lista frissítéséhez.
+            <br>Használd a <strong>+</strong> gombot a kártyákon több környezet összehasonlításához!
         </p>
     </div>
 
@@ -43,7 +45,7 @@ title: Arch Environment Finder
             <button 
                 onclick="toggleFilter('{{ filter.id }}')" 
                 id="filter-btn-{{ filter.id }}"
-                class="filter-btn rounded-full font-bold border border-darkbg-700 bg-darkbg-800 text-gray-400 transition-all duration-300 hover:border-gray-500 hover:text-white
+                class="filter-btn rounded-full font-bold border border-darkbg-700 bg-darkbg-800 text-gray-400 transition-all duration-300 hover:border-gray-500 hover:text-white cursor-pointer
                 {% if filter.id == 'de' or filter.id == 'wm' or filter.id == 'wayland' or filter.id == 'x11' %}
                     px-6 py-2.5 text-sm border-white/20 shadow-lg tracking-wide
                 {% else %}
@@ -55,7 +57,7 @@ title: Arch Environment Finder
 
             {% endfor %}
             
-            <button onclick="clearAllFilters()" id="reset-btn" class="hidden px-4 py-1.5 rounded-full text-xs font-bold border border-red-900/50 bg-red-900/10 text-red-400 hover:bg-red-900/30 transition-all">
+            <button onclick="clearAllFilters()" id="reset-btn" class="hidden px-4 py-1.5 rounded-full text-xs font-bold border border-red-900/50 bg-red-900/10 text-red-400 hover:bg-red-900/30 transition-all cursor-pointer">
                 ✕ Reset
             </button>
         </div>
@@ -82,12 +84,12 @@ title: Arch Environment Finder
 
                 <button onclick="toggleCompare('{{ item.id }}')" 
                         id="compare-btn-{{ item.id }}"
-                        class="absolute top-3 right-3 z-30 w-10 h-10 rounded-full bg-black/40 backdrop-blur-md border border-white/20 text-white flex items-center justify-center hover:bg-[var(--theme-color)] hover:border-transparent hover:text-black transition-all duration-300 shadow-lg group-hover:scale-110"
-                        title="Hozzáadás az összehasonlításhoz">
-                    <svg id="icon-plus-{{ item.id }}" xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 transition-transform duration-300" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                        class="absolute top-3 right-3 z-30 w-10 h-10 rounded-full bg-black/40 backdrop-blur-md border border-white/20 text-white flex items-center justify-center hover:bg-[var(--theme-color)] hover:border-transparent hover:text-black transition-all duration-300 shadow-lg group-hover:scale-110 cursor-pointer"
+                        title="Hozzáadás összehasonlításhoz">
+                    <svg id="icon-plus-{{ item.id }}" xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4" />
                     </svg>
-                    <svg id="icon-check-{{ item.id }}" xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 hidden transition-transform duration-300 scale-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3">
+                    <svg id="icon-check-{{ item.id }}" xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 hidden transform scale-0 transition-transform duration-300" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
                     </svg>
                 </button>
@@ -136,11 +138,11 @@ title: Arch Environment Finder
             <svg class="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" /></svg>
         </div>
         <p class="text-xl text-gray-400 font-medium">Nincs találat a kiválasztott szűrőkre.</p>
-        <button onclick="clearAllFilters()" class="mt-4 text-cyan-400 hover:text-white transition-colors underline decoration-dotted">Szűrők törlése</button>
+        <button onclick="clearAllFilters()" class="mt-4 text-cyan-400 hover:text-white transition-colors underline decoration-dotted cursor-pointer">Szűrők törlése</button>
     </div>
 
-    <div id="compare-floating-bar" class="fixed bottom-6 left-1/2 transform -translate-x-1/2 z-50 hidden">
-        <button onclick="clearComparison()" class="flex items-center gap-2 px-6 py-3 rounded-full bg-fuchsia-600 text-white font-bold shadow-[0_0_20px_rgba(192,38,211,0.6)] hover:bg-fuchsia-500 hover:scale-105 transition-all">
+    <div id="compare-floating-bar" class="fixed bottom-6 left-1/2 transform -translate-x-1/2 z-50 hidden transition-all duration-300">
+        <button onclick="clearComparison()" class="flex items-center gap-2 px-6 py-3 rounded-full bg-fuchsia-600 text-white font-bold shadow-[0_0_20px_rgba(192,38,211,0.6)] hover:bg-fuchsia-500 hover:scale-105 transition-all cursor-pointer">
             <span>Összehasonlítás törlése</span>
             <span id="compare-count" class="bg-white text-fuchsia-600 text-xs rounded-full w-5 h-5 flex items-center justify-center">0</span>
         </button>
@@ -149,10 +151,10 @@ title: Arch Environment Finder
     <div class="max-w-4xl mx-auto mt-20 space-y-4">
         <h2 class="text-2xl font-bold text-center text-white mb-8">Telepítési Segédlet</h2>
 
-        <div class="bg-darkbg-800 border border-darkbg-700 rounded-2xl overflow-hidden transition-all duration-300 hover:border-cyan-500/30">
-            <button onclick="toggleAccordion('guide-etcher')" class="w-full flex items-center justify-between p-6 text-left focus:outline-none group">
+        <div class="bg-darkbg-800 border border-darkbg-700 rounded-2xl overflow-hidden">
+            <button onclick="toggleAccordion('guide-etcher')" class="w-full flex items-center justify-between p-6 text-left focus:outline-none group cursor-pointer">
                 <div class="flex items-center gap-4">
-                    <div class="w-10 h-10 rounded-full bg-cyan-500/10 flex items-center justify-center text-cyan-400 group-hover:bg-cyan-500 group-hover:text-black transition-colors">
+                    <div class="w-10 h-10 rounded-full bg-cyan-500/10 flex items-center justify-center text-cyan-400">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" /></svg>
                     </div>
                     <div>
@@ -163,18 +165,18 @@ title: Arch Environment Finder
                 <svg id="icon-guide-etcher" xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-gray-500 transform transition-transform duration-300" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" /></svg>
             </button>
             <div id="guide-etcher" class="hidden px-6 pb-8 border-t border-darkbg-700/50">
-                <div class="pt-6 space-y-4 text-gray-300 text-sm leading-relaxed">
+                <div class="pt-6 space-y-4 text-gray-300 text-sm">
                     <p>1. Töltsd le az <strong>Arch Linux ISO-t</strong> és a <a href="https://etcher.balena.io/" target="_blank" class="text-cyan-400 underline">Balena Etchert</a>.</p>
                     <p>2. Csatlakoztass egy pendrive-ot.</p>
-                    <p>3. Az Etcherben válaszd ki az ISO-t, majd a pendrive-ot, és kattints a <strong>Flash</strong> gombra.</p>
+                    <p>3. Flash-eld az ISO-t a pendrive-ra.</p>
                 </div>
             </div>
         </div>
 
-        <div class="bg-darkbg-800 border border-darkbg-700 rounded-2xl overflow-hidden transition-all duration-300 hover:border-fuchsia-500/30">
-            <button onclick="toggleAccordion('guide-calamares')" class="w-full flex items-center justify-between p-6 text-left focus:outline-none group">
+        <div class="bg-darkbg-800 border border-darkbg-700 rounded-2xl overflow-hidden">
+            <button onclick="toggleAccordion('guide-calamares')" class="w-full flex items-center justify-between p-6 text-left focus:outline-none group cursor-pointer">
                 <div class="flex items-center gap-4">
-                    <div class="w-10 h-10 rounded-full bg-fuchsia-500/10 flex items-center justify-center text-fuchsia-400 group-hover:bg-fuchsia-500 group-hover:text-black transition-colors">
+                    <div class="w-10 h-10 rounded-full bg-fuchsia-500/10 flex items-center justify-center text-fuchsia-400">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 12h14M5 12a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v4a2 2 0 01-2 2M5 12a2 2 0 00-2 2v4a2 2 0 002 2h14a2 2 0 002-2v-4a2 2 0 00-2-2m-2-4h.01M17 16h.01" /></svg>
                     </div>
                     <div>
@@ -185,32 +187,20 @@ title: Arch Environment Finder
                 <svg id="icon-guide-calamares" xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-gray-500 transform transition-transform duration-300" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" /></svg>
             </button>
             <div id="guide-calamares" class="hidden px-6 pb-8 border-t border-darkbg-700/50">
-                <div class="pt-6 space-y-4 text-gray-300 text-sm leading-relaxed">
-                    <p>A grafikus telepítő (Calamares) végigvezet a folyamaton:</p>
-                    <ul class="list-disc list-inside space-y-2 marker:text-fuchsia-500">
-                        <li><strong>Particionálás:</strong> Válaszd az "Erase Disk" opciót a tiszta telepítéshez.</li>
-                        <li><strong>Felhasználó:</strong> Add meg a neved és jelszavad.</li>
-                        <li><strong>Összegzés:</strong> Ellenőrizd az adatokat, majd indítsd el a telepítést.</li>
-                    </ul>
+                <div class="pt-6 text-gray-300 text-sm">
+                    <p>Kövesd a grafikus telepítő utasításait a particionáláshoz és a felhasználó létrehozásához.</p>
                 </div>
             </div>
         </div>
     </div>
-
 </div>
 
-<button 
-    id="back-to-top" 
-    onclick="scrollToTop()" 
-    class="fixed bottom-6 right-6 z-50 p-3 rounded-full bg-cyan-500 text-black shadow-[0_0_20px_rgba(6,182,212,0.6)] hover:bg-white hover:scale-110 transition-all duration-300 opacity-0 pointer-events-none translate-y-4"
-    aria-label="Vissza a tetejére">
-    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3">
-        <path stroke-linecap="round" stroke-linejoin="round" d="M5 10l7-7m0 0l7 7m-7-7v18" />
-    </svg>
+<button id="back-to-top" onclick="scrollToTop()" class="fixed bottom-6 right-6 z-50 p-3 rounded-full bg-cyan-500 text-black shadow-[0_0_20px_rgba(6,182,212,0.6)] hover:bg-white hover:scale-110 transition-all duration-300 opacity-0 pointer-events-none translate-y-4">
+    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3"><path stroke-linecap="round" stroke-linejoin="round" d="M5 10l7-7m0 0l7 7m-7-7v18" /></svg>
 </button>
 
 <script>
-    // --- 1. ADATOK BETÖLTÉSE ---
+    // 1. ADATOK BETÖLTÉSE (Jekyll Liquid Loop)
     const envData = [
         {% for item in site.data.environments.items %}
         {
@@ -224,7 +214,7 @@ title: Arch Environment Finder
         {% endfor %}
     ];
 
-    // --- 2. CHART.JS CONFIG ---
+    // 2. CHART CONFIG
     Chart.defaults.font.family = 'Inter';
     Chart.defaults.color = '#64748b';
     Chart.defaults.borderColor = 'rgba(255,255,255,0.05)';
@@ -232,6 +222,201 @@ title: Arch Environment Finder
     let chartRam, chartCpu, chartDisk;
 
     function initCharts() {
+        if(typeof Chart === 'undefined') {
+            console.error("Chart.js nincs betöltve!");
+            return;
+        }
+
         const commonOptions = {
             responsive: true, maintainAspectRatio: false,
-            plugins:
+            plugins: { legend: { display: false } },
+            scales: { y: { beginAtZero: true, grid: { color: '#1e293b' } }, x: { display: false } },
+            animation: { duration: 600, easing: 'easeOutQuart' }
+        };
+
+        const createChart = (id) => {
+            const ctx = document.getElementById(id);
+            if(!ctx) return null;
+            return new Chart(ctx, {
+                type: 'bar',
+                data: { labels: [], datasets: [{ data: [], backgroundColor: [], borderRadius: 4, borderSkipped: false }] },
+                options: commonOptions
+            });
+        };
+
+        chartRam = createChart('chartRam');
+        chartCpu = createChart('chartCpu');
+        chartDisk = createChart('chartDisk');
+    }
+
+    // 3. LOGIKA
+    const activeBtnClass = ['bg-cyan-500', 'text-black', 'border-cyan-400', 'shadow-[0_0_15px_rgba(6,182,212,0.5)]', 'opacity-100'];
+    const inactiveBtnClass = ['bg-darkbg-800', 'text-gray-400', 'border-darkbg-700'];
+
+    let selectedFilters = new Set(); 
+    let comparisonSet = new Set();
+
+    document.addEventListener("DOMContentLoaded", () => {
+        initCharts();
+        updateView();
+    });
+
+    function toggleFilter(filterId) {
+        // NEM töröljük a comparisonSet-et, hogy lehessen szűrni válogatás közben
+        const btn = document.getElementById(`filter-btn-${filterId}`);
+        if(!btn) return;
+
+        if (selectedFilters.has(filterId)) {
+            selectedFilters.delete(filterId);
+            btn.classList.remove(...activeBtnClass);
+            btn.classList.add(...inactiveBtnClass);
+        } else {
+            selectedFilters.add(filterId);
+            btn.classList.remove(...inactiveBtnClass);
+            btn.classList.add(...activeBtnClass);
+        }
+        updateView();
+    }
+
+    function clearAllFilters() {
+        selectedFilters.clear();
+        document.querySelectorAll('.filter-btn').forEach(btn => {
+            btn.classList.remove(...activeBtnClass);
+            btn.classList.add(...inactiveBtnClass);
+        });
+        updateView();
+    }
+
+    function toggleCompare(id) {
+        const btn = document.getElementById(`compare-btn-${id}`);
+        const iconPlus = document.getElementById(`icon-plus-${id}`);
+        const iconCheck = document.getElementById(`icon-check-${id}`);
+        
+        if(!btn) return;
+
+        if (comparisonSet.has(id)) {
+            // Eltávolítás
+            comparisonSet.delete(id);
+            btn.classList.remove('bg-fuchsia-500', 'text-black', 'border-transparent');
+            btn.classList.add('bg-black/40', 'border-white/20', 'text-white');
+            iconPlus.classList.remove('hidden');
+            iconCheck.classList.add('hidden', 'scale-0');
+            iconCheck.classList.remove('scale-100');
+        } else {
+            // Hozzáadás
+            comparisonSet.add(id);
+            btn.classList.remove('bg-black/40', 'border-white/20', 'text-white');
+            btn.classList.add('bg-fuchsia-500', 'text-black', 'border-transparent');
+            iconPlus.classList.add('hidden');
+            iconCheck.classList.remove('hidden');
+            setTimeout(() => iconCheck.classList.add('scale-100'), 50);
+        }
+        updateView();
+    }
+
+    function clearComparison() {
+        comparisonSet.forEach(id => {
+            const btn = document.getElementById(`compare-btn-${id}`);
+            const iconPlus = document.getElementById(`icon-plus-${id}`);
+            const iconCheck = document.getElementById(`icon-check-${id}`);
+            if (btn) {
+                btn.classList.remove('bg-fuchsia-500', 'text-black', 'border-transparent');
+                btn.classList.add('bg-black/40', 'border-white/20', 'text-white');
+                iconPlus.classList.remove('hidden');
+                iconCheck.classList.add('hidden', 'scale-0');
+            }
+        });
+        comparisonSet.clear();
+        updateView();
+    }
+
+    function updateView() {
+        const resetBtn = document.getElementById('reset-btn');
+        const compareBar = document.getElementById('compare-floating-bar');
+        const compareCount = document.getElementById('compare-count');
+        const noResults = document.getElementById('no-results');
+
+        // Gombok láthatósága
+        if(resetBtn) resetBtn.style.display = selectedFilters.size > 0 ? 'block' : 'none';
+        
+        if (comparisonSet.size > 0) {
+            compareBar.classList.remove('hidden');
+            compareCount.innerText = comparisonSet.size;
+        } else {
+            compareBar.classList.add('hidden');
+        }
+
+        // Kártyák szűrése (A RÁCSBAN MINDIG A SZŰRŐK ÉRVÉNYESEK)
+        const cards = document.querySelectorAll('.env-card');
+        let visibleIdsInGrid = [];
+
+        cards.forEach(card => {
+            const id = card.getAttribute('data-id');
+            const tags = card.getAttribute('data-tags').split(',');
+
+            const isVisible = selectedFilters.size === 0 || Array.from(selectedFilters).every(f => tags.includes(f));
+            
+            if (isVisible) {
+                card.style.display = 'flex';
+                visibleIdsInGrid.push(id);
+            } else {
+                card.style.display = 'none';
+            }
+        });
+
+        if(noResults) noResults.style.display = visibleIdsInGrid.length === 0 ? 'block' : 'none';
+
+        // Diagramok frissítése (VAGY A LISTA, VAGY A KIVÁLASZTOTTAK)
+        let chartDataIds = [];
+        if (comparisonSet.size > 0) {
+            chartDataIds = Array.from(comparisonSet);
+        } else {
+            chartDataIds = visibleIdsInGrid;
+        }
+
+        const filteredData = envData.filter(item => chartDataIds.includes(item.id));
+        const labels = filteredData.map(d => d.name);
+        const colors = filteredData.map(d => d.color);
+
+        if(chartRam) updateChart(chartRam, labels, filteredData.map(d => d.ram), colors);
+        if(chartCpu) updateChart(chartCpu, labels, filteredData.map(d => d.cpu), colors);
+        if(chartDisk) updateChart(chartDisk, labels, filteredData.map(d => d.disk), colors);
+    }
+
+    function updateChart(chart, labels, data, colors) {
+        if(!chart) return;
+        chart.data.labels = labels;
+        chart.data.datasets[0].data = data;
+        chart.data.datasets[0].backgroundColor = colors;
+        chart.update();
+    }
+
+    function toggleAccordion(id) {
+        const content = document.getElementById(id);
+        const icon = document.getElementById('icon-' + id);
+        if(!content) return;
+        
+        if (content.classList.contains('hidden')) {
+            content.classList.remove('hidden');
+            if(icon) icon.classList.add('rotate-180');
+        } else {
+            content.classList.add('hidden');
+            if(icon) icon.classList.remove('rotate-180');
+        }
+    }
+
+    const backToTopBtn = document.getElementById('back-to-top');
+    if(backToTopBtn) {
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 300) {
+                backToTopBtn.classList.remove('opacity-0', 'pointer-events-none', 'translate-y-4');
+            } else {
+                backToTopBtn.classList.add('opacity-0', 'pointer-events-none', 'translate-y-4');
+            }
+        });
+    }
+    
+    function scrollToTop() {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+</script>
