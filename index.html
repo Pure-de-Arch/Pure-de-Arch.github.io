@@ -38,7 +38,7 @@ title: Arch Environment Finder
         </div>
     </div>
 
-    <div class="flex flex-col items-center gap-4 sticky top-16 z-30 py-4 bg-darkbg-900/95 backdrop-blur-xl border-b border-white/5 w-full">
+    <div class="flex flex-col items-center gap-4 py-8 w-full border-b border-white/5">
         <div class="flex flex-wrap justify-center gap-3 items-center">
             {% for filter in site.data.environments.feature_filters %}
             
@@ -200,7 +200,7 @@ title: Arch Environment Finder
 </button>
 
 <script>
-    // 1. ADATOK BETÖLTÉSE (Jekyll Liquid Loop)
+    // 1. ADATOK BETÖLTÉSE
     const envData = [
         {% for item in site.data.environments.items %}
         {
@@ -262,7 +262,6 @@ title: Arch Environment Finder
     });
 
     function toggleFilter(filterId) {
-        // NEM töröljük a comparisonSet-et, hogy lehessen szűrni válogatás közben
         const btn = document.getElementById(`filter-btn-${filterId}`);
         if(!btn) return;
 
