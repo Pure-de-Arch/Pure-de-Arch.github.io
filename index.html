@@ -72,13 +72,25 @@ title: Arch Environment Finder
                 <div class="absolute inset-0 bg-gradient-to-t from-darkbg-800 via-transparent to-transparent z-10"></div>
                 <img src="{{ item.image }}" loading="lazy" alt="{{ item.name }}" class="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-700 opacity-90 group-hover:opacity-100">
                 
-                <div class="absolute top-3 right-3 z-20 flex gap-1 flex-wrap justify-end max-w-[80%]">
-                    {% for tag in item.tags limit:3 %}
+                <div class="absolute top-3 left-3 z-20 flex gap-1 flex-wrap max-w-[70%]">
+                    {% for tag in item.tags limit:2 %}
                     <span class="px-2 py-1 rounded bg-black/60 text-[10px] font-bold text-white backdrop-blur-md border border-white/10 uppercase tracking-wide">
                         {{ tag }}
                     </span>
                     {% endfor %}
                 </div>
+
+                <button onclick="toggleCompare('{{ item.id }}')" 
+                        id="compare-btn-{{ item.id }}"
+                        class="absolute top-3 right-3 z-30 w-10 h-10 rounded-full bg-black/40 backdrop-blur-md border border-white/20 text-white flex items-center justify-center hover:bg-[var(--theme-color)] hover:border-transparent hover:text-black transition-all duration-300 shadow-lg group-hover:scale-110"
+                        title="Hozzáadás az összehasonlításhoz">
+                    <svg id="icon-plus-{{ item.id }}" xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 transition-transform duration-300" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4" />
+                    </svg>
+                    <svg id="icon-check-{{ item.id }}" xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 hidden transition-transform duration-300 scale-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
+                    </svg>
+                </button>
             </div>
 
             <div class="p-6 flex-1 flex flex-col">
@@ -125,6 +137,13 @@ title: Arch Environment Finder
         </div>
         <p class="text-xl text-gray-400 font-medium">Nincs találat a kiválasztott szűrőkre.</p>
         <button onclick="clearAllFilters()" class="mt-4 text-cyan-400 hover:text-white transition-colors underline decoration-dotted">Szűrők törlése</button>
+    </div>
+
+    <div id="compare-floating-bar" class="fixed bottom-6 left-1/2 transform -translate-x-1/2 z-50 hidden">
+        <button onclick="clearComparison()" class="flex items-center gap-2 px-6 py-3 rounded-full bg-fuchsia-600 text-white font-bold shadow-[0_0_20px_rgba(192,38,211,0.6)] hover:bg-fuchsia-500 hover:scale-105 transition-all">
+            <span>Összehasonlítás törlése</span>
+            <span id="compare-count" class="bg-white text-fuchsia-600 text-xs rounded-full w-5 h-5 flex items-center justify-center">0</span>
+        </button>
     </div>
 
     <div class="max-w-4xl mx-auto mt-20 space-y-4">
@@ -243,11 +262,11 @@ title: Arch Environment Finder
     }
 
     // --- 3. SZŰRÉS LOGIKA (KÁRTYÁK + DIAGRAMOK) ---
-    // Stílusok a gombokhoz
     const activeBtnClass = ['bg-cyan-500', 'text-black', 'border-cyan-400', 'shadow-[0_0_15px_rgba(6,182,212,0.5)]', 'opacity-100'];
     const inactiveBtnClass = ['bg-darkbg-800', 'text-gray-400', 'border-darkbg-700'];
 
     let selectedFilters = new Set(); 
+    let comparisonSet = new Set(); // Itt tároljuk a kézzel kiválasztott elemeket
 
     document.addEventListener("DOMContentLoaded", () => {
         initCharts();
@@ -255,12 +274,14 @@ title: Arch Environment Finder
     });
 
     function toggleFilter(filterId) {
+        // Ha van aktív összehasonlítás, töröljük, hogy a szűrő működjön
+        if (comparisonSet.size > 0) clearComparison();
+
         const btn = document.getElementById(`filter-btn-${filterId}`);
         if (selectedFilters.has(filterId)) {
             selectedFilters.delete(filterId);
             btn.classList.remove(...activeBtnClass);
             btn.classList.add(...inactiveBtnClass);
-            // Ha speciális gomb volt (DE/WM/Wayland/X11), az eredeti padding marad a HTML-ben
         } else {
             selectedFilters.add(filterId);
             btn.classList.remove(...inactiveBtnClass);
@@ -278,22 +299,84 @@ title: Arch Environment Finder
         updateView();
     }
 
+    // --- 4. MANUÁLIS ÖSSZEHASONLÍTÁS LOGIKA ---
+    function toggleCompare(id) {
+        const btn = document.getElementById(`compare-btn-${id}`);
+        const iconPlus = document.getElementById(`icon-plus-${id}`);
+        const iconCheck = document.getElementById(`icon-check-${id}`);
+        
+        if (comparisonSet.has(id)) {
+            // Eltávolítás
+            comparisonSet.delete(id);
+            btn.classList.remove('bg-fuchsia-500', 'text-black', 'border-transparent');
+            btn.classList.add('bg-black/40', 'border-white/20', 'text-white');
+            iconPlus.classList.remove('hidden');
+            iconCheck.classList.add('hidden', 'scale-0');
+            iconCheck.classList.remove('scale-100');
+        } else {
+            // Hozzáadás
+            comparisonSet.add(id);
+            btn.classList.remove('bg-black/40', 'border-white/20', 'text-white');
+            btn.classList.add('bg-fuchsia-500', 'text-black', 'border-transparent');
+            iconPlus.classList.add('hidden');
+            iconCheck.classList.remove('hidden');
+            setTimeout(() => iconCheck.classList.add('scale-100'), 50);
+        }
+        updateView();
+    }
+
+    function clearComparison() {
+        comparisonSet.forEach(id => {
+            const btn = document.getElementById(`compare-btn-${id}`);
+            const iconPlus = document.getElementById(`icon-plus-${id}`);
+            const iconCheck = document.getElementById(`icon-check-${id}`);
+            if (btn) {
+                btn.classList.remove('bg-fuchsia-500', 'text-black', 'border-transparent');
+                btn.classList.add('bg-black/40', 'border-white/20', 'text-white');
+                iconPlus.classList.remove('hidden');
+                iconCheck.classList.add('hidden', 'scale-0');
+            }
+        });
+        comparisonSet.clear();
+        updateView();
+    }
+
+    // --- 5. VIEW FRISSÍTÉSE ---
     function updateView() {
-        // Reset gomb
         const resetBtn = document.getElementById('reset-btn');
+        const compareBar = document.getElementById('compare-floating-bar');
+        const compareCount = document.getElementById('compare-count');
+        const noResults = document.getElementById('no-results');
+
         resetBtn.style.display = selectedFilters.size > 0 ? 'block' : 'none';
+        
+        if (comparisonSet.size > 0) {
+            compareBar.classList.remove('hidden');
+            compareCount.innerText = comparisonSet.size;
+        } else {
+            compareBar.classList.add('hidden');
+        }
 
         // Kártyák szűrése
         const cards = document.querySelectorAll('.env-card');
         let visibleIds = [];
 
         cards.forEach(card => {
+            const id = card.getAttribute('data-id');
             const tags = card.getAttribute('data-tags').split(',');
-            const matches = selectedFilters.size === 0 || Array.from(selectedFilters).every(f => tags.includes(f));
+
+            let isVisible = false;
+
+            // Ha van manuális összehasonlítás, CSAK azokat mutatjuk
+            if (comparisonSet.size > 0) {
+                isVisible = comparisonSet.has(id);
+            } else {
+                isVisible = selectedFilters.size === 0 || Array.from(selectedFilters).every(f => tags.includes(f));
+            }
             
-            if (matches) {
+            if (isVisible) {
                 card.style.display = 'flex';
-                visibleIds.push(card.getAttribute('data-id'));
+                visibleIds.push(id);
             } else {
                 card.style.display = 'none';
             }
@@ -308,8 +391,7 @@ title: Arch Environment Finder
         updateChart(chartCpu, labels, filteredData.map(d => d.cpu), colors);
         updateChart(chartDisk, labels, filteredData.map(d => d.disk), colors);
 
-        // Empty state
-        document.getElementById('no-results').style.display = visibleIds.length === 0 ? 'block' : 'none';
+        noResults.style.display = visibleIds.length === 0 ? 'block' : 'none';
     }
 
     function updateChart(chart, labels, data, colors) {
@@ -319,31 +401,17 @@ title: Arch Environment Finder
         chart.update();
     }
 
-    // --- 4. ACCORDION LOGIKA ---
+    // --- 6. ACCORDION & BACK TO TOP ---
     function toggleAccordion(id) {
         const content = document.getElementById(id);
         const icon = document.getElementById('icon-' + id);
-        
-        if (content.classList.contains('hidden')) {
-            content.classList.remove('hidden');
-            icon.classList.add('rotate-180');
-        } else {
-            content.classList.add('hidden');
-            icon.classList.remove('rotate-180');
-        }
+        if (content.classList.contains('hidden')) { content.classList.remove('hidden'); icon.classList.add('rotate-180'); } 
+        else { content.classList.add('hidden'); icon.classList.remove('rotate-180'); }
     }
-
-    // --- 5. BACK TO TOP LOGIKA ---
     const backToTopBtn = document.getElementById('back-to-top');
     window.addEventListener('scroll', () => {
-        if (window.scrollY > 300) {
-            backToTopBtn.classList.remove('opacity-0', 'pointer-events-none', 'translate-y-4');
-        } else {
-            backToTopBtn.classList.add('opacity-0', 'pointer-events-none', 'translate-y-4');
-        }
+        if (window.scrollY > 300) { backToTopBtn.classList.remove('opacity-0', 'pointer-events-none', 'translate-y-4'); } 
+        else { backToTopBtn.classList.add('opacity-0', 'pointer-events-none', 'translate-y-4'); }
     });
-
-    function scrollToTop() {
-        window.scrollTo({ top: 0, behavior: 'smooth' });
-    }
+    function scrollToTop() { window.scrollTo({ top: 0, behavior: 'smooth' }); }
 </script>
