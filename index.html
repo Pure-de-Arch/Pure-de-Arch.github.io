@@ -5,6 +5,14 @@ title: Arch Environment Finder
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
+<div id="scroll-header" class="fixed top-0 left-0 w-full z-50 py-3 bg-darkbg-900/90 backdrop-blur-md border-b border-white/5 transition-all duration-300 opacity-0 -translate-y-full pointer-events-none">
+    <div class="max-w-7xl mx-auto px-6 flex items-center">
+        <h2 class="text-xl font-extrabold text-white tracking-tight">
+            Arch <span class="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-fuchsia-500">Environment</span> Finder
+        </h2>
+    </div>
+</div>
+
 <div class="max-w-7xl mx-auto px-6 py-10 space-y-12">
 
     <div class="text-center space-y-4">
@@ -294,7 +302,6 @@ title: Arch Environment Finder
         if(!btn) return;
 
         if (comparisonSet.has(id)) {
-            // Eltávolítás
             comparisonSet.delete(id);
             btn.classList.remove('bg-fuchsia-500', 'text-black', 'border-transparent');
             btn.classList.add('bg-black/40', 'border-white/20', 'text-white');
@@ -302,7 +309,6 @@ title: Arch Environment Finder
             iconCheck.classList.add('hidden', 'scale-0');
             iconCheck.classList.remove('scale-100');
         } else {
-            // Hozzáadás
             comparisonSet.add(id);
             btn.classList.remove('bg-black/40', 'border-white/20', 'text-white');
             btn.classList.add('bg-fuchsia-500', 'text-black', 'border-transparent');
@@ -335,7 +341,6 @@ title: Arch Environment Finder
         const compareCount = document.getElementById('compare-count');
         const noResults = document.getElementById('no-results');
 
-        // Gombok láthatósága
         if(resetBtn) resetBtn.style.display = selectedFilters.size > 0 ? 'block' : 'none';
         
         if (comparisonSet.size > 0) {
@@ -345,14 +350,12 @@ title: Arch Environment Finder
             compareBar.classList.add('hidden');
         }
 
-        // Kártyák szűrése (A RÁCSBAN MINDIG A SZŰRŐK ÉRVÉNYESEK)
         const cards = document.querySelectorAll('.env-card');
         let visibleIdsInGrid = [];
 
         cards.forEach(card => {
             const id = card.getAttribute('data-id');
             const tags = card.getAttribute('data-tags').split(',');
-
             const isVisible = selectedFilters.size === 0 || Array.from(selectedFilters).every(f => tags.includes(f));
             
             if (isVisible) {
@@ -365,7 +368,6 @@ title: Arch Environment Finder
 
         if(noResults) noResults.style.display = visibleIdsInGrid.length === 0 ? 'block' : 'none';
 
-        // Diagramok frissítése (VAGY A LISTA, VAGY A KIVÁLASZTOTTAK)
         let chartDataIds = [];
         if (comparisonSet.size > 0) {
             chartDataIds = Array.from(comparisonSet);
@@ -405,12 +407,22 @@ title: Arch Environment Finder
     }
 
     const backToTopBtn = document.getElementById('back-to-top');
-    if(backToTopBtn) {
+    const scrollHeader = document.getElementById('scroll-header');
+
+    if(backToTopBtn || scrollHeader) {
         window.addEventListener('scroll', () => {
             if (window.scrollY > 300) {
-                backToTopBtn.classList.remove('opacity-0', 'pointer-events-none', 'translate-y-4');
+                if(backToTopBtn) backToTopBtn.classList.remove('opacity-0', 'pointer-events-none', 'translate-y-4');
+                if(scrollHeader) {
+                    scrollHeader.classList.remove('opacity-0', '-translate-y-full', 'pointer-events-none');
+                    scrollHeader.classList.add('opacity-100', 'translate-y-0');
+                }
             } else {
-                backToTopBtn.classList.add('opacity-0', 'pointer-events-none', 'translate-y-4');
+                if(backToTopBtn) backToTopBtn.classList.add('opacity-0', 'pointer-events-none', 'translate-y-4');
+                if(scrollHeader) {
+                    scrollHeader.classList.add('opacity-0', '-translate-y-full', 'pointer-events-none');
+                    scrollHeader.classList.remove('opacity-100', 'translate-y-0');
+                }
             }
         });
     }
