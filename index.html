@@ -21,16 +21,13 @@ title: Arch Environment Finder
 </style>
 
 <div id="scroll-header" class="fixed top-0 left-0 w-full z-50 py-3 bg-darkbg-900/95 backdrop-blur-md border-b border-white/5 transition-all duration-300 opacity-0 -translate-y-full pointer-events-none">
-    <div class="max-w-7xl mx-auto px-6 flex items-center justify-between">
-        
-        <h2 class="text-xl font-extrabold text-white tracking-tight cursor-pointer" onclick="window.scrollTo(0,0)">
+    <div class="max-w-7xl mx-auto px-6 flex items-center w-full"> <h2 class="text-xl font-extrabold text-white tracking-tight cursor-pointer shrink-0" onclick="window.scrollTo(0,0)">
             Arch <span class="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-fuchsia-500">Environment</span> Finder
         </h2>
 
-        <div class="flex items-center gap-6 text-sm font-bold text-gray-400">
+        <div class="flex items-center gap-6 text-sm font-bold text-gray-400 ml-auto">
             
             <a href="#cards-container" class="hover:text-white transition-colors hidden md:block">Tartalom</a>
-            
             <a href="#glossary" class="hover:text-white transition-colors hidden md:block">Fogalomtár</a>
             
             <div class="relative flex items-center">
@@ -393,146 +390,3 @@ title: Arch Environment Finder
     }
 
     function toggleCompare(id) {
-        const btn = document.getElementById(`compare-btn-${id}`);
-        const iconPlus = document.getElementById(`icon-plus-${id}`);
-        const iconCheck = document.getElementById(`icon-check-${id}`);
-        
-        if(!btn) return;
-
-        if (comparisonSet.has(id)) {
-            comparisonSet.delete(id);
-            btn.classList.remove('bg-fuchsia-500', 'text-black', 'border-transparent');
-            btn.classList.add('bg-black/40', 'border-white/20', 'text-white');
-            iconPlus.classList.remove('hidden');
-            iconCheck.classList.add('hidden', 'scale-0');
-            iconCheck.classList.remove('scale-100');
-        } else {
-            comparisonSet.add(id);
-            btn.classList.remove('bg-black/40', 'border-white/20', 'text-white');
-            btn.classList.add('bg-fuchsia-500', 'text-black', 'border-transparent');
-            iconPlus.classList.add('hidden');
-            iconCheck.classList.remove('hidden');
-            setTimeout(() => iconCheck.classList.add('scale-100'), 50);
-        }
-        updateView();
-    }
-
-    function clearComparison() {
-        comparisonSet.forEach(id => {
-            const btn = document.getElementById(`compare-btn-${id}`);
-            const iconPlus = document.getElementById(`icon-plus-${id}`);
-            const iconCheck = document.getElementById(`icon-check-${id}`);
-            if (btn) {
-                btn.classList.remove('bg-fuchsia-500', 'text-black', 'border-transparent');
-                btn.classList.add('bg-black/40', 'border-white/20', 'text-white');
-                iconPlus.classList.remove('hidden');
-                iconCheck.classList.add('hidden', 'scale-0');
-            }
-        });
-        comparisonSet.clear();
-        updateView();
-    }
-
-    function updateView() {
-        const resetBtn = document.getElementById('reset-btn');
-        const compareBar = document.getElementById('compare-floating-bar');
-        const compareCount = document.getElementById('compare-count');
-        const noResults = document.getElementById('no-results');
-
-        if(resetBtn) resetBtn.style.display = selectedFilters.size > 0 ? 'block' : 'none';
-        
-        if (comparisonSet.size > 0) {
-            compareBar.classList.remove('hidden');
-            compareCount.innerText = comparisonSet.size;
-        } else {
-            compareBar.classList.add('hidden');
-        }
-
-        const cards = document.querySelectorAll('.env-card');
-        let visibleIdsInGrid = [];
-
-        cards.forEach(card => {
-            const id = card.getAttribute('data-id');
-            const tags = card.getAttribute('data-tags').split(',');
-            const name = card.getAttribute('data-name');
-            const desc = card.getAttribute('data-description');
-
-            // 1. Szűrők ellenőrzése
-            const matchesFilters = selectedFilters.size === 0 || Array.from(selectedFilters).every(f => tags.includes(f));
-            
-            // 2. Keresés ellenőrzése
-            const matchesSearch = searchText === "" || name.includes(searchText) || desc.includes(searchText);
-
-            if (matchesFilters && matchesSearch) {
-                card.style.display = 'flex';
-                visibleIdsInGrid.push(id);
-            } else {
-                card.style.display = 'none';
-            }
-        });
-
-        if(noResults) noResults.style.display = visibleIdsInGrid.length === 0 ? 'block' : 'none';
-
-        let chartDataIds = [];
-        if (comparisonSet.size > 0) {
-            chartDataIds = Array.from(comparisonSet);
-        } else {
-            chartDataIds = visibleIdsInGrid;
-        }
-
-        const filteredData = envData.filter(item => chartDataIds.includes(item.id));
-        const labels = filteredData.map(d => d.name);
-        const colors = filteredData.map(d => d.color);
-
-        if(chartRam) updateChart(chartRam, labels, filteredData.map(d => d.ram), colors);
-        if(chartCpu) updateChart(chartCpu, labels, filteredData.map(d => d.cpu), colors);
-        if(chartDisk) updateChart(chartDisk, labels, filteredData.map(d => d.disk), colors);
-    }
-
-    function updateChart(chart, labels, data, colors) {
-        if(!chart) return;
-        chart.data.labels = labels;
-        chart.data.datasets[0].data = data;
-        chart.data.datasets[0].backgroundColor = colors;
-        chart.update();
-    }
-
-    function toggleAccordion(id) {
-        const content = document.getElementById(id);
-        const icon = document.getElementById('icon-' + id);
-        if(!content) return;
-        
-        if (content.classList.contains('hidden')) {
-            content.classList.remove('hidden');
-            if(icon) icon.classList.add('rotate-180');
-        } else {
-            content.classList.add('hidden');
-            if(icon) icon.classList.remove('rotate-180');
-        }
-    }
-
-    const backToTopBtn = document.getElementById('back-to-top');
-    const scrollHeader = document.getElementById('scroll-header');
-
-    if(backToTopBtn || scrollHeader) {
-        window.addEventListener('scroll', () => {
-            if (window.scrollY > 300) {
-                if(backToTopBtn) backToTopBtn.classList.remove('opacity-0', 'pointer-events-none', 'translate-y-4');
-                if(scrollHeader) {
-                    scrollHeader.classList.remove('opacity-0', '-translate-y-full', 'pointer-events-none');
-                    scrollHeader.classList.add('opacity-100', 'translate-y-0', 'pointer-events-auto');
-                }
-            } else {
-                if(backToTopBtn) backToTopBtn.classList.add('opacity-0', 'pointer-events-none', 'translate-y-4');
-                if(scrollHeader) {
-                    scrollHeader.classList.add('opacity-0', '-translate-y-full', 'pointer-events-none');
-                    scrollHeader.classList.remove('opacity-100', 'translate-y-0', 'pointer-events-auto');
-                }
-            }
-        });
-    }
-    
-    function scrollToTop() {
-        window.scrollTo({ top: 0, behavior: 'smooth' });
-    }
-</script>
