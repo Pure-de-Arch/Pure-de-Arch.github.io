@@ -14,38 +14,13 @@ title: Arch Environment Finder
     #scroll-header, .max-w-7xl {
         display: block;
     }
-    /* Sima görgetés az oldalon belül */
-    html {
-        scroll-behavior: smooth;
-    }
 </style>
 
-<div id="scroll-header" class="fixed top-0 left-0 w-full z-50 py-3 bg-darkbg-900/95 backdrop-blur-md border-b border-white/5 transition-all duration-300 opacity-0 -translate-y-full pointer-events-none">
-    <div class="max-w-7xl mx-auto px-6 flex items-center w-full"> <h2 class="text-xl font-extrabold text-white tracking-tight cursor-pointer shrink-0" onclick="window.scrollTo(0,0)">
+<div id="scroll-header" class="fixed top-0 left-0 w-full z-50 py-3 bg-darkbg-900/90 backdrop-blur-md border-b border-white/5 transition-all duration-300 opacity-0 -translate-y-full pointer-events-none">
+    <div class="max-w-7xl mx-auto px-6 flex items-center">
+        <h2 class="text-xl font-extrabold text-white tracking-tight">
             Arch <span class="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-fuchsia-500">Environment</span> Finder
         </h2>
-
-        <div class="flex items-center gap-6 text-sm font-bold text-gray-400 ml-auto">
-            
-            <a href="#cards-container" class="hover:text-white transition-colors hidden md:block">Tartalom</a>
-            <a href="#glossary" class="hover:text-white transition-colors hidden md:block">Fogalomtár</a>
-            
-            <div class="relative flex items-center">
-                <input type="text" id="search-input" placeholder="Keresés..." oninput="handleSearch(this.value)" 
-                       class="w-0 opacity-0 focus:w-48 focus:opacity-100 transition-all duration-300 ease-in-out bg-darkbg-800 border border-white/10 rounded-full px-4 py-1 text-sm text-white focus:outline-none focus:border-cyan-500 mr-2">
-                
-                <button onclick="toggleSearchInput()" class="text-gray-400 hover:text-white transition-colors p-1" aria-label="Keresés">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-                    </svg>
-                </button>
-            </div>
-
-            <a href="https://github.com" target="_blank" class="hover:text-white transition-colors flex items-center" title="GitHub Repository">
-                <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="currentColor" class="opacity-80 hover:opacity-100"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
-            </a>
-
-        </div>
     </div>
 </div>
 
@@ -107,13 +82,11 @@ title: Arch Environment Finder
         </div>
     </div>
 
-    <div id="cards-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 scroll-mt-32">
+    <div id="cards-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
         {% for item in site.data.environments.items %}
         <div class="env-card group flex flex-col bg-darkbg-800 rounded-2xl overflow-hidden border border-darkbg-700 hover:border-opacity-50 transition-all duration-500 hover:-translate-y-1 hover:shadow-2xl"
              style="--theme-color: {{ item.color }}"
              data-id="{{ item.id }}"
-             data-name="{{ item.name | downcase }}"
-             data-description="{{ item.description | downcase }}"
              data-tags="{{ item.tags | join: ',' }}">
             
             <div class="relative h-48 overflow-hidden bg-black">
@@ -194,7 +167,7 @@ title: Arch Environment Finder
         </button>
     </div>
 
-    <div id="glossary" class="max-w-7xl mx-auto mt-24 scroll-mt-24">
+    <div class="max-w-7xl mx-auto mt-24">
         <h2 class="text-2xl font-bold text-center text-white mb-8">Fogalomtár</h2>
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
             <div class="p-4 rounded-xl bg-darkbg-800 border border-darkbg-700 hover:border-cyan-500/50 transition-colors">
@@ -339,30 +312,11 @@ title: Arch Environment Finder
 
     let selectedFilters = new Set(); 
     let comparisonSet = new Set();
-    let searchText = "";
 
     document.addEventListener("DOMContentLoaded", () => {
         initCharts();
         updateView();
     });
-
-    // KERESÉS KEZELÉSE
-    function toggleSearchInput() {
-        const input = document.getElementById('search-input');
-        if (input.classList.contains('w-0')) {
-            input.classList.remove('w-0', 'opacity-0');
-            input.classList.add('w-48', 'opacity-100');
-            input.focus();
-        } else {
-            input.classList.add('w-0', 'opacity-0');
-            input.classList.remove('w-48', 'opacity-100');
-        }
-    }
-
-    function handleSearch(val) {
-        searchText = val.toLowerCase();
-        updateView();
-    }
 
     function toggleFilter(filterId) {
         const btn = document.getElementById(`filter-btn-${filterId}`);
@@ -390,3 +344,139 @@ title: Arch Environment Finder
     }
 
     function toggleCompare(id) {
+        const btn = document.getElementById(`compare-btn-${id}`);
+        const iconPlus = document.getElementById(`icon-plus-${id}`);
+        const iconCheck = document.getElementById(`icon-check-${id}`);
+        
+        if(!btn) return;
+
+        if (comparisonSet.has(id)) {
+            comparisonSet.delete(id);
+            btn.classList.remove('bg-fuchsia-500', 'text-black', 'border-transparent');
+            btn.classList.add('bg-black/40', 'border-white/20', 'text-white');
+            iconPlus.classList.remove('hidden');
+            iconCheck.classList.add('hidden', 'scale-0');
+            iconCheck.classList.remove('scale-100');
+        } else {
+            comparisonSet.add(id);
+            btn.classList.remove('bg-black/40', 'border-white/20', 'text-white');
+            btn.classList.add('bg-fuchsia-500', 'text-black', 'border-transparent');
+            iconPlus.classList.add('hidden');
+            iconCheck.classList.remove('hidden');
+            setTimeout(() => iconCheck.classList.add('scale-100'), 50);
+        }
+        updateView();
+    }
+
+    function clearComparison() {
+        comparisonSet.forEach(id => {
+            const btn = document.getElementById(`compare-btn-${id}`);
+            const iconPlus = document.getElementById(`icon-plus-${id}`);
+            const iconCheck = document.getElementById(`icon-check-${id}`);
+            if (btn) {
+                btn.classList.remove('bg-fuchsia-500', 'text-black', 'border-transparent');
+                btn.classList.add('bg-black/40', 'border-white/20', 'text-white');
+                iconPlus.classList.remove('hidden');
+                iconCheck.classList.add('hidden', 'scale-0');
+            }
+        });
+        comparisonSet.clear();
+        updateView();
+    }
+
+    function updateView() {
+        const resetBtn = document.getElementById('reset-btn');
+        const compareBar = document.getElementById('compare-floating-bar');
+        const compareCount = document.getElementById('compare-count');
+        const noResults = document.getElementById('no-results');
+
+        if(resetBtn) resetBtn.style.display = selectedFilters.size > 0 ? 'block' : 'none';
+        
+        if (comparisonSet.size > 0) {
+            compareBar.classList.remove('hidden');
+            compareCount.innerText = comparisonSet.size;
+        } else {
+            compareBar.classList.add('hidden');
+        }
+
+        const cards = document.querySelectorAll('.env-card');
+        let visibleIdsInGrid = [];
+
+        cards.forEach(card => {
+            const id = card.getAttribute('data-id');
+            const tags = card.getAttribute('data-tags').split(',');
+            const isVisible = selectedFilters.size === 0 || Array.from(selectedFilters).every(f => tags.includes(f));
+            
+            if (isVisible) {
+                card.style.display = 'flex';
+                visibleIdsInGrid.push(id);
+            } else {
+                card.style.display = 'none';
+            }
+        });
+
+        if(noResults) noResults.style.display = visibleIdsInGrid.length === 0 ? 'block' : 'none';
+
+        let chartDataIds = [];
+        if (comparisonSet.size > 0) {
+            chartDataIds = Array.from(comparisonSet);
+        } else {
+            chartDataIds = visibleIdsInGrid;
+        }
+
+        const filteredData = envData.filter(item => chartDataIds.includes(item.id));
+        const labels = filteredData.map(d => d.name);
+        const colors = filteredData.map(d => d.color);
+
+        if(chartRam) updateChart(chartRam, labels, filteredData.map(d => d.ram), colors);
+        if(chartCpu) updateChart(chartCpu, labels, filteredData.map(d => d.cpu), colors);
+        if(chartDisk) updateChart(chartDisk, labels, filteredData.map(d => d.disk), colors);
+    }
+
+    function updateChart(chart, labels, data, colors) {
+        if(!chart) return;
+        chart.data.labels = labels;
+        chart.data.datasets[0].data = data;
+        chart.data.datasets[0].backgroundColor = colors;
+        chart.update();
+    }
+
+    function toggleAccordion(id) {
+        const content = document.getElementById(id);
+        const icon = document.getElementById('icon-' + id);
+        if(!content) return;
+        
+        if (content.classList.contains('hidden')) {
+            content.classList.remove('hidden');
+            if(icon) icon.classList.add('rotate-180');
+        } else {
+            content.classList.add('hidden');
+            if(icon) icon.classList.remove('rotate-180');
+        }
+    }
+
+    const backToTopBtn = document.getElementById('back-to-top');
+    const scrollHeader = document.getElementById('scroll-header');
+
+    if(backToTopBtn || scrollHeader) {
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 300) {
+                if(backToTopBtn) backToTopBtn.classList.remove('opacity-0', 'pointer-events-none', 'translate-y-4');
+                if(scrollHeader) {
+                    scrollHeader.classList.remove('opacity-0', '-translate-y-full', 'pointer-events-none');
+                    scrollHeader.classList.add('opacity-100', 'translate-y-0');
+                }
+            } else {
+                if(backToTopBtn) backToTopBtn.classList.add('opacity-0', 'pointer-events-none', 'translate-y-4');
+                if(scrollHeader) {
+                    scrollHeader.classList.add('opacity-0', '-translate-y-full', 'pointer-events-none');
+                    scrollHeader.classList.remove('opacity-100', 'translate-y-0');
+                }
+            }
+        });
+    }
+    
+    function scrollToTop() {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+</script>
