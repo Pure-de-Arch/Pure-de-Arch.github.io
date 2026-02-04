@@ -5,6 +5,17 @@ title: Arch Environment Finder
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
+<style>
+    /* Elrejtjük a layout által generált fejlécet és navigációt */
+    body > header, .site-header, .site-title, .site-nav, nav:not(#scroll-header nav) {
+        display: none !important;
+    }
+    /* Biztosítjuk, hogy a saját elemeink látszódjanak */
+    #scroll-header, .max-w-7xl {
+        display: block;
+    }
+</style>
+
 <div id="scroll-header" class="fixed top-0 left-0 w-full z-50 py-3 bg-darkbg-900/90 backdrop-blur-md border-b border-white/5 transition-all duration-300 opacity-0 -translate-y-full pointer-events-none">
     <div class="max-w-7xl mx-auto px-6 flex items-center">
         <h2 class="text-xl font-extrabold text-white tracking-tight">
@@ -154,6 +165,44 @@ title: Arch Environment Finder
             <span>Összehasonlítás törlése</span>
             <span id="compare-count" class="bg-white text-fuchsia-600 text-xs rounded-full w-5 h-5 flex items-center justify-center">0</span>
         </button>
+    </div>
+
+    <div class="max-w-7xl mx-auto mt-24">
+        <h2 class="text-2xl font-bold text-center text-white mb-8">Fogalomtár</h2>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+            <div class="p-4 rounded-xl bg-darkbg-800 border border-darkbg-700 hover:border-cyan-500/50 transition-colors">
+                <h3 class="text-cyan-400 font-bold mb-2">Desktop Environment (DE)</h3>
+                <p class="text-xs text-gray-400">Teljes asztali környezet programokkal, menükkel és beállításokkal. Kényelmes, de több erőforrást kér.</p>
+            </div>
+            <div class="p-4 rounded-xl bg-darkbg-800 border border-darkbg-700 hover:border-fuchsia-500/50 transition-colors">
+                <h3 class="text-fuchsia-400 font-bold mb-2">Window Manager (WM)</h3>
+                <p class="text-xs text-gray-400">Csak az ablakokat kezeli. Minimalista, rendkívül gyors, de mindent kézzel kell beállítani.</p>
+            </div>
+            <div class="p-4 rounded-xl bg-darkbg-800 border border-darkbg-700 hover:border-lime-500/50 transition-colors">
+                <h3 class="text-lime-400 font-bold mb-2">Wayland</h3>
+                <p class="text-xs text-gray-400">A modern megjelenítő protokoll. Simább kép, jobb biztonság, de régebbi programokkal gond lehet.</p>
+            </div>
+            <div class="p-4 rounded-xl bg-darkbg-800 border border-darkbg-700 hover:border-orange-500/50 transition-colors">
+                <h3 class="text-orange-400 font-bold mb-2">X11 (Xorg)</h3>
+                <p class="text-xs text-gray-400">A régi szabvány. Minden fut rajta, stabil, de nehézkesebb a kódja és kevésbé biztonságos.</p>
+            </div>
+            <div class="p-4 rounded-xl bg-darkbg-800 border border-darkbg-700 hover:border-purple-500/50 transition-colors">
+                <h3 class="text-purple-400 font-bold mb-2">Tiling</h3>
+                <p class="text-xs text-gray-400">Csempéző elrendezés: az ablakok automatikusan kitöltik a képernyőt, nem takarják egymást.</p>
+            </div>
+            <div class="p-4 rounded-xl bg-darkbg-800 border border-darkbg-700 hover:border-blue-500/50 transition-colors">
+                <h3 class="text-blue-400 font-bold mb-2">Stacking (Floating)</h3>
+                <p class="text-xs text-gray-400">Hagyományos, lebegő ablakok, amik fedhetik egymást (mint Windowsban).</p>
+            </div>
+            <div class="p-4 rounded-xl bg-darkbg-800 border border-darkbg-700 hover:border-pink-500/50 transition-colors">
+                <h3 class="text-pink-400 font-bold mb-2">Compositor</h3>
+                <p class="text-xs text-gray-400">A vizuális effektekért (árnyék, átlátszóság, animációk) felelős szoftverréteg.</p>
+            </div>
+            <div class="p-4 rounded-xl bg-darkbg-800 border border-darkbg-700 hover:border-yellow-500/50 transition-colors">
+                <h3 class="text-yellow-400 font-bold mb-2">Toolkit (GTK/Qt)</h3>
+                <p class="text-xs text-gray-400">A programok kinézetét (gombok, menük) meghatározó grafikus könyvtár.</p>
+            </div>
+        </div>
     </div>
 
     <div class="max-w-4xl mx-auto mt-20 space-y-4">
