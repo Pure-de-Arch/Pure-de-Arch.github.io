@@ -14,13 +14,42 @@ title: Arch Environment Finder
     #scroll-header, .max-w-7xl {
         display: block;
     }
+    /* Sima görgetés az oldalon belül */
+    html {
+        scroll-behavior: smooth;
+    }
 </style>
 
-<div id="scroll-header" class="fixed top-0 left-0 w-full z-50 py-3 bg-darkbg-900/90 backdrop-blur-md border-b border-white/5 transition-all duration-300 opacity-0 -translate-y-full pointer-events-none">
-    <div class="max-w-7xl mx-auto px-6 flex items-center">
-        <h2 class="text-xl font-extrabold text-white tracking-tight">
+<div id="scroll-header" class="fixed top-0 left-0 w-full z-50 py-3 bg-darkbg-900/95 backdrop-blur-md border-b border-white/5 transition-all duration-300 opacity-0 -translate-y-full pointer-events-none">
+    <div class="max-w-7xl mx-auto px-6 flex items-center justify-between">
+        
+        <h2 class="text-xl font-extrabold text-white tracking-tight cursor-pointer" onclick="window.scrollTo(0,0)">
             Arch <span class="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-fuchsia-500">Environment</span> Finder
         </h2>
+
+        <div class="flex items-center gap-6">
+            
+            <nav class="hidden md:flex items-center gap-6 text-sm font-bold text-gray-400">
+                <a href="#cards-container" class="hover:text-white transition-colors">Tartalom</a>
+                <a href="#glossary" class="hover:text-white transition-colors">Fogalomtár</a>
+                
+                <a href="https://github.com" target="_blank" class="hover:text-white transition-colors flex items-center gap-2" title="GitHub Repository">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="currentColor" class="opacity-80 hover:opacity-100"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
+                </a>
+            </nav>
+
+            <div class="relative flex items-center">
+                <input type="text" id="search-input" placeholder="Keresés..." oninput="handleSearch(this.value)" 
+                       class="w-0 opacity-0 focus:w-48 focus:opacity-100 transition-all duration-300 ease-in-out bg-darkbg-800 border border-white/10 rounded-full px-4 py-1 text-sm text-white focus:outline-none focus:border-cyan-500 mr-2">
+                
+                <button onclick="toggleSearchInput()" class="text-gray-400 hover:text-white transition-colors p-1" aria-label="Keresés">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                    </svg>
+                </button>
+            </div>
+
+        </div>
     </div>
 </div>
 
@@ -82,11 +111,13 @@ title: Arch Environment Finder
         </div>
     </div>
 
-    <div id="cards-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+    <div id="cards-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 scroll-mt-32">
         {% for item in site.data.environments.items %}
         <div class="env-card group flex flex-col bg-darkbg-800 rounded-2xl overflow-hidden border border-darkbg-700 hover:border-opacity-50 transition-all duration-500 hover:-translate-y-1 hover:shadow-2xl"
              style="--theme-color: {{ item.color }}"
              data-id="{{ item.id }}"
+             data-name="{{ item.name | downcase }}"
+             data-description="{{ item.description | downcase }}"
              data-tags="{{ item.tags | join: ',' }}">
             
             <div class="relative h-48 overflow-hidden bg-black">
@@ -167,7 +198,7 @@ title: Arch Environment Finder
         </button>
     </div>
 
-    <div class="max-w-7xl mx-auto mt-24">
+    <div id="glossary" class="max-w-7xl mx-auto mt-24 scroll-mt-24">
         <h2 class="text-2xl font-bold text-center text-white mb-8">Fogalomtár</h2>
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
             <div class="p-4 rounded-xl bg-darkbg-800 border border-darkbg-700 hover:border-cyan-500/50 transition-colors">
@@ -312,11 +343,30 @@ title: Arch Environment Finder
 
     let selectedFilters = new Set(); 
     let comparisonSet = new Set();
+    let searchText = "";
 
     document.addEventListener("DOMContentLoaded", () => {
         initCharts();
         updateView();
     });
+
+    // KERESÉS KEZELÉSE
+    function toggleSearchInput() {
+        const input = document.getElementById('search-input');
+        if (input.classList.contains('w-0')) {
+            input.classList.remove('w-0', 'opacity-0');
+            input.classList.add('w-48', 'opacity-100');
+            input.focus();
+        } else {
+            input.classList.add('w-0', 'opacity-0');
+            input.classList.remove('w-48', 'opacity-100');
+        }
+    }
+
+    function handleSearch(val) {
+        searchText = val.toLowerCase();
+        updateView();
+    }
 
     function toggleFilter(filterId) {
         const btn = document.getElementById(`filter-btn-${filterId}`);
@@ -405,9 +455,16 @@ title: Arch Environment Finder
         cards.forEach(card => {
             const id = card.getAttribute('data-id');
             const tags = card.getAttribute('data-tags').split(',');
-            const isVisible = selectedFilters.size === 0 || Array.from(selectedFilters).every(f => tags.includes(f));
+            const name = card.getAttribute('data-name');
+            const desc = card.getAttribute('data-description');
+
+            // 1. Szűrők ellenőrzése
+            const matchesFilters = selectedFilters.size === 0 || Array.from(selectedFilters).every(f => tags.includes(f));
             
-            if (isVisible) {
+            // 2. Keresés ellenőrzése
+            const matchesSearch = searchText === "" || name.includes(searchText) || desc.includes(searchText);
+
+            if (matchesFilters && matchesSearch) {
                 card.style.display = 'flex';
                 visibleIdsInGrid.push(id);
             } else {
@@ -464,13 +521,13 @@ title: Arch Environment Finder
                 if(backToTopBtn) backToTopBtn.classList.remove('opacity-0', 'pointer-events-none', 'translate-y-4');
                 if(scrollHeader) {
                     scrollHeader.classList.remove('opacity-0', '-translate-y-full', 'pointer-events-none');
-                    scrollHeader.classList.add('opacity-100', 'translate-y-0');
+                    scrollHeader.classList.add('opacity-100', 'translate-y-0', 'pointer-events-auto');
                 }
             } else {
                 if(backToTopBtn) backToTopBtn.classList.add('opacity-0', 'pointer-events-none', 'translate-y-4');
                 if(scrollHeader) {
                     scrollHeader.classList.add('opacity-0', '-translate-y-full', 'pointer-events-none');
-                    scrollHeader.classList.remove('opacity-100', 'translate-y-0');
+                    scrollHeader.classList.remove('opacity-100', 'translate-y-0', 'pointer-events-auto');
                 }
             }
         });
